@@ -1,7 +1,11 @@
 import json
+import os
+from urllib import response
 from django.http import HttpResponse
 from django.http.response import StreamingHttpResponse
 from django.shortcuts import redirect, render
+
+import backend.settings as settings
 
 # Create your views here.
 
@@ -68,11 +72,34 @@ def newProject(request):
     return render(request, "index.html", context)
 
 
-# Front
-# POST: 还不是很清楚
-def uploadProject(request):
-    context = {"isUpload": True}
-    return render(request, "index.html", context)
+# 现在文件是都存在一个media的文件夹下。
+# 之后应该是根据用户id分别有文件夹， request.COOKIES.get(' ')来得到用户id
+def getProjectFile(request):
+    if request.method == "POST":
+        file = request.FILES['file']
+
+        if not file:
+            print("file not find")
+            return HttpResponse("file not find")
+
+        save_path = os.path.join(settings.MEDIA_ROOT, file.name)
+        try:
+            print("making media dir...")
+            os.mkdir(settings.MEDIA_ROOT)
+        except Exception:
+            pass
+
+        # save file
+        print("start to save file...")
+        with open(save_path, 'wb+') as fp:
+            for chunk in file.chunks():
+                fp.write(chunk)
+
+        print("save file done...")
+
+        return HttpResponse("upload ok!")
+        # context = {"isUpload": True}
+        # return render(request, "index.html", context)
 
 
 # Front
@@ -141,3 +168,25 @@ def templatePage(request):
 def templateStar(request):
     context = {'isStar': True}
     return render(request, "index.html", context)
+
+
+# def getProjectFile(request):
+#     file = request.FILES['file']
+#     file_path = os.path.join(settings.MEDIA_ROOT, image_name)
+#        # 在没有目录路径时创建一个
+#        try:
+#             os.mkdir(settings.MEDIA_ROOT)
+#         except Exception:
+#             pass
+#         # 将文件保存在本地
+#         f = open(image_path, 'wb')
+#         for i in onecard.chunks():
+#             f.write(i)
+#         f.close()
+#         # 创建用户
+#         try:
+#             UserModel.objects.create(name=name, image=image_name)
+#         except Exception as e:
+#             # logger.info("[Users] Fail to create user!\n", e)
+#             response['success'] = '0'
+#         return Response(response)

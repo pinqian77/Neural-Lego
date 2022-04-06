@@ -10,6 +10,7 @@ urlpatterns = [
     path('register/', views.register),
 
     path('project/', views.projectPage),
+    path('project/upload/', views.getProjectFile),
 
     path('profile/', views.profilePage),
 

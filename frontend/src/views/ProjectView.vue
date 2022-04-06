@@ -2,14 +2,22 @@
   <body>
     <div id="title">
       Neural LEGO
-      <input id="btn1" type="button" value="open" onClick="location.href='#'" />
+      <!-- <input id="btn1" type="button" value="open" onClick="location.href='#'" />
       <input
         id="btn2"
         type="button"
         value="new project"
         onClick="location.href='#'"
-      />
+      /> -->
     </div>
+
+    <form @submit.prevent="upload">
+      <input id="file" type="file" />
+      <button class="btn btn-primary" style="margin-top: 20px">
+        TestUpload
+      </button>
+    </form>
+
     <div class="box">
       <ul>
         <li>
@@ -36,147 +44,180 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "ProjectView",
+  data() {
+    return {
+      name: "",
+    };
+  },
+  components: {},
+  methods: {
+    upload() {
+      var form_data = new FormData();
+      var file = document.getElementById("file").files[0];
+      form_data.append("file", file, file.name);
+
+      axios({
+        method: "post",
+        url: "/project/upload/",
+        data: form_data,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+        .then((response) => {
+          console.log("response:");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
 };
 </script>
 
 
 <style scoped>
 body {
-    background: #00000020;
-    margin: 0%;
+  background: #00000020;
+  margin: 0%;
 }
 
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 #title {
-    background: #5f6298;
-    font-size: 50px;
-    color: white;
+  background: #5f6298;
+  font-size: 50px;
+  color: white;
 }
 
 #btn1 {
-    width: 8%;
-    height: 40px;
-    border-radius: 20px;
-    border: medium solid white;
-    background-color: #5f6298;
-    color: white;
-    font-size: 15px;
-    text-decoration: none;
-    vertical-align: 60%;
-    text-align: center;
-    /* display: inline-block; */
-    margin-left: 50%;
+  width: 8%;
+  height: 40px;
+  border-radius: 20px;
+  border: medium solid white;
+  background-color: #5f6298;
+  color: white;
+  font-size: 15px;
+  text-decoration: none;
+  vertical-align: 60%;
+  text-align: center;
+  /* display: inline-block; */
+  margin-left: 50%;
 }
 
 #btn2 {
-    width: 8%;
-    height: 40px;
-    border-radius: 20px;
-    border: medium solid white;
-    background-color: #5f6298;
-    color: white;
-    font-size: 15px;
-    text-decoration: none;
-    vertical-align: 60%;
+  width: 8%;
+  height: 40px;
+  border-radius: 20px;
+  border: medium solid white;
+  background-color: #5f6298;
+  color: white;
+  font-size: 15px;
+  text-decoration: none;
+  vertical-align: 60%;
 }
 
 li {
-    list-style: none;
+  list-style: none;
 }
 
 .box {
-    height: 460px;
-    width: 1200px;
-    background-color: none;
-    margin: 0;
+  height: 460px;
+  width: 1200px;
+  background-color: none;
+  margin: 0;
 }
 
 .box li {
-    float: left;
-    margin-right: 10px;
+  float: left;
+  margin-right: 10px;
 }
 
 .box .right {
-    width: 700px;
+  width: 700px;
 }
 
 .left {
-    width: 230px;
-    height: 460px;
-    background-color: #55585a;
+  width: 230px;
+  height: 460px;
+  background-color: #55585a;
 }
 
 .left a {
-    display: block;
-    width: 190px;
-    height: 80px;
-    background-color: #55585a;
-    font-size: 20px;
-    color: white;
-    text-decoration: none;
-    line-height: 80px;
-    padding-left: 40px;
+  display: block;
+  width: 190px;
+  height: 80px;
+  background-color: #55585a;
+  font-size: 20px;
+  color: white;
+  text-decoration: none;
+  line-height: 80px;
+  padding-left: 40px;
 }
 
 .left .Project {
-    background-color: #292a2b;
+  background-color: #292a2b;
 }
 
 .left a:hover {
-    background-color: #292a2b;
+  background-color: #292a2b;
 }
 
 .search {
-    background-color: none;
+  background-color: none;
 }
 
 .search .check {
-    border: 10;
-    width: 30%;
-    font-size: 20px;
-    background: white;
-    border-radius: 10px;
-    padding: 5px 10px;
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-bottom: 20px;
+  border: 10;
+  width: 30%;
+  font-size: 20px;
+  background: white;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-bottom: 20px;
 }
 
 .project {
-    width: 540px;
-    height: 150px;
-    background-color: white;
-    border-width: 2px;
-    border-style: solid;
-    margin-left: 20px;
+  width: 540px;
+  height: 150px;
+  background-color: white;
+  border-width: 2px;
+  border-style: solid;
+  margin-left: 20px;
 }
 
 .project p {
-    margin-left: 20px;
-    margin-top: 20px;
-    font-size: 20px;
-    color: blue;
+  margin-left: 20px;
+  margin-top: 20px;
+  font-size: 20px;
+  color: blue;
 }
 
 .project .projectcontent {
-    word-wrap: break-word;
-    word-break: normal;
-    margin-left: 20px;
-    font-size: 20px;
+  word-wrap: break-word;
+  word-break: normal;
+  margin-left: 20px;
+  font-size: 20px;
 }
 
 .line2 {
-    width: 500px;
-    height: 2px;
-    background-image: linear-gradient(to right, #000 0%, #000 50%, transparent 75%);
-    background-size: 20px 10px;
-    background-repeat: repeat-x;
-    margin-left: 20px;
+  width: 500px;
+  height: 2px;
+  background-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 50%,
+    transparent 75%
+  );
+  background-size: 20px 10px;
+  background-repeat: repeat-x;
+  margin-left: 20px;
 }
 </style>
