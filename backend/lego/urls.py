@@ -11,6 +11,7 @@ urlpatterns = [
 
     path('project/', views.projectPage),
     path('project/upload/', views.getProjectFile),
+    path('project/search/', views.search),
 
     path('profile/', views.profilePage),
 

@@ -2,36 +2,22 @@
   <body>
     <div id="title">Neural LEGO</div>
 
-    <div>
-      <form @submit.prevent="upload">
-        <input id="file" type="file" />
-        <button>Upload</button>
-      </form>
-    </div>
-
     <div class="box">
       <ul>
         <li>
           <div class="left">
             <a href="/profile">Profile</a>
-            <a href="/project" class="Project">Projects</a>
-            <a href="/template">Templates</a>
+            <a href="/project">Projects</a>
+            <a href="/template" class="Template">Templates</a>
           </div>
         </li>
-
         <li class="right">
           <div class="search">
-            <form>
-              <input
-                type="text"
-                placeholder="Find your project..."
-                v-model="search_data"
-              />
-              <button type="submit" @click="search($event)">Search</button>
-            </form>
+            <input class="check" type="text" placeholder="search" />
           </div>
-
           <div class="project">
+            <p>title</p>
+            <div class="line2"></div>
             <div class="projectcontent"></div>
           </div>
         </li>
@@ -44,47 +30,14 @@
 import axios from "axios";
 
 export default {
-  name: "ProjectView",
+  name: "TemplateView",
   data() {
     return {
-      page_name: "project_page",
-      search_data: "",
+      name: "",
     };
   },
   components: {},
-  methods: {
-    upload() {
-      var form_data = new FormData();
-      var file = document.getElementById("file").files[0];
-      form_data.append("file", file, file.name);
-
-      axios({
-        method: "post",
-        url: "/project/upload/",
-        data: form_data,
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-        .then((response) => {
-          console.log("response:");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-
-    search(event) {
-      event.preventDefault();
-
-      axios({
-        method: "post",
-        url: "/project/search/",
-        data: {
-          page_name: this.page_name,
-          keyword: this.search_data,
-        },
-      });
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -171,7 +124,7 @@ li {
   padding-left: 40px;
 }
 
-.left .Project {
+.left .Template {
   background-color: #292a2b;
 }
 

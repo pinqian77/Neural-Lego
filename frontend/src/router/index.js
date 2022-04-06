@@ -38,6 +38,12 @@ const routes = [
       import(/* webpackChunkName: "project" */ "../views/ProjectView.vue"),
   },
   {
+    path: "/template",
+    name: "template",
+    component: () =>
+      import(/* webpackChunkName: "template" */ "../views/TemplateView.vue"),
+  },
+  {
     path: "/canvas",
     name: "canvas",
     component: () =>
