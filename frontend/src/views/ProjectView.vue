@@ -81,7 +81,9 @@ export default {
         url: "/project/",
       }).then((res) => {
         console.log(JSON.stringify(res));
+
         if (res.data.status == 200) {
+          window.location = "/project/";
           this.project_datail = res.data.project_datail;
         } else {
           alert("error");
