@@ -1,7 +1,7 @@
 import json
 import os
 from urllib import response
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.http.response import StreamingHttpResponse
 from django.shortcuts import redirect, render
 
@@ -44,10 +44,12 @@ def register(request):
 # Back
 # 都是list {“project_ID":"1", "project_name":"name", "project_time":"time"} 表示list中的一个元素
 def projectPage(request):
-    context = {'project_detail': [{"project_ID": "1", "project_name": "name", "project_time": "time"},
+    context = {'status': 200,
+               'project_detail': [{"project_ID": "1", "project_name": "name", "project_time": "time"},
                                   {"project_ID": "2", "project_name": "name", "project_time": "time"}]
                }
     return render(request, "index.html", context)
+    # return JsonResponse(context, json_dumps_params={"ensure_ascii": False})
 
 
 # Front

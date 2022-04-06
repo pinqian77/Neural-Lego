@@ -32,7 +32,24 @@
           </div>
 
           <div class="project">
-            <div class="projectcontent"></div>
+            <table class="tabx" border="2" cellspacing="1">
+              <tr>
+                <td>Porject ID</td>
+                <td>Project Nane</td>
+                <td>Created Time</td>
+                <td>Operation</td>
+              </tr>
+
+              <tr v-for="project in project_datail" :key="project.project_ID">
+                <td>{{ project.project_ID }}</td>
+                <td>{{ project.project_name }}</td>
+                <td>{{ project.project_time }}</td>
+                <td>
+                  <button @click="edit(project.project_ID)">Edit</button>
+                  <button @click="delx(project.project_ID)">Delete</button>
+                </td>
+              </tr>
+            </table>
           </div>
         </li>
       </ul>
@@ -49,10 +66,29 @@ export default {
     return {
       page_name: "project_page",
       search_data: "",
+      project_datail: {},
     };
   },
-  components: {},
+  created() {
+    // Fetch tasks on page load
+    this.getData();
+  },
   methods: {
+    getData() {
+      // 向后端发送一个请求，res是后端发给前端的数据
+      axios({
+        method: "get",
+        url: "/project/",
+      }).then((res) => {
+        console.log(JSON.stringify(res));
+        if (res.data.status == 200) {
+          this.project_datail = res.data.project_datail;
+        } else {
+          alert("error");
+        }
+      });
+    },
+
     upload() {
       var form_data = new FormData();
       var file = document.getElementById("file").files[0];

@@ -2,7 +2,9 @@ from django.urls import path
 
 from . import views
 
-# 'x/' is defined by frontend in src/router/index.js, 'views.x' is defined by backend in lego/views.py
+# 'x/' is defined by frontend, 'views.x' is defined by backend
+# frontend SEND DATA TO 'x/';
+# backend SEND DATA BY 'views.x'
 urlpatterns = [
     path('', views.welcome),
 
