@@ -1,6 +1,9 @@
 from django.http import HttpResponse, JsonResponse
 from django.http.response import StreamingHttpResponse
 from django.shortcuts import redirect, render
+from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -28,10 +31,13 @@ def login(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         next_url = request.POST.get("next_url")
-        return redirect(next_url)
+
+        user = authenticate(username = username, password = password)
+        if user is not None and user.is_active:
+            return redirect(next_url)
 
     context = {'isLogin': True}
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
 
 
 # Front
@@ -40,11 +46,15 @@ def register(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        next_url = request.POST.get("next_url")
-        return redirect(next_url)
+
+        if username is not None and password is not None:
+            user = User.objects.create_user(username=username, password = password)
+            user.is_active = True
+            user.save
+            return redirect(request.POST.get("next_url"))
 
     context = {'isLogin': True}
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
 
 
 # Back
@@ -54,7 +64,7 @@ def projectPage(request):
                'project_detail': [{"project_ID": "1", "project_name": "name", "project_time": "time"},
                                   {"project_ID": "2", "project_name": "name", "project_time": "time"}]
                }
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
     # return JsonResponse(context, json_dumps_params={"ensure_ascii": False})
 
 
@@ -63,27 +73,28 @@ def projectPage(request):
 def search(request):
     context = {'project_detail': {"project_ID": "1",
                                   "project_name": "name", "project_time": "time"}}
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
 
 
 # Front
 # POST: {"project_ID":"1"}
 def deleteProject(request):
     context = {"isDelete": True}
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
 
 
 # Front
 # POST: {"project_name":"xxx", "project_time":"time"}
 def newProject(request):
     context = {"isNew": True}
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
 
 
 # 现在文件是都存在一个media的文件夹下。
 # 之后应该是根据用户id分别有文件夹， request.COOKIES.get(' ')来得到用户id
 def uploadProject(request):
-    pass
+    context = {"isNew": True}
+    return JsonResponse(context, safe=False)
 
 # Front
 # POST: {"project_ID":"xxx"}
@@ -95,17 +106,18 @@ def downloadProject(request):
 
 def profilePage(request):
     context = {"name": "username"}
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
 
 
 # Front
 # POST: {"canvas_data":"xxx"}
 def canvasPage(request):
-    pass
+    context = {"canvas_data": "username"}
+    return JsonResponse(context, safe=False)
 
 def canvasSave(request):
     context = {"isSave": True}
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
 
 # 传一个string 需要前端自己分词，还是说我这边分号，传很多个参数过来, 如果是后一种，将这里的context修改为想要的参数，左边为自己想要的名字
 
@@ -114,36 +126,36 @@ def canvasSave(request):
 # POST: {"optimizer":"xxx", "dataset":"xxx", "lr":"xxx", "t_batch_size":"xxx", "batch_size":"xxx", "epoch":"xxx", "seed"="xxx"}
 def trainPage(request):
     context = {"hyperpars": "name"}
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
 
 
 def trainSave(request):
     context = {"isSave": True}
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
 
 
 def trainRun(request):
     context = {"isRun": True}
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
 
 
 # Front
 # POST: 还不是很清楚
 def uploadDataset(request):
     context = {"isUpload": True}
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
 # 都是list {“project_ID":"1", "project_name":"name", "project_time":"time"} 表示list中的一个元素
 
 
 def templatePage(request):
     context = {'project_share': {"project_ID": "1", "project_name": "name", "project_time": "time"}, 'project_recommend': {
         "project_ID": "1", "project_name": "name", "project_time": "time"}, 'starlist': [1, 2, 3, 4]}
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
 
 
 def templateStar(request):
     context = {'isStar': True}
-    return render(request, "index.html", context)
+    return JsonResponse(context, safe=False)
 
 
 # def getProjectFile(request):
