@@ -1,14 +1,20 @@
-import json
-import os
-from urllib import response
 from django.http import HttpResponse, JsonResponse
 from django.http.response import StreamingHttpResponse
 from django.shortcuts import redirect, render
 
-import backend.settings as settings
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import generics, permissions, renderers
+from django.contrib.auth.models import User
+from lego.models import Comment, Data, Project, Users_data, Users_project, Users_template
+from lego.serializers import CommentSerializer, DataSerializer, ProjectSerializer, UserDataSerializer, UserProjectSerializer, UserSerializer, UserTemplateSerializer
+from lego.permissions import IsOwnerOrReadOnly
+from django.http import Http404
+
 
 # Create your views here.
-
 
 def welcome(request):
     return render(request, "index.html")
@@ -76,33 +82,8 @@ def newProject(request):
 
 # 现在文件是都存在一个media的文件夹下。
 # 之后应该是根据用户id分别有文件夹， request.COOKIES.get(' ')来得到用户id
-def getProjectFile(request):
-    if request.method == "POST":
-        file = request.FILES['file']
-
-        if not file:
-            print("file not find")
-            return HttpResponse("file not find")
-
-        save_path = os.path.join(settings.MEDIA_ROOT, file.name)
-        try:
-            print("making media dir...")
-            os.mkdir(settings.MEDIA_ROOT)
-        except Exception:
-            pass
-
-        # save file
-        print("start to save file...")
-        with open(save_path, 'wb+') as fp:
-            for chunk in file.chunks():
-                fp.write(chunk)
-
-        print("save file done...")
-
-        return HttpResponse("upload ok!")
-        # context = {"isUpload": True}
-        # return render(request, "index.html", context)
-
+def uploadProject(request):
+    pass
 
 # Front
 # POST: {"project_ID":"xxx"}
@@ -120,14 +101,7 @@ def profilePage(request):
 # Front
 # POST: {"canvas_data":"xxx"}
 def canvasPage(request):
-    if request.method == "POST":
-        # file = request.POST.get("file")
-        file = json.loads(request.body)
-        print(file)
-        return HttpResponse("hhhhh")
-    context = {"file": "name", "python": "name"}
-    return render(request, "index.html", context)
-
+    pass
 
 def canvasSave(request):
     context = {"isSave": True}
@@ -192,3 +166,40 @@ def templateStar(request):
 #             # logger.info("[Users] Fail to create user!\n", e)
 #             response['success'] = '0'
 #         return Response(response)
+
+#def uploadProject(request):
+#    if request.method == "POST":
+#        file = request.FILES['file']
+#
+#        if not file:
+#            print("file not find")
+#            return HttpResponse("file not find")
+#
+#        save_path = os.path.join(settings.MEDIA_ROOT, file.name)
+#        try:
+#            print("making media dir...")
+#            os.mkdir(settings.MEDIA_ROOT)
+#        except Exception:
+#            pass
+#
+#        # save file
+#        print("start to save file...")
+#        with open(save_path, 'wb+') as fp:
+#            for chunk in file.chunks():
+#                fp.write(chunk)
+#
+#        print("save file done...")
+#
+#        return HttpResponse("upload ok!")
+        # context = {"isUpload": True}
+        # return render(request, "index.html", context)
+
+#def canvasPage(request):
+#    if request.method == "POST":
+#        # file = request.POST.get("file")
+#        file = json.loads(request.body)
+#        print(file)
+#        return HttpResponse("hhhhh")
+#    context = {"file": "name", "python": "name"}
+#    return render(request, "index.html", context)
+

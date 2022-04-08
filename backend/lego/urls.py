@@ -12,7 +12,7 @@ urlpatterns = [
     path('register/', views.register),
 
     path('project/', views.projectPage),
-    path('project/upload/', views.getProjectFile),
+    path('project/upload/', views.uploadProject),
     path('project/search/', views.search),
 
     path('profile/', views.profilePage),
