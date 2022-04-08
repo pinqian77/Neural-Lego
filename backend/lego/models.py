@@ -1,14 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
-
-class Users_account(models.Model):
-    user_id = models.AutoField(primary_key=True);
-    accout_name = models.CharField(max_length=50, null=False)
-    accout_password = models.CharField(max_length=50, null=False)
-    last_login_time = models.DateField(null=False)
-    def __str__(self):
-        return self.user_id
 
 class Project(models.Model):
     project_id = models.AutoField(primary_key=True)
@@ -19,27 +12,34 @@ class Project(models.Model):
     is_public = models.CharField(max_length = 50, null=False)
     def __str__(self):
         return self.project_id
+    class Meta:
+        db_table = 'project'
+        ordering = ['project_id']
 
 class Users_project(models.Model):
-    F_user = models.ForeignKey(Users_account, on_delete=models.CASCADE)
+    F_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     F_project = models.ForeignKey(Project, on_delete=models.CASCADE, null=False)
     user_id = models.IntegerField(null=False);
     project_id = models.IntegerField(null=False);
     def __str__(self):
         return self.user_id
+    class Meta:
+        db_table = 'users_project'
 
 class Users_template(models.Model):
-    F_user = models.ForeignKey(Users_account, on_delete=models.CASCADE)
+    F_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     F_project = models.ForeignKey(Project, on_delete=models.CASCADE, null=False)
     user_id = models.IntegerField(null=False);
     project_id = models.IntegerField(null=False);
     def __str__(self):
         return self.user_id
+    class Meta:
+        db_table = 'users_template'
 
 class Comment(models.Model):
-    F_user = models.ForeignKey(Users_account, on_delete=models.CASCADE)
+    F_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     F_project = models.ForeignKey(Project, on_delete=models.CASCADE, null=False)
     comment_id = models.AutoField(primary_key=True)
@@ -51,6 +51,8 @@ class Comment(models.Model):
     like_count = models.IntegerField(default=0)
     def __str__(self):
         return self.comment_id
+    class Meta:
+        db_table = 'comment'
 
 class Data(models.Model):
     data_id = models.AutoField(primary_key=True)
@@ -60,12 +62,17 @@ class Data(models.Model):
     upload_time = models.DateTimeField(null = False)
     def __str__(self):
         return self.data_id
+    class Meta:
+        db_table = 'data'
+        ordering = ['data_id']
 
-class User_data(models.Model):
-    F_user = models.ForeignKey(Users_account, on_delete=models.CASCADE)
+class Users_data(models.Model):
+    F_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     F_data = models.ForeignKey(Data, on_delete=models.CASCADE, null=False)
     user_id = models.IntegerField(null=False);
     data_id = models.IntegerField(null=False);
     def __str__(self):
         return self.user_id
+    class Meta:
+        db_table = 'users_data'
