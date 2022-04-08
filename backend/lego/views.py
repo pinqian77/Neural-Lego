@@ -59,26 +59,34 @@ def register(request):
 
 # Back
 # 都是list {“project_ID":"1", "project_name":"name", "project_time":"time"} 表示list中的一个元素
-def projectPage(request):
-    context = {'status': 200,
-               'project_detail': [{"project_ID": "1", "project_name": "name", "project_time": "time"},
-                                  {"project_ID": "2", "project_name": "name", "project_time": "time"}]
-               }
+def projectPage(request, pk):
+#    context = {'status': 200,
+#               'project_detail': [{"project_ID": "1", "project_name": "name", "project_time": "time"},
+#                                  {"project_ID": "2", "project_name": "name", "project_time": "time"}]
+#               }
+    project = Users_project.objects.filter(user_id=pk)
+    project = list(project)
+    context = {'status': 200, 'project_detail': project}
     return JsonResponse(context, safe=False)
     # return JsonResponse(context, json_dumps_params={"ensure_ascii": False})
 
 
 # Front
 # POST: {"page_name":"xxx", "keyword":"xxxxx"}
-def search(request):
-    context = {'project_detail': {"project_ID": "1",
-                                  "project_name": "name", "project_time": "time"}}
+def search(request, pk=None):
+#    context = {'project_detail': {"project_ID": "1",
+#                                  "project_name": "name", "project_time": "time"}}
+    if pk is not None:
+        project = Users_project.objects.filter(user_id=pk,project_name__contains = request.POST.get("keyword"))
+    else:
+        project = Users_project.objects.filter(is_public = True, project_name__contains = request.POST.get("keyword"))
+    context = {"project_detail": list(project)}
     return JsonResponse(context, safe=False)
 
 
 # Front
 # POST: {"project_ID":"1"}
-def deleteProject(request):
+def deleteProject(request, pk):
     context = {"isDelete": True}
     return JsonResponse(context, safe=False)
 
