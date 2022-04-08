@@ -83,7 +83,7 @@ export default {
         console.log(JSON.stringify(res));
 
         if (res.data.status == 200) {
-          window.location = "/project/";
+          // window.location = "/project/";
           this.project_datail = res.data.project_datail;
         } else {
           alert("error");
