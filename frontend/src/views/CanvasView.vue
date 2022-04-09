@@ -1,69 +1,4 @@
 <template>
-  <!-- <div>
-    <div id="allSampleContent" class="p-4 w-full">
-      <div id="sample">
-        <div
-          style="
-            width: 100%;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-          "
-        >
-          <div
-            id="myPaletteDiv"
-            style="
-              width: 150px;
-              margin-right: 10px;
-              background-color: whitesmoke;
-              border: solid 4px #82929b;
-            "
-          ></div>
-          <div
-            id="myDiagramDiv"
-            style="
-              flex-grow: 3;
-              margin-right: 10px;
-              height: 600px;
-              background-color: whitesmoke;
-              border: solid 4px #82929b;
-            "
-          ></div>
-          <div
-            id="myDiagramDiv"
-            style="
-              flex-grow: 2;
-              height: 600px;
-              background-color: whitesmoke;
-              border: solid 4px #82929b;
-            "
-          ></div>
-        </div>
-
-        <button type="submit" @click="save()">Save</button>
-        <button type="submit" @click="load()">Load</button>
-        <button type="submit" @click="layout()">Layout</button>
-
-        <form method="POST">
-          <input
-            v-model="canvasData.file"
-            type="hidden"
-            class="form-control"
-            id="file"
-            name="file"
-          />
-          <button type="submit" @click="compile($event)">Compile</button>
-        </form>
-
-        <br />
-        <textarea
-          id="mySavedModel"
-          style="width: 100%; height: 300px"
-        ></textarea>
-      </div>
-    </div>
-  </div> -->
-
   <div id="page-top" class="body">
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -281,8 +216,8 @@
               <button class="btn btn-primary" type="submit" @click="layout()">
                 Layout
               </button>
-              
-              <form style="display:inline-block" method="POST">
+
+              <form style="display: inline-block" method="POST">
                 <input
                   v-model="canvasData.file"
                   type="hidden"
@@ -290,7 +225,13 @@
                   id="file"
                   name="file"
                 />
-                <button type="submit" class="btn btn-primary" @click="compile($event)">Compile</button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  @click="compile($event)"
+                >
+                  Compile
+                </button>
               </form>
 
               <a href="#"><button class="btn btn-primary">Train</button></a>

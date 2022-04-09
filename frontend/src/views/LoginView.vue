@@ -63,55 +63,50 @@
                     <div class="text-center">
                       <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                     </div>
-                    <form method="POST" class="user">
-                      <div class="form-group">
-                        <input
-                          class="form-control form-control-user"
-                          aria-describedby="emailHelp"
-                          placeholder="Enter Username"
-                          v-model="loginForm.email"
-                          type="text"
-                          id="username"
-                          name="username"
-                          required
-                        />
-                      </div>
-                      <div class="form-group">
-                        <input
-                          type="password"
-                          class="form-control form-control-user"
-                          placeholder="Password"
-                          v-model="loginForm.password"
-                          id="password"
-                          name="password"
-                          required
-                        />
-                      </div>
-                      <input
-                        v-model="loginForm.next_url"
-                        type="hidden"
-                        class="form-control"
-                        id="next_url"
-                        name="next_url"
-                      />
 
-                      <button type="submit" class="btn btn-primary btn-user btn-block" @click="submitFrom($event)">Login</button>
-                      <!-- <hr> -->
-                      <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
-                                        </a>
-                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                        </a> -->
-                    </form>
+                    <div class="form-group">
+                      <input
+                        class="form-control form-control-user"
+                        aria-describedby="emailHelp"
+                        placeholder="Enter Username"
+                        v-model="loginForm.email"
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        type="password"
+                        class="form-control form-control-user"
+                        placeholder="Password"
+                        v-model="loginForm.password"
+                        id="password"
+                        name="password"
+                        required
+                      />
+                    </div>
+                    <input
+                      v-model="loginForm.next_url"
+                      type="hidden"
+                      class="form-control"
+                      id="next_url"
+                      name="next_url"
+                    />
+
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-user btn-block"
+                      @click="submitForm()"
+                    >
+                      Login
+                    </button>
+
                     <hr />
-                    <!-- <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                    </div> -->
+
                     <div class="text-center">
-                      <a class="small" href="/register"
-                        >Create an Account!</a
-                      >
+                      <a class="small" href="/register">Create an Account!</a>
                     </div>
                   </div>
                 </div>
@@ -140,30 +135,25 @@ export default {
     };
   },
   methods: {
-    submitForm(event) {
-      event.preventDefault();
+    submitForm() {
+      // Declare a form
+      let formData = new FormData();
+      formData.append("username", this.loginForm.username);
+      formData.append("password", this.loginForm.password);
+      formData.append("next_url", this.loginForm.next_url);
 
+      // Send form to backend and get response data
       axios({
         method: "post",
         url: "/login/",
-        data: {
-          username: this.loginForm.username,
-          password: this.loginForm.password,
-          next_url: this.loginForm.next_url,
-        },
+        data: formData,
+      }).then((res) => {
+        if (res.data.isLogin == true) {
+          console.log("login ok!");
+        } else {
+          console.log("login fail!");
+        }
       });
-
-      // axios.post({
-      //   url: "/login",
-      //   data: {
-      //     username: this.loginForm.username,
-      //     password: this.loginForm.password,
-      //     next_url: this.loginForm.next_url,
-      //   },
-      //   headers: {
-      //     "Content-Type": "application/x-www-form-urlencoded",
-      //   },
-      // });
     },
   },
 };

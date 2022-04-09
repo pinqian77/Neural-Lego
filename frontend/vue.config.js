@@ -6,7 +6,13 @@ module.exports = defineConfig({
   indexPath: "templates/index.html",
   filenameHashing: false,
   runtimeCompiler: true,
-  // devServer: {
-  //   writeToDisk: true, // Write files to disk in dev mode, so Django can serve the assets
-  // },
+  devServer: {
+    proxy: {
+      "/api": {
+        target: "http://127.0.0.1:8000/", // backend api address
+        changeOrigin: true, // allow cross domain
+        pathRewrite: { "^/api": "" }, // rewrite request api format
+      },
+    },
+  },
 });

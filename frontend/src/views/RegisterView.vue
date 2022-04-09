@@ -87,10 +87,12 @@
                     </div>
                     <div class="col-sm-6">
                       <input
+                        v-model="registerForm.repeat_password"
                         type="password"
                         class="form-control form-control-user"
                         id="exampleRepeatPassword"
                         placeholder="Repeat Password"
+                        required
                       />
                     </div>
                     <input
@@ -104,7 +106,7 @@
                   <button
                     type="submit"
                     class="btn btn-primary btn-user btn-block"
-                    @click="submitFrom($event)"
+                    @click="submitForm()"
                   >
                     Register Account
                   </button>
@@ -126,7 +128,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
+import axios from "axios";
 
 export default {
   name: "RegisterView",
@@ -135,24 +137,36 @@ export default {
       registerForm: {
         username: "",
         password: "",
+        repeat_password: "",
         next_url: "/login",
       },
     };
   },
   methods: {
-    submitForm(event) {
-      event.preventDefault();
+    submitForm() {
+      if (this.registerForm.password != this.registerForm.repeat_password) {
+        alert("The entered password is inconsistent!");
+        return;
+      }
 
-      axios.post({
-        url: "/register",
-        data: {
-          username: this.registerForm.email,
-          password: this.registerForm.password,
-          next_url: this.registerForm.next_url,
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
+      // Declare a form
+      let formData = new FormData();
+      formData.append("username", this.registerForm.email);
+      formData.append("password", this.registerForm.password);
+      formData.append("next_url", this.registerForm.next_url);
+
+      // Send form to backend and get response data
+      axios({
+        method: "post",
+        url: "/register/",
+        data: formData,
+      }).then((res) => {
+        if (res.data.isLogin == true) {
+          console.log("register ok!");
+          window.location.replace("/login");
+        } else {
+          console.log("register fail!");
+        }
       });
     },
   },
