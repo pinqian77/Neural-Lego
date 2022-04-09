@@ -1,29 +1,180 @@
 <template>
-  <body>
-    <div id="title">Neural LEGO</div>
 
-    <div class="box">
-      <ul>
-        <li>
-          <div class="left">
-            <a href="/profile">Profile</a>
-            <a href="/project">Projects</a>
-            <a href="/template" class="Template">Templates</a>
-          </div>
-        </li>
-        <li class="right">
-          <div class="search">
-            <input class="check" type="text" placeholder="search" />
-          </div>
-          <div class="project">
-            <p>title</p>
-            <div class="line2"></div>
-            <div class="projectcontent"></div>
-          </div>
-        </li>
-      </ul>
+<div id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+
+            <a class="sidebar-brand d-flex align-items-center justify-content-center">
+                <!-- <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div> -->
+                <div class="sidebar-brand-text mx-3">NEURAL LEGO</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="/profile">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>User</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="/project">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Project</span></a>
+            </li>
+
+
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/template">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Template</span></a>
+            </li>
+
+
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="/canvas">
+                    <i class="fas fa-fw fa-palette"></i>
+                    <span>Canvas</span></a>
+            </li>
+
+
+
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <i class="fas fa-fw fa-arrow-circle-left"></i>
+                    <span>Log out</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-5 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Template 1</h6>
+
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <a href="#"><img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-5 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Template 2</h6>
+
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <a href="#"><img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
     </div>
-  </body>
+    <!-- End of Page Wrapper -->
+
+</div>
 </template>
 
 <script>
@@ -43,145 +194,14 @@ export default {
 
 
 <style scoped>
-body {
-  background: #00000020;
-  margin: 0%;
-}
-
-* {
-  margin: 0;
+.body {
+  position: fixed;
+  background-size: cover;
   padding: 0;
-}
-
-#title {
-  background: #5f6298;
-  font-size: 50px;
-  color: white;
-}
-
-#btn1 {
-  width: 8%;
-  height: 40px;
-  border-radius: 20px;
-  border: medium solid white;
-  background-color: #5f6298;
-  color: white;
-  font-size: 15px;
-  text-decoration: none;
-  vertical-align: 60%;
-  text-align: center;
-  /* display: inline-block; */
-  margin-left: 50%;
-}
-
-#btn2 {
-  width: 8%;
-  height: 40px;
-  border-radius: 20px;
-  border: medium solid white;
-  background-color: #5f6298;
-  color: white;
-  font-size: 15px;
-  text-decoration: none;
-  vertical-align: 60%;
-}
-
-li {
-  list-style: none;
-}
-
-.box {
-  height: 460px;
-  width: 1200px;
-  background-color: none;
   margin: 0;
-}
-
-.box li {
-  float: left;
-  margin-right: 10px;
-}
-
-.box .right {
-  width: 700px;
-}
-
-.left {
-  width: 230px;
-  height: 460px;
-  background-color: #55585a;
-}
-
-.left a {
-  display: block;
-  width: 190px;
-  height: 80px;
-  background-color: #55585a;
-  font-size: 20px;
-  color: white;
-  text-decoration: none;
-  line-height: 80px;
-  padding-left: 40px;
-}
-
-.left .Template {
-  background-color: #292a2b;
-}
-
-.left a:hover {
-  background-color: #292a2b;
-}
-
-.search {
-  background-color: none;
-}
-
-.search .check {
-  border: 10;
-  width: 30%;
-  font-size: 20px;
-  background: white;
-  border-radius: 10px;
-  padding: 5px 10px;
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-bottom: 20px;
-}
-
-.project {
-  width: 540px;
-  height: 150px;
-  background-color: white;
-  border-width: 2px;
-  border-style: solid;
-  margin-left: 20px;
-}
-
-.project p {
-  margin-left: 20px;
-  margin-top: 20px;
-  font-size: 20px;
-  color: blue;
-}
-
-.project .projectcontent {
-  word-wrap: break-word;
-  word-break: normal;
-  margin-left: 20px;
-  font-size: 20px;
-}
-
-.line2 {
-  width: 500px;
-  height: 2px;
-  background-image: linear-gradient(
-    to right,
-    #000 0%,
-    #000 50%,
-    transparent 75%
-  );
-  background-size: 20px 10px;
-  background-repeat: repeat-x;
-  margin-left: 20px;
+  height: 100%;
+  width: 100%;
 }
 </style>
+<style scoped src="../../new_pages/vendor/fontawesome-free/css/all.min.css"></style>
+<style scoped src="../../new_pages/css/sb-admin-2.min.css"></style>

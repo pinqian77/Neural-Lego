@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <!-- <div class="container">
     <div class="title">Neural LEGO</div>
 
     <div class="login-box">
@@ -46,8 +46,84 @@
         </div>
       </form>
     </div>
+  </div> -->
+
+  <div class="bg-gradient-primary body">
+    <div class="container">
+      <!-- Outer Row -->
+      <div class="row justify-content-center">
+        <div class="col-xl-10 col-lg-12 col-md-9">
+          <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+              <!-- Nested Row within Card Body -->
+              <div class="row">
+                <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                <div class="col-lg-6">
+                  <div class="p-5">
+                    <div class="text-center">
+                      <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                    </div>
+                    <form method="POST" class="user">
+                      <div class="form-group">
+                        <input
+                          class="form-control form-control-user"
+                          aria-describedby="emailHelp"
+                          placeholder="Enter Username"
+                          v-model="loginForm.email"
+                          type="text"
+                          id="username"
+                          name="username"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
+                        <input
+                          type="password"
+                          class="form-control form-control-user"
+                          placeholder="Password"
+                          v-model="loginForm.password"
+                          id="password"
+                          name="password"
+                          required
+                        />
+                      </div>
+                      <input
+                        v-model="loginForm.next_url"
+                        type="hidden"
+                        class="form-control"
+                        id="next_url"
+                        name="next_url"
+                      />
+
+                      <button type="submit" class="btn btn-primary btn-user btn-block" @click="submitFrom($event)">Login</button>
+                      <!-- <hr> -->
+                      <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
+                                            <i class="fab fa-google fa-fw"></i> Login with Google
+                                        </a>
+                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
+                                        </a> -->
+                    </form>
+                    <hr />
+                    <!-- <div class="text-center">
+                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
+                                    </div> -->
+                    <div class="text-center">
+                      <a class="small" href="/register"
+                        >Create an Account!</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+
 
 <script>
 import axios from "axios";
@@ -94,69 +170,14 @@ export default {
 </script>
 
 <style scoped>
-container {
-  background: #00000020;
-  margin: 0%;
+.body {
+  position: fixed;
+  background-size: cover;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
 }
-
-.title {
-  background: #5f6298;
-  font-size: 50px;
-  color: white;
-}
-
-.login-box {
-  width: 20%;
-  height: 350px;
-  background: white;
-  margin: auto;
-  margin-top: 5%;
-  text-align: center;
-  border-radius: 10px;
-  padding: 50px 50px;
-}
-
-.login-box:hover {
-  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.3);
-}
-
-.input-box {
-  border: 10;
-  width: 60%;
-  font-size: 15px;
-  background: #ffffff00;
-  border-radius: 10px;
-  padding: 5px 10px;
-  margin-top: 10px;
-}
-
-/* .form-label{
-  text-align: center;
-}
-
-.form-control{
-  text-align: center;
-} */
-
-/* .login-btn {
-  margin-top: 30px;
-  width: 30%;
-  height: 40px;
-  border-radius: 10px;
-  border: 0;
-  background-image: linear-gradient(to top, #30324d 0%, #5f6298 100%);
-  color: white;
-  font-size: 15px;
-  text-decoration: none;
-} */
-
-/* .register {
-  text-align: center;
-  margin-top: 10%;
-} */
-
-/* .register.a {
-  color: black;
-  text-decoration: none;
-} */
 </style>
+<style scoped src="../../new_pages/vendor/fontawesome-free/css/all.min.css"></style>
+<style scoped src="../../new_pages/css/sb-admin-2.min.css"></style>
