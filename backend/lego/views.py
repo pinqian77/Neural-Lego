@@ -4,6 +4,8 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+import os
+import time
 
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -86,15 +88,26 @@ def search(request, pk=None):
 
 # Front
 # POST: {"project_ID":"1"}
+# TODO: 删掉这个的地址的文件
 def deleteProject(request, pk):
-    context = {"isDelete": True}
+    project = Users_project.objects.get(project_id=request.POST.get("project_ID"), user_id = pk)
+    if project is None:
+        context = {"isDelete": False, "error": "Invalid project"}
+    else:
+        context = {"isDelete": True, "error": None}
     return JsonResponse(context, safe=False)
 
 
 # Front
 # POST: {"project_name":"xxx", "project_time":"time"}
-def newProject(request):
-    context = {"isNew": True}
+# TODO: 真的存这个文件夹， 要前端发送is_public过来
+def newProject(request, pk):
+    project = Project(project_name=request.POST.get("project_name"), project_directory=os.path.join('.','media',pk ,request.POST.get("project_name")), last_save_time=time.localtime(),is_public=request.POST.get("is_public"))
+    if project is None:
+        context = {"isDelete": False, "error": "Invalid project"}
+    else:
+        project.save()
+        context = {"isDelete": True, "error": None}
     return JsonResponse(context, safe=False)
 
 
