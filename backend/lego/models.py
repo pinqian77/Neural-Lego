@@ -10,6 +10,7 @@ class Project(models.Model):
     discription = models.CharField(max_length=100, null=False)
     last_save_time = models.DateTimeField(null = False)
     is_public = models.CharField(max_length = 50, null=False)
+    star = models.IntegerField(null=False)
     def __str__(self):
         return self.project_id
     class Meta:

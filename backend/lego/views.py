@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 import os
 import time
+import json
+import backend.settings as settings
 
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -102,7 +104,9 @@ def deleteProject(request, pk):
 # POST: {"project_name":"xxx", "project_time":"time"}
 # TODO: 真的存这个文件夹， 要前端发送is_public过来
 def newProject(request, pk):
-    project = Project(project_name=request.POST.get("project_name"), project_directory=os.path.join('.','media',pk ,request.POST.get("project_name")), last_save_time=time.localtime(),is_public=request.POST.get("is_public"))
+    save_path = os.path.join(settings.MEDIA_ROOT, pk, request.POST.get("project_name"))
+
+    project = Project(project_name=request.POST.get("project_name"), project_directory=save_path, last_save_time=time.localtime(),is_public=request.POST.get("is_public"))
     if project is None:
         context = {"isDelete": False, "error": "Invalid project"}
     else:
@@ -113,30 +117,62 @@ def newProject(request, pk):
 
 # 现在文件是都存在一个media的文件夹下。
 # 之后应该是根据用户id分别有文件夹， request.COOKIES.get(' ')来得到用户id
-def uploadProject(request):
+def uploadProject(request, pk):
+    if request.method == "POST":
+        file = request.FILES['file']
+
+        if not file:
+            return HttpResponse("file not find")
+
+        save_path = os.path.join(settings.MEDIA_ROOT, pk, "project", file.name)
+        try:
+            os.makedirs(save_path)
+        except Exception:
+            raise Http404('Exist File')
+
+        # save file
+        file_path = os.path.join(save_path, file.name)
+        with open(file_path, 'wb+') as fp:
+            for chunk in file.chunks():
+                fp.write(chunk)
+
     context = {"isNew": True}
     return JsonResponse(context, safe=False)
 
 # Front
 # POST: {"project_ID":"xxx"}
-# TODO: 这个页面我数据库还没建，具体要什么信息确认后，建立数据库
-def downloadProject(request):
-    response = StreamingHttpResponse("hi")
-    return response
+# TODO: 文件要先打包成zip
+def downloadProject(request, pk):
+    project_ID = request.POST.get("project_ID")
+    project_path = Project.objects.only('project_directory').filter(project_id = project_ID)
+    if project_path:
+        try:
+            response = StreamingHttpResponse(open(project_path, 'rb'))
+            response["Content-type"] = "application/zip"
+        except Exception as e:
+            raise Http404('Invalid file')
+        project_name = "placeholder"
+        response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_name)
+        return response
+    else:
+        raise Http404("Invalid file")
 
 
-def profilePage(request):
+def profilePage(request, pk):
     context = {"name": "username"}
     return JsonResponse(context, safe=False)
 
 
 # Front
 # POST: {"canvas_data":"xxx"}
-def canvasPage(request):
+def canvasPage(request, pk):
+    project_ID = request.POST.get("project_ID")
+    project_path = Project.objects.only('project_directory').filter(project_id = project_ID)
+    project_name = "placeholder"
     context = {"canvas_data": "username"}
     return JsonResponse(context, safe=False)
 
-def canvasSave(request):
+def canvasSave(request, pk):
     context = {"isSave": True}
     return JsonResponse(context, safe=False)
 
@@ -145,36 +181,68 @@ def canvasSave(request):
 
 # Front
 # POST: {"optimizer":"xxx", "dataset":"xxx", "lr":"xxx", "t_batch_size":"xxx", "batch_size":"xxx", "epoch":"xxx", "seed"="xxx"}
-def trainPage(request):
-    context = {"hyperpars": "name"}
+def trainPage(request, pk):
+    project_ID = request.POST.get("project_ID")
+    project_path = Project.objects.only('project_directory').filter(project_id = project_ID)
+    project_json_name = project_ID + ".json"
+    with open(os.path.join(project_path, project_json_name), 'r') as f:
+        context = json.load(f)
     return JsonResponse(context, safe=False)
 
 
-def trainSave(request):
+def trainSave(request, pk):
+    project_ID = request.POST.get("project_ID")
+    project_path = Project.objects.only('project_directory').filter(project_id = project_ID)
+    project_json_name = project_ID + ".json"
+    project_json = request.POST.get("project_json")
+    with open(os.path.join(project_path, project_json_name), 'w') as f:
+        json.dump(project_json, f)
     context = {"isSave": True}
     return JsonResponse(context, safe=False)
 
 
-def trainRun(request):
+def trainRun(request, pk):
     context = {"isRun": True}
     return JsonResponse(context, safe=False)
 
 
 # Front
 # POST: 还不是很清楚
-def uploadDataset(request):
+def uploadDataset(request, pk):
+    if request.method == "POST":
+        file = request.FILES['file']
+
+        if not file:
+            print("file not find")
+            return HttpResponse("file not find")
+
+        save_path = os.path.join(settings.MEDIA_ROOT, pk, "project", file.name)
+        try:
+            print("making media dir...")
+            os.makedirs(save_path)
+        except Exception:
+            pass
+
+        # save file
+        print("start to save file...")
+        file_path = os.path.join(save_path, file.name)
+        with open(file_path, 'wb+') as fp:
+            for chunk in file.chunks():
+                fp.write(chunk)
+
+        print("save file done...")
     context = {"isUpload": True}
     return JsonResponse(context, safe=False)
 # 都是list {“project_ID":"1", "project_name":"name", "project_time":"time"} 表示list中的一个元素
 
 
-def templatePage(request):
+def templatePage(request, pk):
     context = {'project_share': {"project_ID": "1", "project_name": "name", "project_time": "time"}, 'project_recommend': {
         "project_ID": "1", "project_name": "name", "project_time": "time"}, 'starlist': [1, 2, 3, 4]}
     return JsonResponse(context, safe=False)
 
 
-def templateStar(request):
+def templateStar(request, pk):
     context = {'isStar': True}
     return JsonResponse(context, safe=False)
 
@@ -201,27 +269,6 @@ def templateStar(request):
 #         return Response(response)
 
 #def uploadProject(request):
-#    if request.method == "POST":
-#        file = request.FILES['file']
-#
-#        if not file:
-#            print("file not find")
-#            return HttpResponse("file not find")
-#
-#        save_path = os.path.join(settings.MEDIA_ROOT, file.name)
-#        try:
-#            print("making media dir...")
-#            os.mkdir(settings.MEDIA_ROOT)
-#        except Exception:
-#            pass
-#
-#        # save file
-#        print("start to save file...")
-#        with open(save_path, 'wb+') as fp:
-#            for chunk in file.chunks():
-#                fp.write(chunk)
-#
-#        print("save file done...")
 #
 #        return HttpResponse("upload ok!")
         # context = {"isUpload": True}
