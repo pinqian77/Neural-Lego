@@ -69,7 +69,7 @@
                         class="form-control form-control-user"
                         aria-describedby="emailHelp"
                         placeholder="Enter Username"
-                        v-model="loginForm.email"
+                        v-model="loginForm.username"
                         type="text"
                         id="username"
                         name="username"
