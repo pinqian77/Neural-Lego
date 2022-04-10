@@ -415,7 +415,7 @@ export default {
 
       axios({
         method: "post",
-        url: "/project/upload/",
+        url: "/project/upload/" + localStorage.uid + "/",
         data: form_data,
         headers: { "Content-Type": "multipart/form-data" },
       })
