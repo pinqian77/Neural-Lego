@@ -6,6 +6,8 @@ with open(os.path.join('.','example.json'), 'r') as f:
 
 nodeList = List['nodeDataArray']
 linkList = List['linkDataArray']
+start = 0
+end = 0
 for node in nodeList:
     if node['category'] == "Data":
         start = node['key']

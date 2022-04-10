@@ -42,12 +42,15 @@ def register(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
+        isHave = User.objects.get(username = username)
 
-        if username is not None and password is not None:
+        if isHave is None and username is not None and password is not None:
             user = User.objects.create_user(username=username, password = password)
             user.is_active = True
             user.save
             return JsonResponse({'status':200})
+        else:
+            return JsonResponse({'status':500})
 
     return JsonResponse({'status': 404}, safe=False)
 
