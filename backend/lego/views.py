@@ -2,7 +2,6 @@ from django.http import HttpResponse, JsonResponse
 from django.http.response import StreamingHttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 import os
 import time
@@ -22,6 +21,8 @@ from django.http import Http404
 
 
 # Create your views here.
+# status: 
+# data: 
 
 def welcome(request):
     return render(request, "index.html")

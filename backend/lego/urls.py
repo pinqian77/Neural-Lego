@@ -12,6 +12,7 @@ from . import views
 # 'x/' is defined by frontend, 'views.x' is defined by backend
 # frontend SEND DATA TO 'x/';
 # backend SEND DATA BY 'views.x'
+
 urlpatterns = [
     path('', views.welcome),
 
