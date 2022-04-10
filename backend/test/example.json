@@ -1,9 +1,9 @@
 { "class": "GraphLinksModel",
   "nodeDataArray": [ 
-{"category":"Data", "key":-1, "loc":"26 -168"},
+{"category":"Data", "reasonsList":[ {"text1":"512", "text3":"128"} ], "key":-1, "loc":"26 -168"},
 {"category":"FC", "reasonsList":[ {"text1":"512", "text3":"128"} ], "key":-3, "loc":"179 -149"},
-{"category":"ReLU", "key":-2, "loc":"308 -75"},
-{"category":"End", "key":-4, "loc":"465 35"}
+{"category":"ReLU", "reasonsList":[ {"text1":"512", "text3":"128"} ], "key":-2, "loc":"308 -75"},
+{"category":"End", "reasonsList":[ {"text1":"512", "text3":"128"} ], "key":-4, "loc":"465 35"}
  ],
   "linkDataArray": [ 
 {"from":-1, "to":-3, "points":[67.9031400339463,-162.7963420872877,116.891524508423,-156.71281721790825]},
