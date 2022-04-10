@@ -27,9 +27,9 @@ def login(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        next_url = request.POST.get("next_url")
 
         user = authenticate(username = username, password = password)
+        print("username:", username, "password", password)
         if user is not None and user.is_active:
             return JsonResponse({'status':200, 'uid': user.pk})
 
