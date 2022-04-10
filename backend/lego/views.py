@@ -172,7 +172,22 @@ def canvasPage(request, pk):
     context = {"canvas_data": "username"}
     return JsonResponse(context, safe=False)
 
+# TODO 检查文件合法
 def canvasSave(request, pk):
+    if request.method == "POST":
+        file = request.FILES['file']
+
+        if not file:
+            return HttpResponse("file not find")
+
+        save_path = os.path.join(settings.MEDIA_ROOT, pk, "project", file.name)
+
+        # save file
+        file_path = os.path.join(save_path, file.name)
+        with open(file_path, 'wb+') as fp:
+            for chunk in file.chunks():
+                fp.write(chunk)
+
     context = {"isSave": True}
     return JsonResponse(context, safe=False)
 
@@ -221,7 +236,7 @@ def uploadDataset(request, pk):
             print("making media dir...")
             os.makedirs(save_path)
         except Exception:
-            pass
+            raise Http404("Invalid file")
 
         # save file
         print("start to save file...")
@@ -239,10 +254,20 @@ def uploadDataset(request, pk):
 def templatePage(request, pk):
     context = {'project_share': {"project_ID": "1", "project_name": "name", "project_time": "time"}, 'project_recommend': {
         "project_ID": "1", "project_name": "name", "project_time": "time"}, 'starlist': [1, 2, 3, 4]}
+
+    project = Project.objects.filter(is_public=True).order_by(star)
+    context = {'status': 400, 'project_list': list(project)}
     return JsonResponse(context, safe=False)
 
 
 def templateStar(request, pk):
+    project_ID = request.POST.get("project_ID")
+    user_ID = request.POST.get("User_ID")
+    project = Project.objects.get(project_id=project_ID)
+    project.star += 1
+    project.save()
+    userProject = Users_template(project_id=project_ID, user_id=user_ID)
+    userProject.save()
     context = {'isStar': True}
     return JsonResponse(context, safe=False)
 
