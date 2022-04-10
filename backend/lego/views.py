@@ -78,7 +78,7 @@ def search(request, pk=None):
         project = Users_project.objects.filter(user_id=pk,project_name__contains = request.POST.get("keyword"))
     else:
         project = Users_project.objects.filter(is_public = True, project_name__contains = request.POST.get("keyword"))
-    context = {"project_detail": list(project)}
+    context = {'status': 200, "project_detail": list(project)}
     return JsonResponse(context, safe=False)
 
 
