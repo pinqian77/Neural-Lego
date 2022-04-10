@@ -27,9 +27,9 @@ def login(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        next_url = request.POST.get("next_url")
 
         user = authenticate(username = username, password = password)
+        print("username:", username, "password", password)
         if user is not None and user.is_active:
             return JsonResponse({'status':200, 'uid': user.pk})
 
@@ -47,10 +47,9 @@ def register(request):
             user = User.objects.create_user(username=username, password = password)
             user.is_active = True
             user.save
-            return redirect(request.POST.get("next_url"))
+            return JsonResponse({'status':200})
 
-    context = {'isLogin': True}
-    return JsonResponse(context, safe=False)
+    return JsonResponse({'status': 404}, safe=False)
 
 
 # Back
