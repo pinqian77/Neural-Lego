@@ -325,7 +325,7 @@ export default {
       axios({
         method: "get",
         url: "/project/",
-        params: { pk: 123 },
+        params: { pk: 2 },
       }).then((res) => {
         console.log(JSON.stringify(res));
 
