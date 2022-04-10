@@ -148,7 +148,10 @@ export default {
         url: "/login/",
         data: formData,
       }).then((res) => {
-        if (res.data.isLogin == true) {
+        console.log(res.data);
+        if (res.data.status == "200") {
+          localStorage.uid = res.data.uid;
+          console.log("uid: " + localStorage.uid);
           console.log("login ok!");
         } else {
           console.log("login fail!");
