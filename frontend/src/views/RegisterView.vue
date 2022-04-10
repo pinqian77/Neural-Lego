@@ -105,7 +105,7 @@ export default {
         if (res.data.status == "200") {
           console.log("register ok!");
           window.location.replace("/login/");
-        } else if (res.data.status == "300") {
+        } else if (res.data.status == "500") {
           alert("Not an unique username!");
         } else {
           console.log("register fails...");

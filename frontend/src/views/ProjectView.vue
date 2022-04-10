@@ -250,6 +250,7 @@ export default {
     return {
       page_name: "project_page",
       search_data: "",
+      proj_idx: 0,
       proj_data: {},
     };
   },
