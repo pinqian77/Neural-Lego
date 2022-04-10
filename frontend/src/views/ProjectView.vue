@@ -153,36 +153,33 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr
-                        v-for="project in project_datail"
-                        :key="project.project_ID"
-                      >
-                        <th scope="col">{{ project.project_ID }}</th>
+                      <tr v-for="proj in proj_data" :key="proj.project_ID">
+                        <th scope="col">{{ proj.project_ID }}</th>
                         <td>
                           <button
                             type="button"
                             class="btn btn-link"
-                            @click="enterCanvas(project.project_ID)"
+                            @click="enterCanvas(proj.project_ID)"
                           >
-                            {{ project.project_name }}
+                            {{ proj.project_name }}
                           </button>
                         </td>
 
                         <td>
                           <button type="button" class="btn btn-link" disabled>
-                            {{ project.project_time }}
+                            {{ proj.project_time }}
                           </button>
                         </td>
                         <td>
                           <button
                             class="btn btn-warning"
-                            @click="enterCanvas(project.project_ID)"
+                            @click="enterCanvas(proj.project_ID)"
                           >
                             Edit</button
                           >&ensp;
                           <button
                             class="btn btn-danger"
-                            @click="remove(project.project_ID)"
+                            @click="remove(proj.project_ID)"
                           >
                             Delete
                           </button>
@@ -253,10 +250,7 @@ export default {
     return {
       page_name: "project_page",
       search_data: "",
-      project_datail: [
-        { project_ID: "1", project_name: "name", project_time: "time" },
-        { project_ID: "2", project_name: "name", project_time: "time" },
-      ],
+      proj_data: {},
     };
   },
   mounted() {
@@ -271,12 +265,10 @@ export default {
         url: "/project/" + localStorage.uid + "/",
       }).then((res) => {
         console.log(res.data);
-
         if (res.data.status == 200) {
-          // window.location = "/project/";
-          this.project_datail = res.data.project_datail;
+          this.proj_data = res.data.project_datail;
         } else {
-          alert("error");
+          alert("project loading error!");
         }
       });
     },
