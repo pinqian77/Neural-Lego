@@ -152,10 +152,18 @@
                 >
                   Open
                 </button>
+
+                <input
+                  type="file"
+                  class="form-control-file"
+                  ref="fileRef"
+                  id="file"
+                  v-show="false"
+                  @change="uploadProject()"
+                />
               </li>
             </ul>
           </nav>
-
           <!-- End of Topbar -->
 
           <!-- Begin Page Content -->
@@ -191,7 +199,7 @@
 
                         <td>
                           <button type="button" class="btn btn-link" disabled>
-                            {{ proj.project_time }}
+                            {{ proj.last_save_time }}
                           </button>
                         </td>
                         <td>
@@ -342,7 +350,6 @@ export default {
       },
       page_name: "project_page",
       search_keyword: "",
-      proj_idx: 0,
       proj_data: {},
       isModalVisible: false,
     };
@@ -360,7 +367,9 @@ export default {
       }).then((res) => {
         console.log(res.data);
         if (res.data.status == 200) {
-          this.proj_data = res.data.project_datail;
+          this.proj_data = res.data.project_detail;
+          console.log(res.data.project_detail);
+          console.log(this.proj_data);
         } else {
           alert("project loading error!");
         }
@@ -396,6 +405,10 @@ export default {
     },
 
     openProject() {
+      this.$refs.fileRef.dispatchEvent(new MouseEvent("click"));
+    },
+
+    uploadProject() {
       var form_data = new FormData();
       var file = document.getElementById("file").files[0];
       form_data.append("file", file, file.name);
