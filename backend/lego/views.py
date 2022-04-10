@@ -47,10 +47,9 @@ def register(request):
             user = User.objects.create_user(username=username, password = password)
             user.is_active = True
             user.save
-            return redirect(request.POST.get("next_url"))
+            return JsonResponse({'status':200})
 
-    context = {'isLogin': True}
-    return JsonResponse(context, safe=False)
+    return JsonResponse({'status': 404}, safe=False)
 
 
 # Back
