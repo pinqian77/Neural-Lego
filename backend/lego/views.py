@@ -75,7 +75,7 @@ def search(request, pk=None):
 #    context = {'project_detail': {"project_ID": "1",
 #                                  "project_name": "name", "project_time": "time"}}
     if pk is not None:
-        project = Users_project.objects.filter(user_id=pk,project_name__contains = request.POST.get("keyword"))
+        project = Users_project.objects.filter(user_id=pk,project_id__contains = request.POST.get("keyword"))
     else:
         project = Users_project.objects.filter(is_public = True, project_name__contains = request.POST.get("keyword"))
     context = {'status': 200, "project_detail": list(project)}
