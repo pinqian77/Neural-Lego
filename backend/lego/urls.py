@@ -26,6 +26,6 @@ urlpatterns = [
 
     path('train/<int:pk>/', views.trainPage, name='trainPage'),
 
-    path('canvas/<int:pk>', views.canvasPage, name='canvasPage'),
+    path('canvas/<int:pk>/', views.canvasPage, name='canvasPage'),
 
 ]
