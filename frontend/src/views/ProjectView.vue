@@ -288,7 +288,7 @@
                   type="text"
                   class="form-control"
                   placeholder="Enter project name.."
-                  v-model="name"
+                  v-model="new_proj.name"
                 />
               </div>
 
@@ -297,7 +297,7 @@
                   type="checkbox"
                   class="form-check-input"
                   id="share-to-public"
-                  v-model="is_public"
+                  v-model="new_proj.is_public"
                 />
                 <label class="form-check-label" for="exampleCheck1"
                   >Share to public?</label
@@ -338,7 +338,6 @@ export default {
     return {
       new_proj: {
         name: "",
-        time: "",
         is_public: "",
       },
       page_name: "project_page",
@@ -376,15 +375,10 @@ export default {
     },
 
     newProject() {
-      console.log("new project");
-
-      // Declare a form
       let formData = new FormData();
       formData.append("name", this.new_proj.name);
-      formData.append("time", new Date());
       formData.append("is_public", this.new_proj.is_public);
 
-      // Send form to backend and get response data
       axios({
         method: "post",
         url: "/project/create/" + localStorage.uid + "/",
@@ -421,13 +415,10 @@ export default {
     },
 
     search() {
-      console.log("sending search_keyword");
-      // Declare a form
       let formData = new FormData();
       formData.append("page_name", this.page_name);
       formData.append("keyword", this.search_keyword);
 
-      // Send form to backend and get response data
       axios({
         method: "post",
         url: "/project/search/" + localStorage.uid + "/",
