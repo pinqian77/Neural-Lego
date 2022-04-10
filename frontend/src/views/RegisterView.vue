@@ -11,58 +11,49 @@
                 <div class="text-center">
                   <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                 </div>
-                <form class="user">
-                  <div class="form-group row"></div>
-                  <div class="form-group">
+
+                <div class="form-group row"></div>
+                <div class="form-group">
+                  <input
+                    v-model="registerForm.username"
+                    type="text"
+                    class="form-control form-control-user"
+                    id="username"
+                    name="username"
+                    placeholder="Username"
+                    required
+                  />
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
                     <input
-                      v-model="registerForm.email"
-                      type="username"
+                      v-model="registerForm.password"
+                      type="password"
                       class="form-control form-control-user"
-                      id="username"
-                      name="username"
-                      requiredtype="email"
-                      placeholder="Username"
+                      placeholder="Password"
+                      id="password"
+                      name="password"
                       required
                     />
                   </div>
-                  <div class="form-group row">
-                    <div class="col-sm-6 mb-3 mb-sm-0">
-                      <input
-                        v-model="registerForm.password"
-                        type="password"
-                        class="form-control form-control-user"
-                        placeholder="Password"
-                        id="password"
-                        name="password"
-                        required
-                      />
-                    </div>
-                    <div class="col-sm-6">
-                      <input
-                        v-model="registerForm.repeat_password"
-                        type="password"
-                        class="form-control form-control-user"
-                        id="exampleRepeatPassword"
-                        placeholder="Repeat Password"
-                        required
-                      />
-                    </div>
+                  <div class="col-sm-6">
                     <input
-                      v-model="registerForm.next_url"
-                      type="hidden"
-                      class="form-control"
-                      id="next_url"
-                      name="next_url"
+                      v-model="registerForm.repeat_password"
+                      type="password"
+                      class="form-control form-control-user"
+                      id="exampleRepeatPassword"
+                      placeholder="Repeat Password"
+                      required
                     />
                   </div>
-                  <button
-                    type="submit"
-                    class="btn btn-primary btn-user btn-block"
-                    @click="submitForm()"
-                  >
-                    Register Account
-                  </button>
-                </form>
+                </div>
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-user btn-block"
+                  @click="submitForm()"
+                >
+                  Register Account
+                </button>
                 <hr />
 
                 <div class="text-center">
@@ -90,7 +81,6 @@ export default {
         username: "",
         password: "",
         repeat_password: "",
-        next_url: "/login",
       },
     };
   },
@@ -103,9 +93,8 @@ export default {
 
       // Declare a form
       let formData = new FormData();
-      formData.append("username", this.registerForm.email);
+      formData.append("username", this.registerForm.username);
       formData.append("password", this.registerForm.password);
-      formData.append("next_url", this.registerForm.next_url);
 
       // Send form to backend and get response data
       axios({
@@ -113,11 +102,13 @@ export default {
         url: "/register/",
         data: formData,
       }).then((res) => {
-        if (res.data.isLogin == true) {
+        if (res.data.status == "200") {
           console.log("register ok!");
-          window.location.replace("/login");
+          window.location.replace("/login/");
+        } else if (res.data.status == "300") {
+          alert("Not an unique username!");
         } else {
-          console.log("register fail!");
+          console.log("register fails...");
         }
       });
     },

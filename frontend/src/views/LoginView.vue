@@ -87,13 +87,6 @@
                         required
                       />
                     </div>
-                    <input
-                      v-model="loginForm.next_url"
-                      type="hidden"
-                      class="form-control"
-                      id="next_url"
-                      name="next_url"
-                    />
 
                     <button
                       type="submit"
@@ -130,7 +123,6 @@ export default {
       loginForm: {
         username: "",
         password: "",
-        next_url: "/project",
       },
     };
   },
@@ -140,7 +132,6 @@ export default {
       let formData = new FormData();
       formData.append("username", this.loginForm.username);
       formData.append("password", this.loginForm.password);
-      formData.append("next_url", this.loginForm.next_url);
 
       // Send form to backend and get response data
       axios({
@@ -153,6 +144,7 @@ export default {
           localStorage.uid = res.data.uid;
           console.log("uid: " + localStorage.uid);
           console.log("login ok!");
+          location.replace("/project/");
         } else {
           console.log("login fail!");
         }
