@@ -20,6 +20,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
 
     path('project/<int:pk>/', views.projectPage, name='projectPage'),
+    path('project/create/<int:pk>/', views.newProject, name='newProjectt'),
     path('project/upload/<int:pk>/', views.uploadProject, name='uploadProject'),
     path('project/search/<int:pk>/', views.search, name='search'),
 

@@ -7,6 +7,7 @@ import torchvision
 from torchvision import transforms
 import time
 import json
+from model import Net
 # setup training parameters
 #parser = argparse.ArgumentParser(description='PyTorch MNIST Training')
 #parser.add_argument('--batch-size', type=int, default=128, metavar='N',
@@ -43,26 +44,6 @@ train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True)
 
 test_set = torchvision.datasets.FashionMNIST(root='data', train=False, download=True, transform=transforms.Compose([transforms.ToTensor()]))
 test_loader = DataLoader(test_set, batch_size=args.batch_size, shuffle=True)
-
-# define fully connected network
-class Net(nn.Module):
-    def __init__(self):
-        super(Net, self).__init__()
-        self.fc1 = nn.Linear(28*28, 128)
-        self.fc2 = nn.Linear(128, 64)
-        self.fc3 = nn.Linear(64, 32)
-        self.fc4 = nn.Linear(32, 10)
-
-    def forward(self, x):
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        x = F.relu(x)
-        x = self.fc3(x)
-        x = F.relu(x)
-        x = self.fc4(x)
-        output = F.log_softmax(x, dim=1)
-        return output
 
 ##############################################################################
 #############    end of "don't change the below code"   ######################
@@ -131,12 +112,6 @@ def train_model():
         print('Epoch '+str(epoch)+': '+str(int(time.time()-start_time))+'s', end=', ')
         print('trn_loss: {:.4f}, trn_acc: {:.2f}%'.format(trnloss, 100. * trnacc), end=', ')
         
-    ################################################################################################
-    ## end of training method
-    ################################################################################################
-    
-    #save the model
-    torch.save(model.state_dict(), str(id_)+'.pt')
     return model
 
 

@@ -7,6 +7,7 @@ import os
 import time
 import json
 import backend.settings as settings
+from django.core import serializers
 
 from django.contrib.auth.models import User
 from lego.models import Comment, Data, Project, Users_data, Users_project, Users_template
@@ -29,7 +30,6 @@ def login(request):
         password = request.POST.get("password")
 
         user = authenticate(username = username, password = password)
-        print("username:", username, "password", password)
         if user is not None and user.is_active:
             return JsonResponse({'status':200, 'uid': user.pk})
 
@@ -63,8 +63,12 @@ def projectPage(request, pk):
 #                                  {"project_ID": "2", "project_name": "name", "project_time": "time"}]
 #               }
     project = Users_project.objects.filter(user_id=pk)
-    project = list(project)
-    context = {'status': 200, 'project_detail': project}
+    project = project.values('project_id')
+    project = Project.objects.filter(project_id__in = project)
+    context = {}
+    context['project_detail'] = serializers.serialize('json', project)
+    context['project_detail'] = json.loads(context['project_detail'])
+    context['status'] = 200
     return JsonResponse(context, safe=False)
     # return JsonResponse(context, json_dumps_params={"ensure_ascii": False})
 
@@ -98,15 +102,26 @@ def deleteProject(request, pk):
 # POST: {"project_name":"xxx", "project_time":"time"}
 # TODO: 真的存这个文件夹， 要前端发送is_public过来
 def newProject(request, pk):
-    save_path = os.path.join(settings.MEDIA_ROOT, pk, request.POST.get("project_name"))
+    save_path = os.path.join(settings.MEDIA_ROOT, str(pk), request.POST.get("name"))
 
-    project = Project(project_name=request.POST.get("project_name"), project_directory=save_path, last_save_time=time.localtime(),is_public=request.POST.get("is_public"))
-    if project is None:
-        context = {"isDelete": False, "error": "Invalid project"}
+    project_list = Users_project.objects.filter(user_id=pk)
+    is_save = False
+    for item in project_list.all():
+        project_name = Project.objects.get(project_id = item.project_id).project_name
+        is_save = (project_name == request.POST.get("name"))
+        if is_save is not False:
+            break
+
+    project = Project.objects.create(project_name=request.POST.get("name"), project_directory=save_path, is_public=request.POST.get("is_public"), star = 0)
+    
+    if project is None or is_save is not False:
+        status = 400
     else:
         project.save()
-        context = {"isDelete": True, "error": None}
-    return JsonResponse(context, safe=False)
+        userProject = Users_project.objects.create(project_id = project.project_id, user_id=pk)
+        userProject.save()
+        status = 200
+    return JsonResponse({'status':status}, safe=False)
 
 
 # 现在文件是都存在一个media的文件夹下。
@@ -114,23 +129,43 @@ def newProject(request, pk):
 def uploadProject(request, pk):
     if request.method == "POST":
         file = request.FILES['file']
-
         if not file:
-            return HttpResponse("file not find")
-
+            return JsonResponse({"status":400})
+        project_name = file.name
         save_path = os.path.join(settings.MEDIA_ROOT, pk, "project", file.name)
+
+        project_list = Users_project.objects.filter(user_id=pk)
+        is_save = False
+        for item in project_list.all():
+            project_name = Project.objects.get(project_id = item.project_id).project_name
+            is_save = (project_name == project_name)
+            if is_save is not False:
+                break
+
+        project = Project.objects.create(project_name=project_name, project_directory=save_path, is_public=request.POST.get("is_public"), star = 0)
+        
+        if project is None or is_save is not False:
+            status = 400
+        else:
+            project.save()
+            userProject = Users_project.objects.create(project_id = project.project_id, user_id=pk)
+            userProject.save()
+            status = 200
+
+
+
         try:
             os.makedirs(save_path)
         except Exception:
             raise Http404('Exist File')
 
         # save file
-        file_path = os.path.join(save_path, file.name)
+        file_path = os.path.join(save_path, project.project_id+".json")
         with open(file_path, 'wb+') as fp:
             for chunk in file.chunks():
                 fp.write(chunk)
 
-    context = {"isNew": True}
+    context = {"status": 200}
     return JsonResponse(context, safe=False)
 
 # Front
@@ -222,24 +257,20 @@ def uploadDataset(request, pk):
         file = request.FILES['file']
 
         if not file:
-            print("file not find")
             return HttpResponse("file not find")
 
         save_path = os.path.join(settings.MEDIA_ROOT, pk, "project", file.name)
         try:
-            print("making media dir...")
             os.makedirs(save_path)
         except Exception:
             raise Http404("Invalid file")
 
         # save file
-        print("start to save file...")
-        file_path = os.path.join(save_path, file.name)
+        file_path = os.path.join(save_path, file.name+".json")
         with open(file_path, 'wb+') as fp:
             for chunk in file.chunks():
                 fp.write(chunk)
 
-        print("save file done...")
     context = {"isUpload": True}
     return JsonResponse(context, safe=False)
 # 都是list {“project_ID":"1", "project_name":"name", "project_time":"time"} 表示list中的一个元素
