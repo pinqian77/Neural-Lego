@@ -132,45 +132,45 @@ def newProject(request, pk):
 # 现在文件是都存在一个media的文件夹下。
 # 之后应该是根据用户id分别有文件夹， request.COOKIES.get(' ')来得到用户id
 def uploadProject(request, pk):
-    if request.method == "POST":
-        file = request.FILES['file']
-        if not file:
-            return JsonResponse({"status":400})
-        project_name = file.name
-        save_path = os.path.join(settings.MEDIA_ROOT, pk, "project", file.name)
+    file = request.FILES['file']
+    if file is None:
+        return JsonResponse({"status":400})
+    name = file.name
+    save_path = os.path.join(settings.MEDIA_ROOT, str(pk), "project", name)
 
-        project_list = Users_project.objects.filter(user_id=pk)
-        is_save = False
-        for item in project_list.all():
-            project_name = Project.objects.get(project_id = item.project_id).project_name
-            is_save = (project_name == project_name)
-            if is_save is not False:
-                break
+    project_list = Users_project.objects.filter(user_id=pk)
+    is_save = False
+    for item in project_list.all():
+        project_name = Project.objects.get(project_id = item.project_id).project_name
+        is_save = (project_name == name)
+        if is_save is not False:
+            break
 
-        project = Project.objects.create(project_name=project_name, project_directory=save_path, is_public=request.POST.get("is_public"), star = 0)
-        
-        if project is None or is_save is not False:
-            status = 400
-        else:
-            project.save()
-            userProject = Users_project.objects.create(project_id = project.project_id, user_id=pk)
-            userProject.save()
-            status = 200
+    project = Project.objects.create(project_name=name, project_directory=save_path, is_public=True, star = 0)
 
+    if project is None or is_save is not False:
+        status = 400
+    else:
+        project.save()
+        userProject = Users_project.objects.create(project_id = project.project_id, user_id=pk)
+        userProject.save()
+        print("save")
+        status = 200
+    print(is_save)
+    print(save_path)
 
+    try:
+        os.makedirs(save_path)
+    except Exception:
+        return JsonResponse({'status':500})
 
-        try:
-            os.makedirs(save_path)
-        except Exception:
-            raise Http404('Exist File')
+    # save file
+    file_path = os.path.join(save_path, str(project.project_id)+".json")
+    with open(file_path, 'wb+') as fp:
+        for chunk in file.chunks():
+            fp.write(chunk)
 
-        # save file
-        file_path = os.path.join(save_path, project.project_id+".json")
-        with open(file_path, 'wb+') as fp:
-            for chunk in file.chunks():
-                fp.write(chunk)
-
-    context = {"status": 200}
+    context = {"status": status}
     return JsonResponse(context, safe=False)
 
 # Front
