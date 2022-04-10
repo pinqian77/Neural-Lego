@@ -1,10 +1,18 @@
 import json
 import os
 
-def FC(input_size, output_size):
-    return "FC\n"
-def ReLU():
-    return "RELU\n"
+def FC(input_size, output_size, init, forward, pointer):
+
+    string = "self.fc"+str(-1*pointer)+" = nn.Linear("+str(input_size)+", "+str(output_size)+")"
+    string = "\t\t"+string + "\n"
+    init += string
+    string = "x = self.fc" + str(-1*pointer) + "(x)"
+    string = "\t\t" + string + "\n"
+    forward += string
+    return init, forward
+def ReLU(forward):
+    forward += "\t\tx = F.relu(x)\n"
+    return forward
 
 with open(os.path.join('.','example.json'), 'r') as f:
     List = json.load(f)
@@ -29,21 +37,21 @@ for link in linkList:
 #if start == 0 or end == 0:
 #    raise 
 
+################################################## model date
 pointer = linkdict[start]
 with open('model.py', 'w') as f:
-    f.write("import torch \n
-import torch.nn as nn \n
-import torch.nn.functional as F \n
-from torch.utils.data import Dataset, DataLoader
-import torch.optim as optim
-import torchvision
-from torchvision import transforms
-import time
-import json
-")
+    head = '''import torch.nn as nn
+import torch.nn.functional as F
+class Net(nn.Module):
+'''
+    f.write(head+"\n")
+    init, forward = "\tdef __init__(self):\n\t\tsuper(Net, self).__init__()\n", "\tdef forward(self, x):\n"
     while pointer != end:
         if nodedict[pointer]['category'] == 'FC':
-            f.write(FC(nodedict[pointer]['para'][0]['text1'], nodedict[pointer]['para'][0]['text3']))
+            init, forward = FC(nodedict[pointer]['para'][0]['text1'], nodedict[pointer]['para'][0]['text3'], init, forward, pointer)
         elif nodedict[pointer]['category'] == 'ReLU':
-            f.write(ReLU())
+            forward = ReLU(forward)
         pointer = linkdict[pointer]
+    forward += "\t\treturn x\n"
+    f.write(init+"\n")
+    f.write(forward+"\n")
