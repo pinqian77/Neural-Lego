@@ -418,13 +418,17 @@ export default {
         url: "/project/upload/" + localStorage.uid + "/",
         data: form_data,
         headers: { "Content-Type": "multipart/form-data" },
-      })
-        .then((response) => {
-          console.log("response:");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.status == "200") {
+          console.log("upload ok!");
+          this.getData();
+          location.replace("/project/");
+        } else {
+          alert.log("upload fail!");
+          location.replace("/project/");
+        }
+      });
     },
 
     search() {
