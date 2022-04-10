@@ -13,7 +13,6 @@ from lego.models import Comment, Data, Project, Users_data, Users_project, Users
 from lego.permissions import IsOwnerOrReadOnly
 from django.http import Http404
 
-
 # Create your views here.
 # status: 
 # data: 
@@ -24,7 +23,6 @@ def welcome(request):
 # Front
 # POST: {"email":"xxx@xxx.com"， "password":"xxxxxx"，"next_url":"/project"， }
 
-
 def login(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -33,10 +31,9 @@ def login(request):
 
         user = authenticate(username = username, password = password)
         if user is not None and user.is_active:
-            return redirect(next_url)
+            return JsonResponse({'status':200, 'uid': user.pk})
 
-    context = {'isLogin': True}
-    return JsonResponse(context, safe=False)
+    return JsonResponse({'status': 404}, safe=False)
 
 
 # Front
