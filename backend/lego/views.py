@@ -8,14 +8,8 @@ import time
 import json
 import backend.settings as settings
 
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework import generics, permissions, renderers
 from django.contrib.auth.models import User
 from lego.models import Comment, Data, Project, Users_data, Users_project, Users_template
-from lego.serializers import CommentSerializer, DataSerializer, ProjectSerializer, UserDataSerializer, UserProjectSerializer, UserSerializer, UserTemplateSerializer
 from lego.permissions import IsOwnerOrReadOnly
 from django.http import Http404
 
