@@ -113,7 +113,7 @@
             >
               <div class="input-group">
                 <input
-                  v-model="search_data"
+                  v-model="search_keyword"
                   type="text"
                   class="form-control bg-light border-0 small"
                   placeholder="Search for..."
@@ -249,7 +249,7 @@ export default {
   data() {
     return {
       page_name: "project_page",
-      search_data: "",
+      search_keyword: "",
       proj_idx: 0,
       proj_data: {},
     };
@@ -294,24 +294,24 @@ export default {
     },
 
     search() {
-      console.log("sending search_data");
+      console.log("sending search_keyword");
       // Declare a form
       let formData = new FormData();
       formData.append("page_name", this.page_name);
-      formData.append("search_data", this.search_data);
+      formData.append("keyword", this.search_keyword);
 
       // Send form to backend and get response data
       axios({
         method: "post",
-        url: "/project/search/",
+        url: "/project/search/" + localStorage.uid + "/",
         data: formData,
       }).then((res) => {
-        // if (res.data.isLogin == true) {
-        //   console.log("login ok!");
-        // } else {
-        //   console.log("login fail!");
-        // }
         console.log(res.data);
+        if (res.data.status == "200") {
+          this.proj_data = res.data.project_datail;
+        } else if (res.data.status == "500") {
+          console.log("Something wrong...");
+        }
       });
     },
 
