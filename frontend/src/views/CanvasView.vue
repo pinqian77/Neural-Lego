@@ -12,9 +12,6 @@
         <a
           class="sidebar-brand d-flex align-items-center justify-content-center"
         >
-          <!-- <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div> -->
           <div class="sidebar-brand-text mx-3">NEURAL LEGO</div>
         </a>
 
@@ -45,7 +42,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
-          <a class="nav-link" href="template.html">
+          <a class="nav-link" href="/template">
             <i class="fas fa-fw fa-table"></i>
             <span>Template</span></a
           >
@@ -249,11 +246,6 @@
       <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a> -->
 
     <!-- Logout Modal-->
     <div

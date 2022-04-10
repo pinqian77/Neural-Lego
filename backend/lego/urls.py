@@ -16,16 +16,16 @@ urlpatterns = [
     path('', views.welcome),
 
     path('login/', views.login, name="login"),
-    path('register/', views.register, name = 'register'),
+    path('register/', views.register, name='register'),
 
-    path('project/<int:pk>/', views.projectPage, name = 'projectPage'),
-    path('project/upload/<int:pk>/', views.uploadProject,name = 'uploadProject'),
-    path('project/search/<int:pk>/', views.search, name = 'search'),
+    path('project/<int:pk>/', views.projectPage, name='projectPage'),
+    path('project/upload/<int:pk>/', views.uploadProject, name='uploadProject'),
+    path('project/search/<int:pk>/', views.search, name='search'),
 
-    path('profile/<int:pk>/', views.profilePage, name = 'profilePage'),
+    path('profile/<int:pk>/', views.profilePage, name='profilePage'),
 
-    path('train/<int:pk>/', views.trainPage, name = 'trainPage'),
+    path('train/<int:pk>/', views.trainPage, name='trainPage'),
 
-    path('canvas/<int:pk>', views.canvasPage, name = 'canvasPage'),
+    path('canvas/<int:pk>', views.canvasPage, name='canvasPage'),
 
 ]
