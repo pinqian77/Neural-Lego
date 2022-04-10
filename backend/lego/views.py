@@ -66,8 +66,13 @@ def projectPage(request, pk):
     project = project.values('project_id')
     project = Project.objects.filter(project_id__in = project)
     context = {}
-    context['project_detail'] = serializers.serialize('json', project)
+    context['project_detail'] = serializers.serialize('json', project, fields = ('project_id', 'last_save_time', 'project_name', 'is_public', 'star'))
     context['project_detail'] = json.loads(context['project_detail'])
+    List = []
+    for item in context['project_detail']:
+        item["fields"]["project_id"] = item['pk']
+        List.append(item['fields'])
+    context['project_detail'] = List
     context['status'] = 200
     return JsonResponse(context, safe=False)
     # return JsonResponse(context, json_dumps_params={"ensure_ascii": False})
