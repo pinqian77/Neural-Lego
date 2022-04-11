@@ -208,6 +208,14 @@
                 Layout
               </button>
 
+              <button
+                class="btn btn-primary"
+                type="submit"
+                @click="renderJson()"
+              >
+                render
+              </button>
+
               <form style="display: inline-block" method="POST">
                 <input
                   v-model="canvasData.file"
@@ -229,11 +237,9 @@
                 Train
               </button>
               <br />
-              <textarea
-                id="mySavedModel"
-                style="width: 100%; height: 300px"
-                v-model="canvasData.file"
-              >
+
+              <textarea id="mySavedModel" style="width: 100%; height: 300px">
+                {{ canvasData.file }}
               </textarea>
             </div>
           </div>
@@ -988,6 +994,12 @@ export default {
     ];
 
     window.myDiagram = myDiagram;
+  },
+
+  filters: {
+    pretty: function (value) {
+      return JSON.stringify(JSON.parse(value), null, 2);
+    },
   },
 
   methods: {
