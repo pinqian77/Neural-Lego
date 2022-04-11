@@ -270,28 +270,30 @@ def canvasSave(request, pk, pid):
 
     return JsonResponse({"status":200}, safe=False)
 
-# 传一个string 需要前端自己分词，还是说我这边分号，传很多个参数过来, 如果是后一种，将这里的context修改为想要的参数，左边为自己想要的名字
-
-
 # Front
 # POST: {heper: {"optimizer":"xxx", "dataset":"xxx", "lr":"xxx", "t_batch_size":"xxx", "batch_size":"xxx", "epoch":"xxx", "seed"="xxx"}}
-def trainPage(request, pk):
-    project_ID = request.POST.get("project_ID")
-    project_path = Project.objects.only('project_directory').filter(project_id = project_ID)
+def trainPage(request, pk, pid):
+    project_ID = pid
+    project_path = Project.objects.only('project_directory').get(project_id = project_ID).project_directory
     project_json_name = "hyperparameter.json"
-    with open(os.path.join(project_path, project_json_name), 'r') as f:
-        context = json.load(f)
-    return JsonResponse(context, safe=False)
+    if os.path.exists(os.path.join(project_path, project_json_name)):
+        with open(os.path.join(project_path, project_json_name), 'r') as f:
+            context = json.load(f)
+            context['status'] = 200
+        return JsonResponse(context, safe=False)
+    else:
+        return JsonResponse({'status':204})
 
-def trainSave(request, pk, project_ID):
-    project_ID = request.POST.get("project_ID")
+def trainSave(request, pk, pid):
+    project_ID = pid
     user = User.objects.get(pk = pk)
-    project = Project.objects.filter(project_ID = project_ID, user_id= user)
+    project = Project.objects.filter(project_id = project_ID, user_id= user)
     if project is None:
         return JsonResponse({"status": 500})
-    project_path = Project.objects.only('project_directory').filter(project_id = project_ID)
+    project_path = Project.objects.only('project_directory').get(project_id = project_ID).project_directory
     project_json_name = "hyperparameter.json"
-    project_json = request.POST.get("project_json")
+    project_json = request.POST.get("config")
+    project_json = json.loads(project_json)
     with open(os.path.join(project_path, project_json_name), 'w') as f:
         json.dump(project_json, f)
     main(project_path= project_path, pid= project_ID)
