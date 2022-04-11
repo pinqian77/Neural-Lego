@@ -23,6 +23,7 @@ urlpatterns = [
     path('project/create/<int:pk>/', views.newProject, name='newProjectt'),
     path('project/upload/<int:pk>/', views.uploadProject, name='uploadProject'),
     path('project/search/<int:pk>/', views.search, name='search'),
+    path('project/remove/<int:pk>/<int:pid>', views.deleteProject, name='deleteProject'),
 
     path('profile/<int:pk>/', views.profilePage, name='profilePage'),
 
