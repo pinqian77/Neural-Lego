@@ -104,5 +104,5 @@ def train_model():
         print('trn_loss: {:.4f}, trn_acc: {:.2f}%'.format(trnloss, 100. * trnacc), end=', ')
         
     return model
-    
+
 model = train_model()

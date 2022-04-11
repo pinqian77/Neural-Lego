@@ -16,20 +16,24 @@ from . import views
 urlpatterns = [
     path('', views.welcome),
 
-    path('login/', views.login, name="login"),
-    path('register/', views.register, name='register'),
+    path('login/', views.login),
+    path('register/', views.register),
 
-    path('project/<int:pk>/', views.projectPage, name='projectPage'),
-    path('project/create/<int:pk>/', views.newProject, name='newProjectt'),
-    path('project/upload/<int:pk>/', views.uploadProject, name='uploadProject'),
-    path('project/search/<int:pk>/', views.search, name='search'),
-    path('project/remove/<int:pk>/<int:pid>/', views.deleteProject, name='deleteProject'),
+    path('project/<int:pk>/', views.projectPage),
+    path('project/create/<int:pk>/', views.newProject),
+    path('project/upload/<int:pk>/', views.uploadProject),
+    path('project/search/<int:pk>/', views.search),
+    path('project/remove/<int:pk>/<int:pid>/', views.deleteProject),
 
-    path('profile/<int:pk>/', views.profilePage, name='profilePage'),
+    path('data/<int:pk>/', views.dataPage),
+    path('data/upload/<int:pk>/', views.uploadDataset),
+    path('data/remove/<int:pk>/<int:did>/', views.deleteData),
 
-    path('train/<int:pk>/<int:pid>/', views.trainPage, name='trainPage'),
-    path('train/apply/<int:pk>/<int:pid>/', views.trainSave, name='trainPage'),
+    path('profile/<int:pk>/', views.profilePage),
 
-    path('canvas/<int:pk>/<int:pid>/', views.canvasPage, name='canvasPage'),
+    path('train/<int:pk>/<int:pid>/', views.trainPage),
+    path('train/apply/<int:pk>/<int:pid>/', views.trainSave),
 
+    path('canvas/getPython/<int:pk>/<int:pid>/', views.canvasPython),
+    path('canvas/getJson/<int:pk>/<int:pid>/', views.canvasJson),
 ]

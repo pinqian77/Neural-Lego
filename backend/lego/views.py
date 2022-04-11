@@ -67,13 +67,6 @@ def querysetTojson(queryset):
 # Back
 # 都是list {“project_ID":"1", "project_name":"name", "project_time":"time"} 表示list中的一个元素
 def projectPage(request, pk):
-#    context = {'status': 200,
-#               'project_detail': [{"project_ID": "1", "project_name": "name", "project_time": "time"},
-#                                  {"project_ID": "2", "project_name": "name", "project_time": "time"}]
-#               }
-#    project = Users_project.objects.filter(user_id=pk)
-#    project = project.values('project_id')
-#    project = Project.objects.filter(project_id__in = project)
     user = User.objects.get(pk = pk)
     project = Project.objects.filter(user_id=user)
 
@@ -83,7 +76,26 @@ def projectPage(request, pk):
     return JsonResponse(context, safe=False)
     # return JsonResponse(context, json_dumps_params={"ensure_ascii": False})
 
+def dataPage(request, pk):
+    user = User.objects.get(pk = pk)
+    data = Data.objects.filter(user_id=user)
 
+    context = {}
+    context['data_detail'] = querysetTojson(data)
+    context['status'] = 200
+    return JsonResponse(context, safe=False)
+
+def deleteData(request, pk, did):
+    context = {}
+    user = User.objects.get(pk = pk)
+    data = Data.objects.get(data_id = did, user_id = user)
+    if data is None:
+        context['status'] = 500
+    else:
+        os.remove(data.data_directory)
+        context['status'] = 200
+    data.delete()
+    return JsonResponse(context, safe=False)
 # Front
 # POST: {"page_name":"xxx", "keyword":"xxxxx"}
 def search(request, pk=None):
@@ -204,30 +216,52 @@ def profilePage(request, pk):
 
 # Front
 # POST: {"canvas_data":"xxx"}
-def canvasPage(request, pk):
+def canvasPython(request, pk):
     project_ID = request.POST.get("project_ID")
-    project_path = Project.objects.only('project_directory').filter(project_id = project_ID)
-    context = {"canvas_data": "username"}
-    return JsonResponse(context, safe=False)
+    project_path = Project.objects.only('project_directory').get(project_id = project_ID)
+    python_path = os.path.join(project_path, project_ID+".py")
+    if python_path:
+        try:
+            response = StreamingHttpResponse(open(python_path, 'rb'))
+            response["Content-type"] = "application/py"
+        except Exception as e:
+            return JsonResponse({'status':500})
+
+        response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
+        return response
+    return JsonResponse({'status':500})
+
+def canvasJson(request, pk):
+    project_ID = request.POST.get("project_ID")
+    project_path = Project.objects.only('project_directory').get(project_id = project_ID)
+    python_path = os.path.join(project_path, project_ID+".json")
+    if python_path:
+        try:
+            response = StreamingHttpResponse(open(python_path, 'rb'))
+            response["Content-type"] = "application/py"
+        except Exception as e:
+            return JsonResponse({'status':500})
+
+        response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
+        return response
+    return JsonResponse({'status':500})
 
 # TODO 检查文件合法
-def canvasSave(request, pk):
+def canvasSave(request, pk, pid):
     if request.method == "POST":
         file = request.FILES['file']
 
         if not file:
             return HttpResponse("file not find")
 
-        save_path = os.path.join(settings.MEDIA_ROOT, pk, "project", file.name)
-
+        save_path = Project.objects.get(project_id=pid).project_directory
+        file_path = os.path.join(save_path, pid + ".json")
         # save file
-        file_path = os.path.join(save_path, file.name)
         with open(file_path, 'wb+') as fp:
             for chunk in file.chunks():
                 fp.write(chunk)
 
-    context = {"isSave": True}
-    return JsonResponse(context, safe=False)
+    return JsonResponse({"status":200}, safe=False)
 
 # 传一个string 需要前端自己分词，还是说我这边分号，传很多个参数过来, 如果是后一种，将这里的context修改为想要的参数，左边为自己想要的名字
 
@@ -266,28 +300,35 @@ def trainRun(request, pk):
 # Front
 # POST: 还不是很清楚
 def uploadDataset(request, pk):
-    if request.method == "POST":
-        file = request.FILES['file']
+    file = request.FILES['file']
+    if file is None:
+        return JsonResponse({"status":400})
+    name = file.name[:-5]
+    file_path = os.path.join(settings.MEDIA_ROOT, str(pk), "data", name)
+    save_path = os.path.join(settings.MEDIA_ROOT, str(pk), "data")
 
-        if not file:
-            return HttpResponse("file not find")
+    user = User.objects.get(pk = pk)
+    is_save = Data.objects.filter(user_id = user, data_name=name)
+    data = Data.objects.create(user_id=user, data_name=name, data_directory= file_path)
 
-        save_path = os.path.join(settings.MEDIA_ROOT, pk, "project", file.name)
-        try:
-            os.makedirs(save_path)
-        except Exception:
-            raise Http404("Invalid file")
+    if data is None or is_save is not None:
+        status = 400
+    else:
+        data.save()
+        status = 200
 
-        # save file
-        file_path = os.path.join(save_path, file.name+".json")
-        with open(file_path, 'wb+') as fp:
-            for chunk in file.chunks():
-                fp.write(chunk)
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
+    # save file
+    file_path = os.path.join(save_path, data.data_name)
+    with open(file_path, 'wb+') as fp:
+        for chunk in file.chunks():
+            fp.write(chunk)
 
-    context = {"isUpload": True}
+    context = {"status": status}
     return JsonResponse(context, safe=False)
-# 都是list {“project_ID":"1", "project_name":"name", "project_time":"time"} 表示list中的一个元素
 
+# 都是list {“project_ID":"1", "project_name":"name", "project_time":"time"} 表示list中的一个元素
 
 def templatePage(request, pk):
     context = {'project_share': {"project_ID": "1", "project_name": "name", "project_time": "time"}, 'project_recommend': {
@@ -309,41 +350,4 @@ def templateStar(request, pk):
     userProject.save()
     context = {'isStar': True}
     return JsonResponse(context, safe=False)
-
-
-# def getProjectFile(request):
-#     file = request.FILES['file']
-#     file_path = os.path.join(settings.MEDIA_ROOT, image_name)
-#        # 在没有目录路径时创建一个
-#        try:
-#             os.mkdir(settings.MEDIA_ROOT)
-#         except Exception:
-#             pass
-#         # 将文件保存在本地
-#         f = open(image_path, 'wb')
-#         for i in onecard.chunks():
-#             f.write(i)
-#         f.close()
-#         # 创建用户
-#         try:
-#             UserModel.objects.create(name=name, image=image_name)
-#         except Exception as e:
-#             # logger.info("[Users] Fail to create user!\n", e)
-#             response['success'] = '0'
-#         return Response(response)
-
-#def uploadProject(request):
-#
-#        return HttpResponse("upload ok!")
-        # context = {"isUpload": True}
-        # return render(request, "index.html", context)
-
-#def canvasPage(request):
-#    if request.method == "POST":
-#        # file = request.POST.get("file")
-#        file = json.loads(request.body)
-#        print(file)
-#        return HttpResponse("hhhhh")
-#    context = {"file": "name", "python": "name"}
-#    return render(request, "index.html", context)
 
