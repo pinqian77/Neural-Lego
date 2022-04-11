@@ -201,11 +201,7 @@
                 <div
                   id="myDiagramDiv"
                   style="flex-grow: 2; height: 600px; border: solid 4px #82929b"
-                >
-                  <highlight-code lang="javascript">
-                    let str = 'Hello, World!'; console.log(str);
-                  </highlight-code>
-                </div>
+                ></div>
               </div>
 
               <button class="btn btn-primary" type="submit" @click="save()">
@@ -289,11 +285,6 @@
         </div>
       </div>
     </div>
-
-    <div class="editor">
-      <textarea class="input" :value="input" @input="update"></textarea>
-      <div class="output" v-html="output"></div>
-    </div>
   </div>
 </template>
 
@@ -302,9 +293,6 @@
 <script>
 import axios from "axios";
 import * as go from "/public/go.js";
-
-import { marked } from "marked";
-import { debounce } from "lodash-es";
 
 export default {
   name: "CanvasView",
@@ -953,12 +941,6 @@ export default {
     window.myDiagram = myDiagram;
   },
 
-  computed: {
-    output() {
-      return marked(this.input);
-    },
-  },
-
   methods: {
     layout() {
       myDiagram.layoutDiagram(true);
@@ -986,11 +968,6 @@ export default {
         },
       });
     },
-
-    // code
-    update: debounce(function (e) {
-      this.input = e.target.value;
-    }, 100),
   },
 };
 </script>
