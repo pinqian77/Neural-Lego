@@ -206,6 +206,43 @@
                         aria-controls="collapseTwo"
                       >
                         <i class="fas fa-fw fa-cog"></i>
+                        <span>Dataset</span>
+                      </a>
+                      <div
+                        id="collapseTwo"
+                        class="collapse"
+                        aria-labelledby="headingTwo"
+                        data-parent="#accordionSidebar"
+                      >
+                        <div class="form-group col-lg-2">
+                          <label for="dataset">select dataset:</label>
+                          <select
+                            v-model="config.dataset"
+                            class="form-control"
+                            id="dataset"
+                          >
+                            <option
+                              v-for="ds in dataset_data"
+                              :key="ds.id"
+                              :label="ds.dataset_name"
+                              :value="ds.dataset_name"
+                            ></option>
+                          </select>
+                        </div>
+                      </div>
+                    </li>
+
+                    <!-- Nav Item - Pages Collapse Menu -->
+                    <li class="nav-item">
+                      <a
+                        class="nav-link collapsed"
+                        href="#"
+                        data-toggle="collapse"
+                        data-target="#collapseTwo"
+                        aria-expanded="true"
+                        aria-controls="collapseTwo"
+                      >
+                        <i class="fas fa-fw fa-cog"></i>
                         <span>Optimizer</span>
                       </a>
                       <div
@@ -221,44 +258,10 @@
                             id="sel1"
                             v-model="config.optimizer"
                           >
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
+                            <option value="Adam">Adam</option>
+                            <option value="SGD">SGD</option>
+                            <option value="Adagrad">Adagrad</option>
                           </select>
-                        </div>
-                      </div>
-                    </li>
-
-                    <!-- Nav Item - Utilities Collapse Menu -->
-                    <li class="nav-item">
-                      <a
-                        class="nav-link collapsed"
-                        href="#"
-                        data-toggle="collapse"
-                        data-target="#collapseUtilities"
-                        aria-expanded="true"
-                        aria-controls="collapseUtilities"
-                      >
-                        <i class="fas fa-fw fa-file"></i>
-                        <span>Dataset</span>
-                      </a>
-                      <div
-                        id="collapseUtilities"
-                        class="collapse"
-                        aria-labelledby="headingUtilities"
-                        data-parent="#accordionSidebar"
-                      >
-                        <div class="custom-file mb-3 col-lg-3">
-                          <input
-                            type="file"
-                            class="custom-file-input"
-                            id="dataset"
-                            name="filename"
-                          />
-                          <label class="custom-file-label" for="dataset"
-                            >Choose file</label
-                          >
                         </div>
                       </div>
                     </li>
@@ -468,6 +471,7 @@ export default {
   data() {
     return {
       config: {
+        dataset: "",
         optimizer: "",
         lr: 0.0,
         test_batch_size: 0,
@@ -475,6 +479,7 @@ export default {
         epoch: 0,
         seed: 0,
       },
+      dataset_data: {},
     };
   },
 
@@ -484,21 +489,36 @@ export default {
 
   methods: {
     getData() {
+      getDatasetName();
+
       axios({
         method: "get",
         url: "/train/" + localStorage.uid + "/" + localStorage.pid + "/",
       }).then((res) => {
         console.log(res.data);
         if (res.data.status == 200) {
-          this.config = res.data.optimizer;
-          this.config = res.data.lr;
-          this.config = res.data.test_batch_size;
-          this.config = res.data.batch_size;
-          this.config = res.data.epoch;
-          this.config = res.data.seed;
-          this.config = res.data.dataset_name;
+          this.config.optimizer = res.data.optimizer;
+          this.config.lr = res.data.lr;
+          this.config.test_batch_size = res.data.test_batch_size;
+          this.config.batch_size = res.data.batch_size;
+          this.config.epoch = res.data.epoch;
+          this.config.seed = res.data.seed;
+          this.config.dataset = res.data.dataset_name;
         } else {
           alert("project loading error!");
+        }
+      });
+    },
+
+    getDatasetName() {
+      axios({
+        method: "get",
+        url: "/dataset/" + localStorage.uid + "/",
+      }).then((res) => {
+        if (res.data.status == 200) {
+          this.dataset_data = res.data.dataset_detail;
+        } else {
+          alert("dataset loading error!");
         }
       });
     },
