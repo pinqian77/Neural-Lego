@@ -12,9 +12,6 @@
         <a
           class="sidebar-brand d-flex align-items-center justify-content-center"
         >
-          <!-- <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div> -->
           <div class="sidebar-brand-text mx-3">NEURAL LEGO</div>
         </a>
 
@@ -141,7 +138,6 @@
                 >
                   New
                 </button>
-                <!-- <Modal v-show="isModalVisible" @close="closeModal"> </Modal> -->
               </li>
               &ensp;
               <li class="nav-item">
@@ -178,7 +174,7 @@
                   <table class="table table-hover">
                     <thead class="thead-dark">
                       <tr>
-                        <th scope="col">ID</th>
+                        <th scope="col"></th>
                         <th scope="col">Name</th>
                         <th scope="col">Time</th>
                         <th scope="col">Operation</th>
@@ -191,7 +187,7 @@
                           <button
                             type="button"
                             class="btn btn-link"
-                            @click="enterCanvas(proj.project_ID)"
+                            @click="enterCanvas(proj)"
                           >
                             {{ proj.project_name }}
                           </button>
@@ -205,14 +201,11 @@
                         <td>
                           <button
                             class="btn btn-warning"
-                            @click="enterCanvas(proj.project_ID)"
+                            @click="enterCanvas(proj)"
                           >
                             Edit</button
                           >&ensp;
-                          <button
-                            class="btn btn-danger"
-                            @click="remove(proj.project_ID)"
-                          >
+                          <button class="btn btn-danger" @click="remove(proj)">
                             Delete
                           </button>
                         </td>
@@ -360,7 +353,6 @@ export default {
   },
   methods: {
     getData() {
-      // 向后端发送一个请求，res是后端发给前端的数据
       axios({
         method: "get",
         url: "/project/" + localStorage.uid + "/",
@@ -379,6 +371,7 @@ export default {
     showModal() {
       this.isModalVisible = true;
     },
+
     closeModal() {
       this.isModalVisible = false;
     },
@@ -444,18 +437,57 @@ export default {
         console.log(res.data);
         if (res.data.status == "200") {
           this.proj_data = res.data.project_datail;
+          this.getData();
+          location.replace("/project/");
         } else if (res.data.status == "500") {
           console.log("Something wrong...");
         }
       });
     },
 
-    enterCanvas(id) {
-      console.log("sending id");
+    remove(proj) {
+      console.log("Remove id:" + proj.project_id);
+
+      let formData = new FormData();
+      formData.append("project_id", proj.project_id);
+
+      axios({
+        method: "post",
+        url:
+          "/project/remove/" + localStorage.uid + "/" + proj.project_id + "/",
+        data: formData,
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.status == "200") {
+          this.proj_data = res.data.project_datail;
+          this.getData();
+          location.replace("/project/");
+        } else if (res.data.status == "500") {
+          console.log("Something wrong...");
+        }
+      });
     },
 
-    remove(id) {
-      console.log("sending id");
+    enterCanvas(proj) {
+      console.log("Enter id: " + proj.project_id);
+
+      let formData = new FormData();
+      formData.append("project_id", proj.project_id);
+
+      axios({
+        method: "post",
+        url: "/canvas/" + localStorage.uid + "/" + proj.project_id + "/",
+        data: formData,
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.status == "200") {
+          this.proj_data = res.data.project_datail;
+          this.getData();
+          location.replace("/canvas/");
+        } else if (res.data.status == "500") {
+          console.log("Something wrong...");
+        }
+      });
     },
   },
 };
