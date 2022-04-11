@@ -74,7 +74,8 @@ def projectPage(request, pk):
 #    project = Users_project.objects.filter(user_id=pk)
 #    project = project.values('project_id')
 #    project = Project.objects.filter(project_id__in = project)
-    project = Project.objects.filter(user_id=pk)
+    user = User.objects.get(pk = pk)
+    project = Project.objects.filter(user_id=user)
 
     context = {}
     context['project_detail'] = querysetTojson(project)
@@ -89,7 +90,8 @@ def search(request, pk=None):
 #    context = {'project_detail': {"project_ID": "1",
 #                                  "project_name": "name", "project_time": "time"}}
     if pk is not None:
-        project = Project.objects.filter(user_id=pk, project_name__contains= request.POST.get("keyword"))
+        user = User.objects.get(pk = pk)
+        project = Project.objects.filter(user_id=user, project_name__contains= request.POST.get("keyword"))
     else:
         project = Project.objects.filter(is_public = True, project_name__contains= request.POST.get("keyword"))
 
@@ -104,10 +106,13 @@ def search(request, pk=None):
 # TODO: 删掉这个的地址的文件
 def deleteProject(request, pk, pid):
     context = {}
-    project = project.objects.get(project_id=pid, user_id = pk)
+    user = User.objects.get(pk = pk)
+    project = Project.objects.get(project_id=pid, user_id = user)
     if project is None:
         context['status'] = 500
     else:
+        for item in os.listdir(project.project_directory):
+            os.remove(os.path.join(project.project_directory, item))
         os.removedirs(project.project_directory)
         context['status'] = 200
     project.delete()
@@ -120,9 +125,10 @@ def deleteProject(request, pk, pid):
 def newProject(request, pk):
     save_path = os.path.join(settings.MEDIA_ROOT, str(pk), request.POST.get("name"))
 
-    is_save = Project.filter(user_id = pk, project_name = request.POST.get("name"))
+    user = User.objects.get(pk = pk)
+    is_save = Project.objects.filter(user_id = user, project_name = request.POST.get("name"))
 
-    project = Project.objects.create(user_id= pk, project_name=request.POST.get("name"), project_directory=save_path, is_public=request.POST.get("is_public"), star = 0)
+    project = Project.objects.create(user_id= user, project_name=request.POST.get("name"), project_directory=save_path, is_public=request.POST.get("is_public"), star = 0)
     
     if project is None or is_save is not None:
         status = 400
@@ -141,9 +147,11 @@ def uploadProject(request, pk):
     name = file.name[:-5]
     save_path = os.path.join(settings.MEDIA_ROOT, str(pk), "project", name)
 
-    is_save = Project.filter(user_id = pk, project_name = name)
+    user = User.objects.get(pk = pk)
 
-    project = Project.objects.create(user_id = pk, project_name=name, project_directory=save_path, is_public=True, star = 0)
+    is_save = Project.objects.filter(user_id = user, project_name = name)
+
+    project = Project.objects.create(user_id = user, project_name=name, project_directory=save_path, is_public=True, star = 0)
 
     if project is None or is_save is not None:
         status = 400
@@ -237,7 +245,8 @@ def trainPage(request, pk):
 
 def trainSave(request, pk, project_ID):
     project_ID = request.POST.get("project_ID")
-    project = Project.objects.filter(project_ID = project_ID, user_id= pk)
+    user = User.objects.get(pk = pk)
+    project = Project.objects.filter(project_ID = project_ID, user_id= user)
     if project is None:
         return JsonResponse({"status": 500})
     project_path = Project.objects.only('project_directory').filter(project_id = project_ID)
@@ -295,7 +304,8 @@ def templateStar(request, pk):
     project = Project.objects.get(project_id=project_ID)
     project.star += 1
     project.save()
-    userProject = Users_template(project_id=project_ID, user_id=user_ID)
+    user = User.objects.get(pk = user_ID)
+    userProject = Users_template(project_id=project_ID, user_id=user)
     userProject.save()
     context = {'isStar': True}
     return JsonResponse(context, safe=False)

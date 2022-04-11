@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Project(models.Model):
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE, null=False)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     project_id = models.AutoField(primary_key=True)
     project_name = models.CharField(max_length=50, null=False)
     project_directory = models.CharField(max_length=100, null=False)
@@ -40,8 +40,8 @@ class Users_template(models.Model):
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)
-    user_owner = models.ForeignKey('User', on_delete=models.CASCADE, null=False)
-    user_target = models.ForeignKey('User', on_delete=models.CASCADE)
+    user_owner = models.ForeignKey(User, on_delete=models.CASCADE, null=False, related_name="user_owner+")
+    user_target = models.ForeignKey(User, on_delete=models.CASCADE,related_name="user_target+")
     project_id = models.IntegerField(null=False);
     content = models.CharField(max_length = 70, null=False);
     create_time = models.DateTimeField(auto_now_add=True);
@@ -53,7 +53,7 @@ class Comment(models.Model):
         ordering = ['comment_id']
 
 class Data(models.Model):
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE, null=False)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     data_id = models.AutoField(primary_key=True)
     data_name = models.CharField(max_length=50, null=False)
     data_directory = models.CharField(max_length=100, null=False)
