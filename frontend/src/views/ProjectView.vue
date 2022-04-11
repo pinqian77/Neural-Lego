@@ -188,8 +188,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="proj in proj_data" :key="proj.project_ID">
-                        <th scope="col">{{ proj.project_ID }}</th>
+                      <tr v-for="proj in proj_data" :key="proj.id">
+                        <th scope="col">{{ proj.id }}</th>
                         <td>
                           <button
                             type="button"
@@ -453,15 +453,14 @@ export default {
     },
 
     remove(proj) {
-      console.log("Remove id:" + proj.project_id);
+      console.log("Remove id:" + proj.id);
 
       let formData = new FormData();
-      formData.append("project_id", proj.project_id);
+      formData.append("project_id", proj.id);
 
       axios({
         method: "post",
-        url:
-          "/project/remove/" + localStorage.uid + "/" + proj.project_id + "/",
+        url: "/project/remove/" + localStorage.uid + "/" + proj.id + "/",
         data: formData,
       }).then((res) => {
         console.log(res.data);
@@ -476,7 +475,7 @@ export default {
     },
 
     enterCanvas(proj) {
-      localStorage.pid = proj.project_id;
+      localStorage.pid = proj.id;
       location.replace("/canvas/");
     },
   },

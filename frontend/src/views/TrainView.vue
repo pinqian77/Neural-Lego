@@ -496,6 +496,7 @@ export default {
           this.config = res.data.batch_size;
           this.config = res.data.epoch;
           this.config = res.data.seed;
+          this.config = res.data.dataset_name;
         } else {
           alert("project loading error!");
         }
@@ -508,12 +509,6 @@ export default {
 
       form_data.append("dataset", dataset, dataset.name);
       form_data.append("config", this.config);
-      // form_data.append("optimizer", this.config.optimizer);
-      // form_data.append("lr", this.config.lr);
-      // form_data.append("test_batch_size", this.config.test_batch_size);
-      // form_data.append("batch_size", this.config.batch_size);
-      // form_data.append("epoch", this.config.epoch);
-      // form_data.append("seed", this.config.seed);
 
       axios({
         method: "post",
