@@ -25,9 +25,9 @@ urlpatterns = [
     path('project/search/<int:pk>/', views.search),
     path('project/remove/<int:pk>/<int:pid>/', views.deleteProject),
 
-    path('data/<int:pk>/', views.dataPage),
-    path('data/upload/<int:pk>/', views.uploadDataset),
-    path('data/remove/<int:pk>/<int:did>/', views.deleteData),
+    path('dataset/<int:pk>/', views.dataPage),
+    path('dataset/upload/<int:pk>/', views.uploadDataset),
+    path('dataset/remove/<int:pk>/<int:did>/', views.deleteData),
 
     path('profile/<int:pk>/', views.profilePage),
 

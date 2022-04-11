@@ -9,6 +9,7 @@ import json
 import backend.settings as settings
 import zipfile
 from django.core import serializers
+from util.utils import main, model
 
 from django.contrib.auth.models import User
 from lego.models import Comment, Data, Project, Users_data, Users_project, Users_template
@@ -17,7 +18,7 @@ from django.http import Http404
 
 # Create your views here.
 # status: 
-# data: 
+# data:{} 
 
 def welcome(request):
     return render(request, "index.html")
@@ -60,7 +61,7 @@ def querysetTojson(queryset):
     context = json.loads(context)
     List = []
     for item in context:
-        item["fields"]["project_id"] = item['pk']
+        item["fields"]["id"] = item['pk']
         List.append(item['fields'])
     return List
 
@@ -81,18 +82,18 @@ def dataPage(request, pk):
     data = Data.objects.filter(user_id=user)
 
     context = {}
-    context['data_detail'] = querysetTojson(data)
+    context['dataset_detail'] = querysetTojson(data)
     context['status'] = 200
     return JsonResponse(context, safe=False)
 
 def deleteData(request, pk, did):
     context = {}
     user = User.objects.get(pk = pk)
-    data = Data.objects.get(data_id = did, user_id = user)
+    data = Data.objects.get(dataset_id = did, user_id = user)
     if data is None:
         context['status'] = 500
     else:
-        os.remove(data.data_directory)
+        os.remove(data.dataset_directory)
         context['status'] = 200
     data.delete()
     return JsonResponse(context, safe=False)
@@ -140,13 +141,18 @@ def newProject(request, pk):
     user = User.objects.get(pk = pk)
     is_save = Project.objects.filter(user_id = user, project_name = request.POST.get("name"))
 
-    project = Project.objects.create(user_id= user, project_name=request.POST.get("name"), project_directory=save_path, is_public=request.POST.get("is_public"), star = 0)
+    project = Project(user_id= user, project_name=request.POST.get("name"), project_directory=save_path, is_public=request.POST.get("is_public"), star = 0)
     
-    if project is None or is_save is not None:
+    if project is None or is_save.count() != 0:
         status = 400
     else:
         project.save()
         status = 200
+
+    try:
+        os.makedirs(save_path)
+    except Exception:
+        return JsonResponse({'status':500})
     return JsonResponse({'status':status}, safe=False)
 
 
@@ -165,8 +171,8 @@ def uploadProject(request, pk):
 
     project = Project.objects.create(user_id = user, project_name=name, project_directory=save_path, is_public=True, star = 0)
 
-    if project is None or is_save is not None:
-        status = 400
+    if project is None or is_save.count() != 0 :
+        status = 500
     else:
         project.save()
         status = 200
@@ -219,6 +225,7 @@ def profilePage(request, pk):
 def canvasPython(request, pk):
     project_ID = request.POST.get("project_ID")
     project_path = Project.objects.only('project_directory').get(project_id = project_ID)
+    model(project_path=project_path, pid=project_ID)
     python_path = os.path.join(project_path, project_ID+".py")
     if python_path:
         try:
@@ -276,7 +283,6 @@ def trainPage(request, pk):
         context = json.load(f)
     return JsonResponse(context, safe=False)
 
-
 def trainSave(request, pk, project_ID):
     project_ID = request.POST.get("project_ID")
     user = User.objects.get(pk = pk)
@@ -288,14 +294,25 @@ def trainSave(request, pk, project_ID):
     project_json = request.POST.get("project_json")
     with open(os.path.join(project_path, project_json_name), 'w') as f:
         json.dump(project_json, f)
+    main(project_path= project_path, pid= project_ID)
     context = {"status":200}
     return JsonResponse(context, safe=False)
-
 
 def trainRun(request, pk):
     context = {"isRun": True}
     return JsonResponse(context, safe=False)
 
+def trainEpoch(request, pk):
+    context = {"isRun": True}
+    return JsonResponse(context, safe=False)
+
+def trainROC(request, pk):
+    context = {"isRun": True}
+    return JsonResponse(context, safe=False)
+
+def trainACC(request, pk):
+    context = {"isRun": True}
+    return JsonResponse(context, safe=False)
 
 # Front
 # POST: 还不是很清楚
@@ -308,10 +325,10 @@ def uploadDataset(request, pk):
     save_path = os.path.join(settings.MEDIA_ROOT, str(pk), "data")
 
     user = User.objects.get(pk = pk)
-    is_save = Data.objects.filter(user_id = user, data_name=name)
-    data = Data.objects.create(user_id=user, data_name=name, data_directory= file_path)
+    is_save = Data.objects.filter(user_id = user, dataset_name=name)
+    data = Data.objects.create(user_id=user, dataset_name=name, dataset_directory= file_path)
 
-    if data is None or is_save is not None:
+    if data is None or is_save.count() != 0 :
         status = 400
     else:
         data.save()
@@ -320,7 +337,7 @@ def uploadDataset(request, pk):
     if not os.path.exists(save_path):
         os.makedirs(save_path)
     # save file
-    file_path = os.path.join(save_path, data.data_name)
+    file_path = os.path.join(save_path, data.dataset_name)
     with open(file_path, 'wb+') as fp:
         for chunk in file.chunks():
             fp.write(chunk)

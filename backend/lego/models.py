@@ -54,16 +54,16 @@ class Comment(models.Model):
 
 class Data(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
-    data_id = models.AutoField(primary_key=True)
-    data_name = models.CharField(max_length=50, null=False)
-    data_directory = models.CharField(max_length=100, null=False)
+    dataset_id = models.AutoField(primary_key=True)
+    dataset_name = models.CharField(max_length=50, null=False)
+    dataset_directory = models.CharField(max_length=100, null=False)
     discription = models.CharField(max_length=100, null=False)
     upload_time = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return str(self.data_id)
+        return str(self.dataset_id)
     class Meta:
         db_table = 'data'
-        ordering = ['data_id']
+        ordering = ['dataset_id']
 
 class Users_data(models.Model):
     udpk = models.AutoField(primary_key=True)
