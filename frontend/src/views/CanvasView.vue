@@ -37,6 +37,13 @@
           >
         </li>
 
+        <li class="nav-item">
+          <a class="nav-link" href="/dataset">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Dataset</span></a
+          >
+        </li>
+
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
 

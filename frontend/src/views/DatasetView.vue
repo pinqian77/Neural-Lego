@@ -259,19 +259,23 @@ import axios from "axios";
 
 export default {
   name: "DatasetView",
+
   data() {
     return {
       page_name: "dataset_page",
       search_keyword: "",
       dataset_data: {},
+
       isModalVisible: false,
     };
   },
   mounted() {
-    // Fetch tasks on page load
+    // Fetch data on page load
     this.getData();
   },
+
   methods: {
+    // 200
     getData() {
       axios({
         method: "get",
@@ -286,10 +290,12 @@ export default {
       });
     },
 
+    // 200
     openProject() {
       this.$refs.fileRef.dispatchEvent(new MouseEvent("click"));
     },
 
+    // 200
     uploadProject() {
       var form_data = new FormData();
       var file = document.getElementById("file").files[0];
@@ -304,7 +310,6 @@ export default {
         console.log(res.data);
         if (res.data.status == "200") {
           console.log("upload ok!");
-          this.getData();
           location.replace("/dataset/");
         } else {
           alert.log("upload fail!");
@@ -313,6 +318,7 @@ export default {
       });
     },
 
+    // 200
     search() {
       let formData = new FormData();
       formData.append("page_name", this.page_name);
@@ -326,14 +332,14 @@ export default {
         console.log(res.data);
         if (res.data.status == "200") {
           this.dataset_data = res.data.dataset_datail;
-          this.getData();
-          location.replace("/dataset/");
         } else if (res.data.status == "500") {
           console.log("Something wrong...");
         }
+        location.replace("/dataset/");
       });
     },
 
+    // 200
     remove(proj) {
       let formData = new FormData();
       formData.append("dataset_id", proj.id);
@@ -346,11 +352,10 @@ export default {
         console.log(res.data);
         if (res.data.status == "200") {
           this.dataset_data = res.data.dataset_datail;
-          this.getData();
-          location.replace("/dataset/");
         } else if (res.data.status == "500") {
           console.log("Something wrong...");
         }
+        location.replace("/dataset/");
       });
     },
   },

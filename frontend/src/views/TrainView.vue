@@ -40,6 +40,13 @@
           >
         </li>
 
+        <li class="nav-item">
+          <a class="nav-link" href="/dataset">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Dataset</span></a
+          >
+        </li>
+
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
 
@@ -495,6 +502,7 @@ export default {
   },
 
   methods: {
+    // 200
     getData() {
       this.getDatasetName();
 
@@ -519,6 +527,7 @@ export default {
       });
     },
 
+    // 200
     getDatasetName() {
       axios({
         method: "get",
@@ -532,6 +541,7 @@ export default {
       });
     },
 
+    // 200
     apply() {
       var form_data = new FormData();
       form_data.append("config", JSON.stringify(this.config));
@@ -551,6 +561,7 @@ export default {
       });
     },
 
+    // untested
     getTrainStatus() {
       axios({
         method: "get",
@@ -567,9 +578,10 @@ export default {
       });
     },
 
+    // untested
     run() {
       var form_data = new FormData();
-      form_data.append("config", "run");
+      form_data.append("run", "true");
       axios({
         method: "post",
         url: "/train/apply/" + localStorage.uid + "/" + localStorage.pid + "/",

@@ -342,23 +342,31 @@ import axios from "axios";
 
 export default {
   name: "ProjectView",
+
   data() {
     return {
       new_proj: {
         name: "",
         is_public: "",
       },
+
       page_name: "project_page",
+
       search_keyword: "",
+
       proj_data: {},
+
       isModalVisible: false,
     };
   },
+
   mounted() {
-    // Fetch tasks on page load
+    // Fetch data on page load
     this.getData();
   },
+
   methods: {
+    // 200
     getData() {
       axios({
         method: "get",
@@ -375,14 +383,7 @@ export default {
       });
     },
 
-    showModal() {
-      this.isModalVisible = true;
-    },
-
-    closeModal() {
-      this.isModalVisible = false;
-    },
-
+    // 200
     newProject() {
       let formData = new FormData();
       formData.append("name", this.new_proj.name);
@@ -396,18 +397,19 @@ export default {
         console.log(res.data);
         if (res.data.status == "200") {
           console.log("create ok!");
-          location.replace("/project/");
         } else if (res.data.status == "500") {
           console.log("create error");
-          location.replace("/project/");
         }
+        location.replace("/project/");
       });
     },
 
+    // 200
     openProject() {
       this.$refs.fileRef.dispatchEvent(new MouseEvent("click"));
     },
 
+    // 200
     uploadProject() {
       var form_data = new FormData();
       var file = document.getElementById("file").files[0];
@@ -422,15 +424,14 @@ export default {
         console.log(res.data);
         if (res.data.status == "200") {
           console.log("upload ok!");
-          this.getData();
-          location.replace("/project/");
         } else {
-          alert.log("upload fail!");
-          location.replace("/project/");
+          alert("upload fail!");
         }
+        location.replace("/project/");
       });
     },
 
+    // untested
     search() {
       let formData = new FormData();
       formData.append("page_name", this.page_name);
@@ -444,17 +445,15 @@ export default {
         console.log(res.data);
         if (res.data.status == "200") {
           this.proj_data = res.data.project_datail;
-          this.getData();
-          location.replace("/project/");
         } else if (res.data.status == "500") {
-          console.log("Something wrong...");
+          alert("Something wrong...");
         }
+        location.replace("/project/");
       });
     },
 
+    // 200
     remove(proj) {
-      console.log("Remove id:" + proj.id);
-
       let formData = new FormData();
       formData.append("project_id", proj.id);
 
@@ -466,17 +465,27 @@ export default {
         console.log(res.data);
         if (res.data.status == "200") {
           this.proj_data = res.data.project_datail;
-          // this.getData();
-          location.replace("/project/");
         } else if (res.data.status == "500") {
-          console.log("Something wrong...");
+          alert("Something wrong...");
         }
+        location.replace("/project/");
       });
     },
 
+    // 200
     enterCanvas(proj) {
       localStorage.pid = proj.id;
       location.replace("/canvas/");
+    },
+
+    // 200
+    showModal() {
+      this.isModalVisible = true;
+    },
+
+    // 200
+    closeModal() {
+      this.isModalVisible = false;
     },
   },
 };

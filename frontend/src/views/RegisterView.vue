@@ -75,6 +75,7 @@ import axios from "axios";
 
 export default {
   name: "RegisterView",
+
   data() {
     return {
       registerForm: {
@@ -84,7 +85,9 @@ export default {
       },
     };
   },
+
   methods: {
+    // 200
     submitForm() {
       if (this.registerForm.password != this.registerForm.repeat_password) {
         alert("The entered password is inconsistent!");
@@ -104,7 +107,7 @@ export default {
       }).then((res) => {
         if (res.data.status == "200") {
           console.log("register ok!");
-          window.location.replace("/login/");
+          location.replace("/login/");
         } else if (res.data.status == "500") {
           alert("Not an unique username!");
         } else {

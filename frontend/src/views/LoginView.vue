@@ -69,6 +69,7 @@ import axios from "axios";
 
 export default {
   name: "LoginView",
+
   data() {
     return {
       loginForm: {
@@ -77,14 +78,14 @@ export default {
       },
     };
   },
+
   methods: {
+    // 200
     submitForm() {
-      // Declare a form
       let formData = new FormData();
       formData.append("username", this.loginForm.username);
       formData.append("password", this.loginForm.password);
 
-      // Send form to backend and get response data
       axios({
         method: "post",
         url: "/login/",
