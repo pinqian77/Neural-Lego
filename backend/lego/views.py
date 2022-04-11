@@ -141,7 +141,7 @@ def uploadProject(request, pk):
     name = file.name[:-5]
     save_path = os.path.join(settings.MEDIA_ROOT, str(pk), "project", name)
 
-    is_save = Project.filter(user_id = pk, project_name = name))
+    is_save = Project.filter(user_id = pk, project_name = name)
 
     project = Project.objects.create(user_id = pk, project_name=name, project_directory=save_path, is_public=True, star = 0)
 
@@ -225,7 +225,7 @@ def canvasSave(request, pk):
 
 
 # Front
-# POST: {"optimizer":"xxx", "dataset":"xxx", "lr":"xxx", "t_batch_size":"xxx", "batch_size":"xxx", "epoch":"xxx", "seed"="xxx"}
+# POST: {heper: {"optimizer":"xxx", "dataset":"xxx", "lr":"xxx", "t_batch_size":"xxx", "batch_size":"xxx", "epoch":"xxx", "seed"="xxx"}}
 def trainPage(request, pk):
     project_ID = request.POST.get("project_ID")
     project_path = Project.objects.only('project_directory').filter(project_id = project_ID)
@@ -235,7 +235,7 @@ def trainPage(request, pk):
     return JsonResponse(context, safe=False)
 
 
-def trainSave(request, pk):
+def trainSave(request, pk, project_ID):
     project_ID = request.POST.get("project_ID")
     project = Project.objects.filter(project_ID = project_ID, user_id= pk)
     if project is None:
