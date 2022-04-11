@@ -7,6 +7,7 @@ import os
 import time
 import json
 import backend.settings as settings
+import zipfile
 from django.core import serializers
 
 from django.contrib.auth.models import User
@@ -54,6 +55,14 @@ def register(request):
 
     return JsonResponse({'status': 404}, safe=False)
 
+def querysetTojson(queryset):
+    context = serializers.serialize('json', queryset)
+    context = json.loads(context)
+    List = []
+    for item in context:
+        item["fields"]["project_id"] = item['pk']
+        List.append(item['fields'])
+    return List
 
 # Back
 # 都是list {“project_ID":"1", "project_name":"name", "project_time":"time"} 表示list中的一个元素
@@ -62,17 +71,14 @@ def projectPage(request, pk):
 #               'project_detail': [{"project_ID": "1", "project_name": "name", "project_time": "time"},
 #                                  {"project_ID": "2", "project_name": "name", "project_time": "time"}]
 #               }
-    project = Users_project.objects.filter(user_id=pk)
-    project = project.values('project_id')
-    project = Project.objects.filter(project_id__in = project)
+#    project = Users_project.objects.filter(user_id=pk)
+#    project = project.values('project_id')
+#    project = Project.objects.filter(project_id__in = project)
+    user = User.objects.get(pk = pk)
+    project = Project.objects.filter(user_id=user)
+
     context = {}
-    context['project_detail'] = serializers.serialize('json', project, fields = ('project_id', 'last_save_time', 'project_name', 'is_public', 'star'))
-    context['project_detail'] = json.loads(context['project_detail'])
-    List = []
-    for item in context['project_detail']:
-        item["fields"]["project_id"] = item['pk']
-        List.append(item['fields'])
-    context['project_detail'] = List
+    context['project_detail'] = querysetTojson(project)
     context['status'] = 200
     return JsonResponse(context, safe=False)
     # return JsonResponse(context, json_dumps_params={"ensure_ascii": False})
@@ -84,22 +90,32 @@ def search(request, pk=None):
 #    context = {'project_detail': {"project_ID": "1",
 #                                  "project_name": "name", "project_time": "time"}}
     if pk is not None:
-        project = Users_project.objects.filter(user_id=pk,user_id__contains = request.POST.get("keyword"))
+        user = User.objects.get(pk = pk)
+        project = Project.objects.filter(user_id=user, project_name__contains= request.POST.get("keyword"))
     else:
-        project = Users_project.objects.filter(is_public = True, project_name__contains = request.POST.get("keyword"))
-    context = {'status': 200, "project_detail": list(project)}
+        project = Project.objects.filter(is_public = True, project_name__contains= request.POST.get("keyword"))
+
+    context = {}
+    context['project_detail'] = querysetTojson(project)
+    context['status'] = 200
     return JsonResponse(context, safe=False)
 
 
 # Front
 # POST: {"project_ID":"1"}
 # TODO: 删掉这个的地址的文件
-def deleteProject(request, pk):
-    project = Users_project.objects.get(project_id=request.POST.get("project_ID"), user_id = pk)
+def deleteProject(request, pk, pid):
+    context = {}
+    user = User.objects.get(pk = pk)
+    project = Project.objects.get(project_id=pid, user_id = user)
     if project is None:
-        context = {"isDelete": False, "error": "Invalid project"}
+        context['status'] = 500
     else:
-        context = {"isDelete": True, "error": None}
+        for item in os.listdir(project.project_directory):
+            os.remove(os.path.join(project.project_directory, item))
+        os.removedirs(project.project_directory)
+        context['status'] = 200
+    project.delete()
     return JsonResponse(context, safe=False)
 
 
@@ -109,22 +125,15 @@ def deleteProject(request, pk):
 def newProject(request, pk):
     save_path = os.path.join(settings.MEDIA_ROOT, str(pk), request.POST.get("name"))
 
-    project_list = Users_project.objects.filter(user_id=pk)
-    is_save = False
-    for item in project_list.all():
-        project_name = Project.objects.get(project_id = item.project_id).project_name
-        is_save = (project_name == request.POST.get("name"))
-        if is_save is not False:
-            break
+    user = User.objects.get(pk = pk)
+    is_save = Project.objects.filter(user_id = user, project_name = request.POST.get("name"))
 
-    project = Project.objects.create(project_name=request.POST.get("name"), project_directory=save_path, is_public=request.POST.get("is_public"), star = 0)
+    project = Project.objects.create(user_id= user, project_name=request.POST.get("name"), project_directory=save_path, is_public=request.POST.get("is_public"), star = 0)
     
-    if project is None or is_save is not False:
+    if project is None or is_save is not None:
         status = 400
     else:
         project.save()
-        userProject = Users_project.objects.create(project_id = project.project_id, user_id=pk)
-        userProject.save()
         status = 200
     return JsonResponse({'status':status}, safe=False)
 
@@ -135,29 +144,20 @@ def uploadProject(request, pk):
     file = request.FILES['file']
     if file is None:
         return JsonResponse({"status":400})
-    name = file.name
+    name = file.name[:-5]
     save_path = os.path.join(settings.MEDIA_ROOT, str(pk), "project", name)
 
-    project_list = Users_project.objects.filter(user_id=pk)
-    is_save = False
-    for item in project_list.all():
-        project_name = Project.objects.get(project_id = item.project_id).project_name
-        is_save = (project_name == name)
-        if is_save is not False:
-            break
+    user = User.objects.get(pk = pk)
 
-    project = Project.objects.create(project_name=name, project_directory=save_path, is_public=True, star = 0)
+    is_save = Project.objects.filter(user_id = user, project_name = name)
 
-    if project is None or is_save is not False:
+    project = Project.objects.create(user_id = user, project_name=name, project_directory=save_path, is_public=True, star = 0)
+
+    if project is None or is_save is not None:
         status = 400
     else:
         project.save()
-        userProject = Users_project.objects.create(project_id = project.project_id, user_id=pk)
-        userProject.save()
-        print("save")
         status = 200
-    print(is_save)
-    print(save_path)
 
     try:
         os.makedirs(save_path)
@@ -178,18 +178,23 @@ def uploadProject(request, pk):
 # TODO: 文件要先打包成zip
 def downloadProject(request, pk):
     project_ID = request.POST.get("project_ID")
-    project_path = Project.objects.only('project_directory').filter(project_id = project_ID)
+    project_path = Project.objects.only('project_directory').get(project_id = project_ID).project_directory
+
     if project_path:
         try:
-            response = StreamingHttpResponse(open(project_path, 'rb'))
+            zip_dir = project_path + '.zip'
+            zip_file = zipfile.ZipFile(zip_dir, 'w', zipfile.ZIP_DEFLATED)
+            for item in os.listdir(project_path):
+                zip_file.write(os.path.join(project_path,item))
+            zip_file.close()
+            response = StreamingHttpResponse(open(zip_dir, 'rb'))
             response["Content-type"] = "application/zip"
         except Exception as e:
-            raise Http404('Invalid file')
-        project_name = "placeholder"
-        response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_name)
+            return JsonResponse({'status':500})
+        response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
         return response
     else:
-        raise Http404("Invalid file")
+        return JsonResponse({'status':500})
 
 
 def profilePage(request, pk):
@@ -202,7 +207,6 @@ def profilePage(request, pk):
 def canvasPage(request, pk):
     project_ID = request.POST.get("project_ID")
     project_path = Project.objects.only('project_directory').filter(project_id = project_ID)
-    project_name = "placeholder"
     context = {"canvas_data": "username"}
     return JsonResponse(context, safe=False)
 
@@ -229,24 +233,28 @@ def canvasSave(request, pk):
 
 
 # Front
-# POST: {"optimizer":"xxx", "dataset":"xxx", "lr":"xxx", "t_batch_size":"xxx", "batch_size":"xxx", "epoch":"xxx", "seed"="xxx"}
+# POST: {heper: {"optimizer":"xxx", "dataset":"xxx", "lr":"xxx", "t_batch_size":"xxx", "batch_size":"xxx", "epoch":"xxx", "seed"="xxx"}}
 def trainPage(request, pk):
     project_ID = request.POST.get("project_ID")
     project_path = Project.objects.only('project_directory').filter(project_id = project_ID)
-    project_json_name = project_ID + ".json"
+    project_json_name = "hyperparameter.json"
     with open(os.path.join(project_path, project_json_name), 'r') as f:
         context = json.load(f)
     return JsonResponse(context, safe=False)
 
 
-def trainSave(request, pk):
+def trainSave(request, pk, project_ID):
     project_ID = request.POST.get("project_ID")
+    user = User.objects.get(pk = pk)
+    project = Project.objects.filter(project_ID = project_ID, user_id= user)
+    if project is None:
+        return JsonResponse({"status": 500})
     project_path = Project.objects.only('project_directory').filter(project_id = project_ID)
-    project_json_name = project_ID + ".json"
+    project_json_name = "hyperparameter.json"
     project_json = request.POST.get("project_json")
     with open(os.path.join(project_path, project_json_name), 'w') as f:
         json.dump(project_json, f)
-    context = {"isSave": True}
+    context = {"status":200}
     return JsonResponse(context, safe=False)
 
 
@@ -296,7 +304,8 @@ def templateStar(request, pk):
     project = Project.objects.get(project_id=project_ID)
     project.star += 1
     project.save()
-    userProject = Users_template(project_id=project_ID, user_id=user_ID)
+    user = User.objects.get(pk = user_ID)
+    userProject = Users_template(project_id=project_ID, user_id=user)
     userProject.save()
     context = {'isStar': True}
     return JsonResponse(context, safe=False)
