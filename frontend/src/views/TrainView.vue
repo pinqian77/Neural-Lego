@@ -216,7 +216,11 @@
                       >
                         <div class="form-group col-lg-2">
                           <label for="sel1">select optimizer:</label>
-                          <select class="form-control" id="sel1">
+                          <select
+                            class="form-control"
+                            id="sel1"
+                            v-model="config.optimizer"
+                          >
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -249,10 +253,10 @@
                           <input
                             type="file"
                             class="custom-file-input"
-                            id="customFile"
+                            id="dataset"
                             name="filename"
                           />
-                          <label class="custom-file-label" for="customFile"
+                          <label class="custom-file-label" for="dataset"
                             >Choose file</label
                           >
                         </div>
@@ -286,6 +290,7 @@
                                 class="form-control input-sm"
                                 id="ex1"
                                 type="text"
+                                v-model="config.lr"
                               />
                             </div>
                             <div class="col-lg-2">
@@ -294,6 +299,7 @@
                                 class="form-control input-sm"
                                 id="ex2"
                                 type="text"
+                                v-model="test_batch_size"
                               />
                             </div>
                             <div class="col-lg-2">
@@ -302,6 +308,7 @@
                                 class="form-control input-sm"
                                 id="ex3"
                                 type="text"
+                                v-model="batch_size"
                               />
                             </div>
                             <div class="col-lg-2">
@@ -310,6 +317,7 @@
                                 class="form-control input-sm"
                                 id="ex3"
                                 type="text"
+                                v-model="epoch"
                               />
                             </div>
                             <div class="col-lg-2">
@@ -318,6 +326,7 @@
                                 class="form-control input-sm"
                                 id="ex3"
                                 type="text"
+                                v-model="seed"
                               />
                             </div>
                           </div>
@@ -327,7 +336,11 @@
 
                     <li class="nav-item">
                       <a class="nav-link collapsed">
-                        <button type="submit" class="btn btn-primary">
+                        <button
+                          type="submit"
+                          class="btn btn-primary"
+                          @click="apply()"
+                        >
                           Apply
                         </button>
                       </a>
@@ -335,6 +348,50 @@
                     </li>
                   </ul>
                   <!-- End of Sidebar -->
+                </div>
+              </div>
+
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-xl-10 col-lg-5">
+                    <div class="card shadow mb-4">
+                      <!-- Card Header - Dropdown -->
+                      <div
+                        class="
+                          card-header
+                          py-3
+                          d-flex
+                          flex-row
+                          align-items-center
+                          justify-content-between
+                        "
+                      >
+                        <h6 class="m-0 font-weight-bold text-primary">
+                          progress
+                        </h6>
+
+                        <div class="col-xl-10 col-lg-5">
+                          <!-- progress bar -->
+                          <div class="progress">
+                            <div
+                              class="
+                                progress-bar
+                                progress-bar-striped
+                                progress-bar-animated
+                              "
+                              role="progressbar"
+                              style="width: 25%"
+                              aria-valuenow="25"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                            >
+                              25%
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -408,6 +465,71 @@
 <script>
 export default {
   name: "ConfigView",
+  data() {
+    return {
+      config: {
+        optimizer: "",
+        lr: 0.0,
+        test_batch_size: 0,
+        batch_size: 0,
+        epoch: 0,
+        seed: 0,
+      },
+    };
+  },
+
+  // mounted() {
+  //   this.getData();
+  // },
+
+  methods: {
+    getData() {
+      axios({
+        method: "get",
+        url: "/train/" + localStorage.uid + "/" + localStorage.pid + "/",
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.status == 200) {
+          this.config = res.data.optimizer;
+          this.config = res.data.lr;
+          this.config = res.data.test_batch_size;
+          this.config = res.data.batch_size;
+          this.config = res.data.epoch;
+          this.config = res.data.seed;
+        } else {
+          alert("project loading error!");
+        }
+      });
+    },
+
+    apply() {
+      var form_data = new FormData();
+      var dataset = document.getElementById("dataset").files[0];
+
+      form_data.append("dataset", dataset, dataset.name);
+      form_data.append("optimizer", this.config.optimizer);
+      form_data.append("lr", this.config.lr);
+      form_data.append("test_batch_size", this.config.test_batch_size);
+      form_data.append("batch_size", this.config.batch_size);
+      form_data.append("epoch", this.config.epoch);
+      form_data.append("seed", this.config.seed);
+
+      axios({
+        method: "post",
+        url: "/train/apply/" + localStorage.uid + "/" + localStorage.pid + "/",
+        data: form_data,
+        headers: { "Content-Type": "multipart/form-data" },
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.status == "200") {
+          console.log("apply ok!");
+          this.getData();
+        } else {
+          alert.log("apply fail!");
+        }
+      });
+    },
+  },
 };
 </script>
 
