@@ -204,12 +204,6 @@
                 ></div>
               </div>
 
-              <button class="btn btn-primary" type="submit" @click="save()">
-                Save
-              </button>
-              <button class="btn btn-primary" type="submit" @click="load()">
-                Load
-              </button>
               <button class="btn btn-primary" type="submit" @click="layout()">
                 Layout
               </button>
@@ -225,20 +219,22 @@
                 <button
                   type="submit"
                   class="btn btn-primary"
-                  @click="compile($event)"
+                  @click="compile()"
                 >
                   Compile
                 </button>
               </form>
 
-              <a href="#"><button class="btn btn-primary">Train</button></a>
+              <button class="btn btn-primary" @click="enterTrain()">
+                Train
+              </button>
               <br />
-              <textarea id="mySavedModel" style="width: 100%; height: 300px">
-{ "class": "GraphLinksModel", 
-"nodeDataArray": [ {"category":"Data", "key":-1, "loc":"-70.5 -90.19999980926514"} ], 
-"linkDataArray": []}
-  </textarea
+              <textarea
+                id="mySavedModel"
+                style="width: 100%; height: 300px"
+                v-model="canvasData.file"
               >
+              </textarea>
             </div>
           </div>
         </div>
@@ -299,10 +295,63 @@ export default {
   data() {
     return {
       canvasData: {
-        file: {},
+        file: {
+          class: "GraphLinksModel",
+          nodeDataArray: [
+            {
+              category: "Data",
+              key: -1,
+              loc: "42.22500681322674 47.35735117835321",
+            },
+            {
+              category: "End",
+              key: -4,
+              loc: "567.1497069414404 47.35735117835318",
+            },
+            {
+              category: "ReLU",
+              key: -2,
+              loc: "403.0334278716728 47.357351178353184",
+            },
+            {
+              category: "FC",
+              reasonsList: [{ text1: "512", text3: "128" }],
+              key: -3,
+              loc: "216.57893005138874 47.357351178353184",
+            },
+          ],
+          linkDataArray: [
+            {
+              from: -3,
+              to: -2,
+              points: [
+                278.70784647632394, 47.35735117835319, 318.70784647632394,
+                47.35735117835319, 338.707846476324, 47.3573511783532,
+                348.707846476324, 47.3573511783532,
+              ],
+            },
+            {
+              from: -2,
+              to: -4,
+              points: [
+                457.3590092670217, 47.3573511783532, 497.3590092670217,
+                47.3573511783532, 517.3590092670217, 47.35735117835319,
+                527.3590092670217, 47.35735117835319,
+              ],
+            },
+            {
+              from: -1,
+              to: -3,
+              points: [
+                84.4500136264535, 47.3573511783532, 94.4500136264535,
+                47.3573511783532, 104.45001362645351, 47.35735117835319,
+                154.4500136264535, 47.35735117835319,
+              ],
+            },
+          ],
+        },
         code: {},
       },
-      input: "python import numpy as np",
     };
   },
   mounted() {
@@ -942,31 +991,81 @@ export default {
   },
 
   methods: {
-    layout() {
-      myDiagram.layoutDiagram(true);
+    // Every time request /canvas/, use this method
+    getData() {
+      axios({
+        method: "get",
+        url: "/canvas/" + localStorage.uid + "/" + localStorage.pid + "/",
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.status == 200) {
+          this.canvas_data.file = res.data.canvas_detail.file;
+          this.canvas_data.code = res.data.canvas_detail.code;
+
+          // render canvas and code
+          // this.renderJson();
+          // this.renderCode();
+        } else {
+          alert("canvas loading error!");
+        }
+      });
     },
-    save() {
+
+    // Update json first, then send to backend and get python code
+    compile(event) {
+      // Update json
+      this.updateJson();
+
+      // send json to backend
+      event.preventDefault();
+      this.canvasData.file = myDiagram.model.toJson();
+
+      console.log(this.canvasData.file);
+
+      let formData = new FormData();
+      formData.append("file", this.canvasData.file);
+      axios({
+        method: "post",
+        url: "/canvas/compile/",
+        data: formData,
+      }).then((res) => {
+        console.log(res.data);
+        // If compile successful 200, backend update database, frontend get data and reload
+        if (res.data.status == "200") {
+          console.log("compile ok!");
+          this.getData();
+        }
+        // If complie fails 500, frontend alert error
+        else if (res.data.status == "500") {
+          alert("The network model is not valid!");
+        }
+      });
+    },
+
+    // Update Json accroding to user's operation
+    updateJson() {
       document.getElementById("mySavedModel").value = myDiagram.model.toJson();
       myDiagram.isModified = false;
     },
-    load() {
+
+    // Render Json on the canvas area
+    renderJson() {
       myDiagram.model = go.Model.fromJson(
         document.getElementById("mySavedModel").value
       );
     },
-    compile(event) {
-      event.preventDefault();
-      this.canvasData.file = myDiagram.model.toJson();
-      console.log(myDiagram.model.toJson());
-      console.log(this.canvasData.file);
 
-      axios({
-        method: "post",
-        url: "/canvas/",
-        data: {
-          file: this.canvasData.file,
-        },
-      });
+    // Render .py on the code area
+    renderCode() {},
+
+    // To make canvas tidy
+    layout() {
+      myDiagram.layoutDiagram(true);
+    },
+
+    // Go to train page
+    enterTrain() {
+      location.replace("/train/");
     },
   },
 };

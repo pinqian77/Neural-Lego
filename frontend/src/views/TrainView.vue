@@ -1,72 +1,4 @@
 <template>
-  <!-- <body>
-    <div id="title">
-      Neural LEGO
-      <input id="btn1" type="button" value="open" onClick="location.href='#'" />
-      <input
-        id="btn2"
-        type="button"
-        value="new project"
-        onClick="location.href='#'"
-      />
-    </div>
-    <div id="setting">
-      <div class="text">Settings</div>
-      <div class="form">
-        <form style="align-self: center">
-          <label for="optimizer">optimizer</label> <br />
-          <select id="optimizer" name="optimizer">
-            <option value="Adam">Adam</option></select
-          ><br />
-
-          <label for="dataset">dataset</label> <br />
-          <select id="dataset" name="dataset">
-            <option value="iris">iris</option></select
-          ><br />
-
-          <label for="label">label</label> <br />
-          <select id="label" name="label">
-            <option value="variety">variety</option>
-          </select>
-          <br />
-
-          <p style="align-self: center">hyperparameters</p>
-          <label for="LR">Learing rate=</label>
-          <input type="text" id="LR" name="LR" placeholder="" /><br />
-
-          <label for="TBS">Test batch size=</label>
-          <input type="text" id="TBS" name="TBS" placeholder="" /><br />
-
-          <label for="BS">batch size=</label>
-          <input type="text" id="BS" name="BS" placeholder="" /><br />
-
-          <label for="epoch">epoch=</label>
-          <input type="text" id="epoch" name="epoch" placeholder="" /><br />
-
-          <label for="seed">seed=</label>
-          <input type="text" id="seed" name="seed" placeholder="" /><br />
-
-          <input type="submit" value="Apply" align="center" />
-        </form>
-      </div>
-    </div>
-    <div style="display: inline-block">
-      <div id="graph">
-        <p style="margin: -30px">
-          <span id="CA">Curve Accuracy</span><span id="ROC">ROC Curve</span>
-        </p>
-        <div class="curve">
-          <img src="img1.png" />
-        </div>
-        <div class="curve">
-          <img src="img2.png" />
-        </div>
-      </div>
-
-      <div id="progress"></div>
-    </div>
-  </body> -->
-
   <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -470,7 +402,6 @@
       <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
-
   </body>
 </template>
 

@@ -469,25 +469,8 @@ export default {
     },
 
     enterCanvas(proj) {
-      console.log("Enter id: " + proj.project_id);
-
-      let formData = new FormData();
-      formData.append("project_id", proj.project_id);
-
-      axios({
-        method: "post",
-        url: "/canvas/" + localStorage.uid + "/" + proj.project_id + "/",
-        data: formData,
-      }).then((res) => {
-        console.log(res.data);
-        if (res.data.status == "200") {
-          this.proj_data = res.data.project_datail;
-          this.getData();
-          location.replace("/canvas/");
-        } else if (res.data.status == "500") {
-          console.log("Something wrong...");
-        }
-      });
+      localStorage.pid = proj.project_id;
+      location.replace("/canvas/");
     },
   },
 };
