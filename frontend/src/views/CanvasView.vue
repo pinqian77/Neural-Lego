@@ -239,7 +239,7 @@
               <br />
 
               <textarea id="mySavedModel" style="width: 100%; height: 300px">
-                {{ canvasData.file }}
+              {{ canvasData.file }}
               </textarea>
             </div>
           </div>
@@ -1021,6 +1021,10 @@ export default {
           alert("canvas loading error!");
         }
       });
+    },
+
+    getJson2Str() {
+      this.canvasData.file = JSON.stringify(this.canvasData.file);
     },
 
     // Update json first, then send to backend and get python code

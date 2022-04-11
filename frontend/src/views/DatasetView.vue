@@ -30,14 +30,14 @@
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="/project">
             <i class="fas fa-fw fa-folder"></i>
             <span>Project</span></a
           >
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="/dataset">
             <i class="fas fa-fw fa-folder"></i>
             <span>Dataset</span></a
@@ -135,25 +135,14 @@
                 </div>
               </div>
             </form>
-
             <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <button
-                  class="btn btn-primary"
-                  type="button"
-                  @click="showModal()"
-                >
-                  New
-                </button>
-              </li>
-              &ensp;
               <li class="nav-item">
                 <button
                   class="btn btn-primary"
                   type="file"
                   @click="openProject()"
                 >
-                  Open
+                  Upload
                 </button>
 
                 <input
@@ -174,7 +163,7 @@
             <!-- Project Card Example -->
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Datasets</h6>
               </div>
               <div class="card-body">
                 <div class="table-responsive-lg">
@@ -188,31 +177,23 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="proj in proj_data" :key="proj.project_ID">
-                        <th scope="col">{{ proj.project_ID }}</th>
+                      <tr v-for="ds in dataset_data" :key="ds.dataset_ID">
+                        <th scope="col">{{ ds.dataset_ID }}</th>
                         <td>
-                          <button
-                            type="button"
-                            class="btn btn-link"
-                            @click="enterCanvas(proj)"
-                          >
-                            {{ proj.project_name }}
+                          <button type="button" class="btn btn-link" disabled>
+                            {{ ds.dataset_name }}
                           </button>
                         </td>
 
                         <td>
                           <button type="button" class="btn btn-link" disabled>
-                            {{ proj.last_save_time }}
+                            {{ ds.last_save_time }}
                           </button>
                         </td>
                         <td>
-                          <button
-                            class="btn btn-warning"
-                            @click="enterCanvas(proj)"
-                          >
-                            Edit</button
+                          <button class="btn btn-warning" disabled>Edit</button
                           >&ensp;
-                          <button class="btn btn-danger" @click="remove(proj)">
+                          <button class="btn btn-danger" @click="remove(ds)">
                             Delete
                           </button>
                         </td>
@@ -270,70 +251,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Modal -->
-    <div class="modal-container" v-show="isModalVisible">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">New project</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              @click="closeModal()"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <!-- create -->
-          <form>
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="name">Project Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter project name.."
-                  v-model="new_proj.name"
-                />
-              </div>
-
-              <div class="form-check">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="share-to-public"
-                  v-model="new_proj.is_public"
-                />
-                <label class="form-check-label" for="exampleCheck1"
-                  >Share to public?</label
-                >
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-                @click="closeModal()"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                @click="newProject()"
-              >
-                Create
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -341,16 +258,16 @@
 import axios from "axios";
 
 export default {
-  name: "ProjectView",
+  name: "DatasetView",
   data() {
     return {
-      new_proj: {
+      new_dataset: {
         name: "",
         is_public: "",
       },
-      page_name: "project_page",
+      page_name: "dataset_page",
       search_keyword: "",
-      proj_data: {},
+      dataset_data: {},
       isModalVisible: false,
     };
   },
@@ -362,44 +279,13 @@ export default {
     getData() {
       axios({
         method: "get",
-        url: "/project/" + localStorage.uid + "/",
+        url: "/dataset/" + localStorage.uid + "/",
       }).then((res) => {
         console.log(res.data);
         if (res.data.status == 200) {
-          this.proj_data = res.data.project_detail;
-          console.log(res.data.project_detail);
-          console.log(this.proj_data);
+          this.dataset_data = res.data.dataset_detail;
         } else {
-          alert("project loading error!");
-        }
-      });
-    },
-
-    showModal() {
-      this.isModalVisible = true;
-    },
-
-    closeModal() {
-      this.isModalVisible = false;
-    },
-
-    newProject() {
-      let formData = new FormData();
-      formData.append("name", this.new_proj.name);
-      formData.append("is_public", this.new_proj.is_public);
-
-      axios({
-        method: "post",
-        url: "/project/create/" + localStorage.uid + "/",
-        data: formData,
-      }).then((res) => {
-        console.log(res.data);
-        if (res.data.status == "200") {
-          console.log("create ok!");
-          this.getData();
-          location.replace("/project/");
-        } else {
-          console.log("create fail!");
+          alert("dataset loading error!");
         }
       });
     },
@@ -415,7 +301,7 @@ export default {
 
       axios({
         method: "post",
-        url: "/project/upload/" + localStorage.uid + "/",
+        url: "/dataset/upload/" + localStorage.uid + "/",
         data: form_data,
         headers: { "Content-Type": "multipart/form-data" },
       }).then((res) => {
@@ -423,10 +309,10 @@ export default {
         if (res.data.status == "200") {
           console.log("upload ok!");
           this.getData();
-          location.replace("/project/");
+          location.replace("/dataset/");
         } else {
           alert.log("upload fail!");
-          location.replace("/project/");
+          location.replace("/dataset/");
         }
       });
     },
@@ -438,14 +324,14 @@ export default {
 
       axios({
         method: "post",
-        url: "/project/search/" + localStorage.uid + "/",
+        url: "/dataset/search/" + localStorage.uid + "/",
         data: formData,
       }).then((res) => {
         console.log(res.data);
         if (res.data.status == "200") {
-          this.proj_data = res.data.project_datail;
+          this.dataset_data = res.data.dataset_datail;
           this.getData();
-          location.replace("/project/");
+          location.replace("/dataset/");
         } else if (res.data.status == "500") {
           console.log("Something wrong...");
         }
@@ -453,31 +339,24 @@ export default {
     },
 
     remove(proj) {
-      console.log("Remove id:" + proj.project_id);
-
       let formData = new FormData();
-      formData.append("project_id", proj.project_id);
+      formData.append("dataset_id", proj.dataset_id);
 
       axios({
         method: "post",
         url:
-          "/project/remove/" + localStorage.uid + "/" + proj.project_id + "/",
+          "/dataset/remove/" + localStorage.uid + "/" + proj.dataset_id + "/",
         data: formData,
       }).then((res) => {
         console.log(res.data);
         if (res.data.status == "200") {
-          this.proj_data = res.data.project_datail;
+          this.dataset_data = res.data.dataset_datail;
           this.getData();
-          location.replace("/project/");
+          location.replace("/dataset/");
         } else if (res.data.status == "500") {
           console.log("Something wrong...");
         }
       });
-    },
-
-    enterCanvas(proj) {
-      localStorage.pid = proj.project_id;
-      location.replace("/canvas/");
     },
   },
 };
