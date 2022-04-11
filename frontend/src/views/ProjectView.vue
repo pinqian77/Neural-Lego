@@ -396,10 +396,10 @@ export default {
         console.log(res.data);
         if (res.data.status == "200") {
           console.log("create ok!");
-          this.getData();
           location.replace("/project/");
-        } else {
-          console.log("create fail!");
+        } else if (res.data.status == "500") {
+          console.log("create error");
+          location.replace("/project/");
         }
       });
     },
@@ -466,7 +466,7 @@ export default {
         console.log(res.data);
         if (res.data.status == "200") {
           this.proj_data = res.data.project_datail;
-          this.getData();
+          // this.getData();
           location.replace("/project/");
         } else if (res.data.status == "500") {
           console.log("Something wrong...");

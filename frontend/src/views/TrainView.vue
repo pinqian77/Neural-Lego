@@ -302,7 +302,7 @@
                                 class="form-control input-sm"
                                 id="ex2"
                                 type="text"
-                                v-model="test_batch_size"
+                                v-model="config.test_batch_size"
                               />
                             </div>
                             <div class="col-lg-2">
@@ -311,7 +311,7 @@
                                 class="form-control input-sm"
                                 id="ex3"
                                 type="text"
-                                v-model="batch_size"
+                                v-model="config.batch_size"
                               />
                             </div>
                             <div class="col-lg-2">
@@ -320,7 +320,7 @@
                                 class="form-control input-sm"
                                 id="ex3"
                                 type="text"
-                                v-model="epoch"
+                                v-model="config.epoch"
                               />
                             </div>
                             <div class="col-lg-2">
@@ -329,7 +329,7 @@
                                 class="form-control input-sm"
                                 id="ex3"
                                 type="text"
-                                v-model="seed"
+                                v-model="config.seed"
                               />
                             </div>
                           </div>
@@ -466,6 +466,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "ConfigView",
   data() {
@@ -473,23 +475,28 @@ export default {
       config: {
         dataset: "",
         optimizer: "",
-        lr: 0.0,
+        lr: 0,
         test_batch_size: 0,
         batch_size: 0,
         epoch: 0,
         seed: 0,
       },
+
       dataset_data: {},
+
+      train_status_data: {
+        finished_epoch: 0,
+        roc: "",
+        acc: "",
+      },
+
+      timer: "",
     };
   },
 
-  // mounted() {
-  //   this.getData();
-  // },
-
   methods: {
     getData() {
-      getDatasetName();
+      this.getDatasetName();
 
       axios({
         method: "get",
@@ -525,11 +532,7 @@ export default {
 
     apply() {
       var form_data = new FormData();
-      var dataset = document.getElementById("dataset").files[0];
-
-      form_data.append("dataset", dataset, dataset.name);
       form_data.append("config", this.config);
-
       axios({
         method: "post",
         url: "/train/apply/" + localStorage.uid + "/" + localStorage.pid + "/",
@@ -545,6 +548,47 @@ export default {
         }
       });
     },
+
+    getTrainStatus() {
+      axios({
+        method: "get",
+        url: "/train/status" + localStorage.uid + "/" + localStorage.pid + "/",
+      }).then((res) => {
+        if (res.data.status == 200) {
+          this.train_status_data.finished_epoch =
+            res.data.train_staus.finished_epoch;
+          this.train_status_data.roc = res.data.train_staus.roc;
+          this.train_status_data.acc = res.data.train_staus.acc;
+        } else {
+          alert("train error!");
+        }
+      });
+    },
+
+    run() {
+      var form_data = new FormData();
+      form_data.append("config", "run");
+      axios({
+        method: "post",
+        url: "/train/apply/" + localStorage.uid + "/" + localStorage.pid + "/",
+        data: form_data,
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.status == "200") {
+          this.timer = setInterval(this.getTrainStatus(), 1000);
+        } else {
+          alert.log("apply fail!");
+        }
+      });
+    },
+  },
+
+  mounted() {
+    this.getData();
+  },
+
+  beforeDestroy() {
+    clearTimeout(this.timer);
   },
 };
 </script>
