@@ -503,7 +503,7 @@ export default {
         url: "/train/" + localStorage.uid + "/" + localStorage.pid + "/",
       }).then((res) => {
         console.log(res.data);
-        if (res.data.status == 200) {
+        if (res.data.status == "200") {
           this.config.optimizer = res.data.optimizer;
           this.config.lr = res.data.lr;
           this.config.test_batch_size = res.data.test_batch_size;
@@ -511,8 +511,10 @@ export default {
           this.config.epoch = res.data.epoch;
           this.config.seed = res.data.seed;
           this.config.dataset = res.data.dataset_name;
+        } else if (res.data.status == "204") {
+          console.log("no config now");
         } else {
-          alert("project loading error!");
+          alert("config loading error!");
         }
       });
     },
@@ -522,7 +524,7 @@ export default {
         method: "get",
         url: "/dataset/" + localStorage.uid + "/",
       }).then((res) => {
-        if (res.data.status == 200) {
+        if (res.data.status == "200") {
           this.dataset_data = res.data.dataset_detail;
         } else {
           alert("dataset loading error!");
@@ -532,7 +534,7 @@ export default {
 
     apply() {
       var form_data = new FormData();
-      form_data.append("config", this.config);
+      form_data.append("config", JSON.stringify(this.config));
       axios({
         method: "post",
         url: "/train/apply/" + localStorage.uid + "/" + localStorage.pid + "/",
