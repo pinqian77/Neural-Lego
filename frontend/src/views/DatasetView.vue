@@ -177,8 +177,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="ds in dataset_data" :key="ds.dataset_ID">
-                        <th scope="col">{{ ds.dataset_ID }}</th>
+                      <tr v-for="ds in dataset_data" :key="ds.id">
+                        <th scope="col">{{ ds.id }}</th>
                         <td>
                           <button type="button" class="btn btn-link" disabled>
                             {{ ds.dataset_name }}
@@ -187,7 +187,7 @@
 
                         <td>
                           <button type="button" class="btn btn-link" disabled>
-                            {{ ds.last_save_time }}
+                            {{ ds.upload_time }}
                           </button>
                         </td>
                         <td>
@@ -261,10 +261,6 @@ export default {
   name: "DatasetView",
   data() {
     return {
-      new_dataset: {
-        name: "",
-        is_public: "",
-      },
       page_name: "dataset_page",
       search_keyword: "",
       dataset_data: {},
@@ -340,12 +336,11 @@ export default {
 
     remove(proj) {
       let formData = new FormData();
-      formData.append("dataset_id", proj.dataset_id);
+      formData.append("dataset_id", proj.id);
 
       axios({
         method: "post",
-        url:
-          "/dataset/remove/" + localStorage.uid + "/" + proj.dataset_id + "/",
+        url: "/dataset/remove/" + localStorage.uid + "/" + proj.id + "/",
         data: formData,
       }).then((res) => {
         console.log(res.data);

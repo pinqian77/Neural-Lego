@@ -3,6 +3,10 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import axios from "axios";
+
+// import "../../new_pages/vendor/jquery/jquery.min.js";
+// import "../../new_pages/vendor/jquery/bootstrap.bundle.min.js";
+
 // import VueHighlightJS from "vue-highlightjs";
 
 const app = createApp(App);
