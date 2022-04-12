@@ -565,11 +565,14 @@ if __name__ == '__main__':
         responseType: "stream",
       }).then((res) => {
         console.log(res.data);
+        // not first time
         if (res.data.status == 200) {
           this.canvas_data.file = res.data;
           this.renderJson();
-        } else if (res.data.status == 204) {
-          this.compile();
+        }
+        // first time
+        else if (res.data.status == 204) {
+          this.getPython();
         } else {
           alert("can not get user's json!");
         }
@@ -625,6 +628,7 @@ if __name__ == '__main__':
     // Update json first, then send to backend and get python code
     compile() {
       // Update json
+      this.renderJson();
       this.updateJson();
 
       // send json to backend
