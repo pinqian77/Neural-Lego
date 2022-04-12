@@ -677,6 +677,7 @@ if __name__ == '__main__':
   },
 
   mounted() {
+    this.getData();
     this.canvasData.file = JSON.stringify(this.canvasData.file);
     const $ = go.GraphObject.make; // for conciseness in defining templates
 
