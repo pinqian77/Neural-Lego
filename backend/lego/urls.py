@@ -36,4 +36,5 @@ urlpatterns = [
 
     path('canvas/getPython/<int:pk>/<int:pid>/', views.canvasPython),
     path('canvas/getJson/<int:pk>/<int:pid>/', views.canvasJson),
+    path('canvas/compile/<int:pk>/<int:pid>/', views.canvasSave),
 ]

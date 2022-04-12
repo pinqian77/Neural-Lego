@@ -225,7 +225,7 @@ def profilePage(request, pk):
 def canvasPython(request, pk, pid):
     project_ID = pid
     project_path = Project.objects.only('project_directory').get(project_id = project_ID).project_directory
-    model(project_path=project_path, pid=project_ID)
+    model(project_path=project_path, pid=str(project_ID))
     python_path = os.path.join(project_path, str(project_ID)+".py")
     if python_path:
         try:
@@ -242,10 +242,8 @@ def canvasJson(request, pk, pid):
     project_ID = pid
     project_path = Project.objects.only('project_directory').get(project_id = project_ID).project_directory
     json_path = os.path.join(project_path, str(project_ID)+".json")
-    print(json_path)
     if json_path:
         try:
-            print("hhhhhh")
             response = StreamingHttpResponse(open(json_path, 'rb'))
             response["Content-type"] = "application/json"
         except Exception as e:
@@ -257,18 +255,16 @@ def canvasJson(request, pk, pid):
 
 # TODO 检查文件合法
 def canvasSave(request, pk, pid):
+    
     if request.method == "POST":
-        file = request.FILES['file']
 
-        if not file:
-            return HttpResponse("file not find")
-
+        file = request.POST.get("file")
+        file = json.loads(file)
         save_path = Project.objects.get(project_id=pid).project_directory
-        file_path = os.path.join(save_path, pid + ".json")
+        file_path = os.path.join(save_path, str(pid) + ".json")
         # save file
         with open(file_path, 'wb+') as fp:
-            for chunk in file.chunks():
-                fp.write(chunk)
+            json.dumps(file)
 
     return JsonResponse({"status":200}, safe=False)
 
@@ -298,7 +294,7 @@ def trainSave(request, pk, pid):
     project_json = json.loads(project_json)
     with open(os.path.join(project_path, project_json_name), 'w') as f:
         json.dump(project_json, f)
-    main(project_path= project_path, pid= project_ID)
+    main(project_path= project_path, pid= str(project_ID))
     context = {"status":200}
     return JsonResponse(context, safe=False)
 
@@ -317,10 +313,13 @@ def trainEpoch(request, pk, pid):
 
 def trainROC(request, pk):
     context = {"isRun": True}
+    project_path = Project.objects.get(project_id = pid).project_directory
+    file_path = os.path.join(project_path, "")
     return JsonResponse(context, safe=False)
 
 def trainACC(request, pk):
     context = {"isRun": True}
+    project_path = Project.objects.get(project_id = pid).project_directory
     return JsonResponse(context, safe=False)
 
 # Front
