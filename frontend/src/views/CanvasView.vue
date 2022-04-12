@@ -568,6 +568,8 @@ if __name__ == '__main__':
         if (res.data.status == 200) {
           this.canvas_data.file = res.data;
           this.renderJson();
+        } else if (res.data.status == 204) {
+          this.compile();
         } else {
           alert("can not get user's json!");
         }
