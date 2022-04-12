@@ -9,7 +9,7 @@ import json
 import backend.settings as settings
 import zipfile
 from django.core import serializers
-from util.utils import main, model
+from util.utils import main, model, cmd
 
 from django.contrib.auth.models import User
 from lego.models import Comment, Data, Project, Users_data, Users_project, Users_template
@@ -194,8 +194,8 @@ def uploadProject(request, pk):
 # Front
 # POST: {"project_ID":"xxx"}
 # TODO: 文件要先打包成zip
-def downloadProject(request, pk):
-    project_ID = request.POST.get("project_ID")
+def downloadProject(request, pk, pid):
+    project_ID = pid
     project_path = Project.objects.only('project_directory').get(project_id = project_ID).project_directory
 
     if project_path:
@@ -222,36 +222,36 @@ def profilePage(request, pk):
 
 # Front
 # POST: {"canvas_data":"xxx"}
-def canvasPython(request, pk):
-    project_ID = request.POST.get("project_ID")
-    project_path = Project.objects.only('project_directory').get(project_id = project_ID)
+def canvasPython(request, pk, pid):
+    project_ID = pid
+    project_path = Project.objects.only('project_directory').get(project_id = project_ID).project_directory
     model(project_path=project_path, pid=project_ID)
-    python_path = os.path.join(project_path, project_ID+".py")
+    python_path = os.path.join(project_path, str(project_ID)+".py")
     if python_path:
         try:
             response = StreamingHttpResponse(open(python_path, 'rb'))
-            response["Content-type"] = "application/py"
+            response["Content-type"] = "application/stream"
         except Exception as e:
             return JsonResponse({'status':500})
 
         response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
         return response
-    return JsonResponse({'status':500})
+    return JsonResponse({'status':204})
 
-def canvasJson(request, pk):
-    project_ID = request.POST.get("project_ID")
-    project_path = Project.objects.only('project_directory').get(project_id = project_ID)
-    python_path = os.path.join(project_path, project_ID+".json")
-    if python_path:
+def canvasJson(request, pk, pid):
+    project_ID = pid
+    project_path = Project.objects.only('project_directory').get(project_id = project_ID).project_directory
+    json_path = os.path.join(project_path, str(project_ID)+".json")
+    if json_path:
         try:
-            response = StreamingHttpResponse(open(python_path, 'rb'))
-            response["Content-type"] = "application/py"
+            response = StreamingHttpResponse(open(json_path, 'rb'))
+            response["Content-type"] = "application/json"
         except Exception as e:
             return JsonResponse({'status':500})
 
         response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
         return response
-    return JsonResponse({'status':500})
+    return JsonResponse({'status':204})
 
 # TODO 检查文件合法
 def canvasSave(request, pk, pid):
@@ -300,12 +300,17 @@ def trainSave(request, pk, pid):
     context = {"status":200}
     return JsonResponse(context, safe=False)
 
-def trainRun(request, pk):
+def trainRun(request, pk, pid):
     context = {"isRun": True}
+    project_path = Project.objects.get(project_id = pid).project_directory
+    cmd("python "+os.path.join(project_path, str(pk)+".py"))
     return JsonResponse(context, safe=False)
 
-def trainEpoch(request, pk):
-    context = {"isRun": True}
+def trainEpoch(request, pk, pid):
+    project_path = Project.objects.get(project_id = pid).project_directory
+    with open(os.path.join(project_path,"epoch"), "r") as f:
+        epoch = f.read()
+    context = {"epoch:", epoch}
     return JsonResponse(context, safe=False)
 
 def trainROC(request, pk):
