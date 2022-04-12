@@ -540,23 +540,6 @@ if __name__ == '__main__':
       return highlight(code, languages.js); // languages.<insert language> to return html with markup
     },
 
-    // Every time request /canvas/, use this method
-    // getData() {
-    //   axios({
-    //     method: "get",
-    //     url: "/canvas/" + localStorage.uid + "/" + localStorage.pid + "/",
-    //   }).then((res) => {
-    //     console.log(res.data);
-    //     if (res.data.status == 200) {
-    //       // render canvas and code
-    //       this.renderJson();
-    //       this.renderCode();
-    //     } else {
-    //       alert("canvas loading error!");
-    //     }
-    //   });
-    // },
-
     getJson() {
       axios({
         method: "get",
@@ -627,7 +610,7 @@ if __name__ == '__main__':
     // Update json first, then send to backend and get python code
     compile() {
       // Update json
-      // this.getJson();
+      this.getJson();
       // console.log(this.canvasData.file);
       // this.renderJson();
       // console.log(this.canvasData.file);
@@ -648,6 +631,7 @@ if __name__ == '__main__':
         console.log(res.data);
         // If compile successful 200, backend update database, frontend get data and reload
         if (res.data.status == "200") {
+          this.getPython();
           console.log("compile ok!");
         }
         // If complie fails 500, frontend alert error
