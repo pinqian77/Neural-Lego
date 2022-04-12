@@ -312,15 +312,26 @@ def trainEpoch(request, pk, pid):
     return JsonResponse(context, safe=False)
 
 def trainROC(request, pk):
-    context = {"isRun": True}
     project_path = Project.objects.get(project_id = pid).project_directory
-    file_path = os.path.join(project_path, "")
-    return JsonResponse(context, safe=False)
+    file_path = os.path.join(project_path, "auc.png")
+    try:
+        response = StreamingHttpResponse(open(file_path, 'rb'))
+        response["Content-type"] = "application/png"
+    except Exception as e:
+        return JsonResponse({'status':500})
+    response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
+    return response
 
 def trainACC(request, pk):
-    context = {"isRun": True}
     project_path = Project.objects.get(project_id = pid).project_directory
-    return JsonResponse(context, safe=False)
+    file_path = os.path.join(project_path, "acc.png")
+    try:
+        response = StreamingHttpResponse(open(file_path, 'rb'))
+        response["Content-type"] = "application/png"
+    except Exception as e:
+        return JsonResponse({'status':500})
+    response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
+    return response
 
 # Front
 # POST: 还不是很清楚
