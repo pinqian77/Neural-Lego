@@ -232,7 +232,7 @@ def canvasPython(request, pk, pid):
             response = StreamingHttpResponse(open(python_path, 'rb'))
             response["Content-type"] = "application/stream"
         except Exception as e:
-            return JsonResponse({'status':500})
+            return JsonResponse({'status':204})
 
         response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
         return response
@@ -242,12 +242,14 @@ def canvasJson(request, pk, pid):
     project_ID = pid
     project_path = Project.objects.only('project_directory').get(project_id = project_ID).project_directory
     json_path = os.path.join(project_path, str(project_ID)+".json")
+    print(json_path)
     if json_path:
         try:
+            print("hhhhhh")
             response = StreamingHttpResponse(open(json_path, 'rb'))
             response["Content-type"] = "application/json"
         except Exception as e:
-            return JsonResponse({'status':500})
+            return JsonResponse({'status':204})
 
         response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
         return response

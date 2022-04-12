@@ -155,7 +155,7 @@ def main(project_path, data_path, pid):
         plt.ylabel('True Positive Rate')
         plt.title('Receiver operating characteristic example')
         plt.legend(loc="lower right")
-        plt.show()
+        plt.savefig(path)
     
     def writeLossAcc(loss, acc, path):
         plt.subplot(1, 2, 1)
@@ -167,7 +167,7 @@ def main(project_path, data_path, pid):
         plt.plot(loss, label = "Training Loss")
         plt.title("Loss")
         plt.legend()
-        plt.show()
+        plt.savefig(path)
     
     
     def eval_test(model, device, test_loader):
@@ -188,7 +188,7 @@ def main(project_path, data_path, pid):
                 target_list.append(target)
                 pred_list.append(pred)
 
-        writeAuc(target_list, pred_list, %s+"/auc.py")
+        writeAuc(target_list, pred_list, %s+"/auc.png")
         test_loss /= len(test_loader.dataset)
         test_accuracy = correct / len(test_loader.dataset)
         return test_loss, test_accuracy
