@@ -684,11 +684,11 @@ if __name__ == '__main__':
   },
 
   mounted() {
-    // this.getJson();
+    this.getJson();
+    // this.updateJson();
     this.canvasData.file = JSON.stringify(this.canvasData.file);
-    this.updateJson();
-    const $ = go.GraphObject.make; // for conciseness in defining templates
 
+    const $ = go.GraphObject.make; // for conciseness in defining templates
     var yellowgrad = $(go.Brush, "Linear", {
       0: "#bde0fe",
       1: "#bde0fe",
