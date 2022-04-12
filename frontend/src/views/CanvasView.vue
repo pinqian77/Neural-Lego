@@ -541,21 +541,21 @@ if __name__ == '__main__':
     },
 
     // Every time request /canvas/, use this method
-    getData() {
-      axios({
-        method: "get",
-        url: "/canvas/" + localStorage.uid + "/" + localStorage.pid + "/",
-      }).then((res) => {
-        console.log(res.data);
-        if (res.data.status == 200) {
-          // render canvas and code
-          this.renderJson();
-          this.renderCode();
-        } else {
-          alert("canvas loading error!");
-        }
-      });
-    },
+    // getData() {
+    //   axios({
+    //     method: "get",
+    //     url: "/canvas/" + localStorage.uid + "/" + localStorage.pid + "/",
+    //   }).then((res) => {
+    //     console.log(res.data);
+    //     if (res.data.status == 200) {
+    //       // render canvas and code
+    //       this.renderJson();
+    //       this.renderCode();
+    //     } else {
+    //       alert("canvas loading error!");
+    //     }
+    //   });
+    // },
 
     getJson() {
       axios({
@@ -567,6 +567,7 @@ if __name__ == '__main__':
         console.log(res.data);
         if (res.data.status == 200) {
           this.canvas_data.file = res.data;
+          this.renderJson();
         } else {
           alert("can not get user's json!");
         }
@@ -677,7 +678,8 @@ if __name__ == '__main__':
   },
 
   mounted() {
-    this.getData();
+    this.getJson();
+    this.getJson();
     this.canvasData.file = JSON.stringify(this.canvasData.file);
     const $ = go.GraphObject.make; // for conciseness in defining templates
 
