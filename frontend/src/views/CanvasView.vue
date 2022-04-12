@@ -572,7 +572,6 @@ if __name__ == '__main__':
         }
         // first time
         else if (res.data.status == 204) {
-          this.getPython();
         } else {
           alert("can not get user's json!");
         }
@@ -628,11 +627,15 @@ if __name__ == '__main__':
     // Update json first, then send to backend and get python code
     compile() {
       // Update json
-      this.renderJson();
-      this.updateJson();
+      // this.getJson();
+      // console.log(this.canvasData.file);
+      // this.renderJson();
+      // console.log(this.canvasData.file);
+      // this.updateJson();
+      // console.log(this.canvasData.file);
 
       // send json to backend
-      this.canvasData.file = myDiagram.model.toJson();
+      // this.canvasData.file = myDiagram.model.toJson();
 
       let formData = new FormData();
       formData.append("file", this.canvasData.file);
@@ -658,7 +661,6 @@ if __name__ == '__main__':
     // Update Json accroding to user's operation
     updateJson() {
       document.getElementById("mySavedModel").value = myDiagram.model.toJson();
-      this.canvasData.file = JSON.stringify(this.canvasData.file);
       myDiagram.isModified = false;
     },
 
@@ -689,7 +691,9 @@ if __name__ == '__main__':
     // // this.updateJson();
     // this.canvasData.file = JSON.stringify(this.canvasData.file);
     // this.renderJson();
+    this.canvasData.file = JSON.stringify(this.canvasData.file);
     this.compile();
+    // this.canvasData.file = JSON.stringify(this.canvasData.file);
 
     const $ = go.GraphObject.make; // for conciseness in defining templates
     var yellowgrad = $(go.Brush, "Linear", {
