@@ -354,6 +354,16 @@
                           Apply
                         </button>
                       </a>
+
+                      <a class="nav-link collapsed">
+                        <button
+                          type="submit"
+                          class="btn btn-primary"
+                          @click="run()"
+                        >
+                          Run
+                        </button>
+                      </a>
                       <!-- <button>Apply</button> -->
                     </li>
                   </ul>
@@ -428,7 +438,7 @@
                     <a href="#"
                       ><img
                         class="card-img-top"
-                        src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                        v-bind:src="train_status_data.acc"
                         alt="..."
                     /></a>
                   </div>
@@ -456,7 +466,7 @@
                     <a href="#"
                       ><img
                         class="card-img-top"
-                        src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                        v-bind:src="train_status_data.roc"
                         alt="..."
                     /></a>
                   </div>

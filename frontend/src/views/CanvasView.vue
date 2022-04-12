@@ -208,24 +208,25 @@
                 <div
                   id="myDiagramDiv"
                   style="flex-grow: 2; height: 600px; border: solid 4px #82929b"
-                ></div>
+                >
+                  <pre class="language-python"> 
+                  <code >
+                    {{canvasData.code}}
+                  </code>
+                  </pre>
+                </div>
               </div>
 
               <button class="btn btn-primary" type="submit" @click="layout()">
                 Layout
               </button>
 
-              <button
-                class="btn btn-primary"
-                type="submit"
-                @click="renderJson()"
-              >
-                render
+              <button class="btn btn-primary" type="submit" @click="download()">
+                Download
               </button>
 
               <form style="display: inline-block" method="POST">
                 <input
-                  v-model="canvasData.file"
                   type="hidden"
                   class="form-control"
                   id="file"
@@ -245,8 +246,11 @@
               </button>
               <br />
 
-              <textarea id="mySavedModel" style="width: 100%; height: 300px">
-              {{ canvasData.file }}
+              <textarea
+                id="mySavedModel"
+                style="width: 100%; height: 300px"
+                v-model="canvasData.file"
+              >
               </textarea>
             </div>
           </div>
@@ -301,7 +305,8 @@
 
 <script>
 import axios from "axios";
-import * as go from "/public/go.js";
+import * as go from "../../public/go.js";
+import * as hljs from "../../public/highlight.min.js";
 
 export default {
   name: "CanvasView",
@@ -363,11 +368,16 @@ export default {
             },
           ],
         },
-        code: {},
+        code: "import torch.nn as nn",
       },
     };
   },
+
   mounted() {
+    // code hightlignt
+    hljs.highlightAll();
+
+    this.canvasData.file = JSON.stringify(this.canvasData.file);
     const $ = go.GraphObject.make; // for conciseness in defining templates
 
     var yellowgrad = $(go.Brush, "Linear", {
@@ -1003,12 +1013,6 @@ export default {
     window.myDiagram = myDiagram;
   },
 
-  filters: {
-    pretty: function (value) {
-      return JSON.stringify(JSON.parse(value), null, 2);
-    },
-  },
-
   methods: {
     // Every time request /canvas/, use this method
     getData() {
@@ -1018,50 +1022,103 @@ export default {
       }).then((res) => {
         console.log(res.data);
         if (res.data.status == 200) {
-          this.canvas_data.file = res.data.canvas_detail.file;
-          this.canvas_data.code = res.data.canvas_detail.code;
-
           // render canvas and code
-          // this.renderJson();
-          // this.renderCode();
+          this.renderJson();
+          this.renderCode();
         } else {
           alert("canvas loading error!");
         }
       });
     },
 
-    getJson2Str() {
-      this.canvasData.file = JSON.stringify(this.canvasData.file);
+    getJson() {
+      axios({
+        method: "get",
+        url:
+          "/canvas/getJson/" + localStorage.uid + "/" + localStorage.pid + "/",
+        responseType: "stream",
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.status == 200) {
+          this.canvas_data.file = res.data;
+        } else {
+          alert("can not get user's json!");
+        }
+      });
+    },
+
+    getPython() {
+      axios({
+        method: "get",
+        url:
+          "/canvas/getPython/" +
+          localStorage.uid +
+          "/" +
+          localStorage.pid +
+          "/",
+        responseType: "stream",
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.status == 200) {
+          this.canvas_data.code = res.code;
+        } else {
+          alert("can not get user's python!");
+        }
+      });
+    },
+
+    download() {
+      axios({
+        method: "get",
+        url:
+          "/canvas/download/" + localStorage.uid + "/" + localStorage.pid + "/",
+        responseType: "blob",
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.status == 200) {
+          let blob = new Blob([res], {
+            type: "application/zip;charset-UTF-8",
+          });
+
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.style.display = "none";
+          a.href = url;
+          a.download = "projectttt.zip";
+          a.click();
+          URL.revokeObjectURL(url);
+        } else {
+          alert("can not get user's json!");
+        }
+      });
     },
 
     // Update json first, then send to backend and get python code
-    compile(event) {
+    compile() {
       // Update json
       this.updateJson();
 
       // send json to backend
-      event.preventDefault();
       this.canvasData.file = myDiagram.model.toJson();
-
-      console.log(this.canvasData.file);
 
       let formData = new FormData();
       formData.append("file", this.canvasData.file);
       axios({
         method: "post",
-        url: "/canvas/compile/",
+        url:
+          "/canvas/compile/" + localStorage.uid + "/" + localStorage.pid + "/",
         data: formData,
       }).then((res) => {
         console.log(res.data);
         // If compile successful 200, backend update database, frontend get data and reload
         if (res.data.status == "200") {
           console.log("compile ok!");
-          this.getData();
         }
         // If complie fails 500, frontend alert error
         else if (res.data.status == "500") {
           alert("The network model is not valid!");
         }
+        location.replace("/canvas/");
       });
     },
 
@@ -1081,12 +1138,13 @@ export default {
     // Render .py on the code area
     renderCode() {},
 
-    // To make canvas tidy
+    // To make canvas tidy 200
     layout() {
+      this.updateJson();
       myDiagram.layoutDiagram(true);
     },
 
-    // Go to train page
+    // Go to train page 200
     enterTrain() {
       location.replace("/train/");
     },
@@ -1094,6 +1152,14 @@ export default {
 };
 </script>
 
+<style type="text/css">
+* {
+  font-family: Consolas, Monaco, monospace;
+  font-size: 11pt;
+  padding: 0;
+  margin: 0;
+}
+</style>
 
 
 <style scoped>
