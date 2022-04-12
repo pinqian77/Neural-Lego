@@ -658,6 +658,7 @@ if __name__ == '__main__':
     // Update Json accroding to user's operation
     updateJson() {
       document.getElementById("mySavedModel").value = myDiagram.model.toJson();
+      this.canvasData.file = JSON.stringify(this.canvasData.file);
       myDiagram.isModified = false;
     },
 
@@ -684,9 +685,11 @@ if __name__ == '__main__':
   },
 
   mounted() {
-    this.getJson();
-    // this.updateJson();
-    this.canvasData.file = JSON.stringify(this.canvasData.file);
+    // this.getJson();
+    // // this.updateJson();
+    // this.canvasData.file = JSON.stringify(this.canvasData.file);
+    // this.renderJson();
+    this.compile();
 
     const $ = go.GraphObject.make; // for conciseness in defining templates
     var yellowgrad = $(go.Brush, "Linear", {
