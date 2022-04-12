@@ -658,6 +658,7 @@ if __name__ == '__main__':
     // Update Json accroding to user's operation
     updateJson() {
       document.getElementById("mySavedModel").value = myDiagram.model.toJson();
+      this.canvasData.file = JSON.stringify(this.canvasData.file);
       myDiagram.isModified = false;
     },
 
