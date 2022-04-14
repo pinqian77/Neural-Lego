@@ -1223,3 +1223,33 @@ if __name__ == '__main__':
   outline: none;
 }
 </style>
+
+    <style scpoed>
+        #myPaletteDiv {
+            border-radius: 7px;
+        }
+        
+        #myDiagramDiv_1 {
+            border-radius: 7px;
+        }
+        
+        #myDiagramDiv_2 {
+            border-radius: 7px;
+        }
+        
+        #myDiagramDiv_1 {
+            resize: horizontal;
+            overflow: auto;
+        }
+        
+         ::-webkit-resizer {
+            /* background: #82929B; */
+            /* background-color: #82929B; */
+            /* background: url("img/arrow.png"); */
+            background: url("../../new_pages/img/1.jpg");
+            border-radius: 0.1rem;
+            /* border: 8px solid black;
+            background: blue; */
+            /* outline: 2px dashed green; */
+        }
+    </style>
