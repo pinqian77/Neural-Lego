@@ -2,180 +2,305 @@
   <div id="page-top" class="body">
     <!-- Page Wrapper -->
     <div id="wrapper">
+      <!-- Sidebar -->
+      <ul
+        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+        id="accordionSidebar"
+      >
+        <!-- Sidebar - Brand -->
 
-        <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-            <!-- Sidebar - Brand -->
-
-            <a class="sidebar-brand d-flex align-items-center justify-content-center">
-                <!-- <div class="sidebar-brand-icon rotate-n-15">
+        <a
+          class="sidebar-brand d-flex align-items-center justify-content-center"
+        >
+          <!-- <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div> -->
-                <div class="sidebar-brand-text mx-3">NEURAL LEGO</div>
-            </a>
+          <div class="sidebar-brand-text mx-3">NEURAL LEGO</div>
+        </a>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="/profile">
-                    <i class="fas fa-fw fa-user"></i>
-                    <span>User</span></a>
-            </li>
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+          <a class="nav-link" href="/profile">
+            <i class="fas fa-fw fa-user"></i>
+            <span>User</span></a
+          >
+        </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="/project">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Project</span></a>
-            </li>
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+          <a class="nav-link" href="/project">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Project</span></a
+          >
+        </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="/template">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Template</span></a>
-            </li>
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+          <a class="nav-link" href="/template">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Template</span></a
+          >
+        </li>
 
+        <hr class="sidebar-divider my-0" />
 
-            <hr class="sidebar-divider my-0">
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+          <a class="nav-link" href="draggable.html">
+            <i class="fas fa-fw fa-palette"></i>
+            <span>Canvas</span></a
+          >
+        </li>
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="draggable.html">
-                    <i class="fas fa-fw fa-palette"></i>
-                    <span>Canvas</span></a>
-            </li>
+        <hr class="sidebar-divider my-0" />
 
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+          <a class="nav-link" href="home.html">
+            <i class="fas fa-fw fa-arrow-circle-left"></i>
+            <span>Log out</span></a
+          >
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block" />
+      </ul>
+      <!-- End of Sidebar -->
 
-            <hr class="sidebar-divider my-0">
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          <!-- Topbar -->
+          <nav
+            class="
+              navbar navbar-expand navbar-light
+              bg-white
+              topbar
+              mb-4
+              static-top
+              shadow
+            "
+          >
+            <!-- Sidebar Toggle (Topbar) -->
+            <button
+              id="sidebarToggleTop"
+              class="btn btn-link d-md-none rounded-circle mr-3"
+            >
+              <i class="fa fa-bars"></i>
+            </button>
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item ">
-                <a class="nav-link" href="home.html">
-                    <i class="fas fa-fw fa-arrow-circle-left"></i>
-                    <span>Log out</span></a>
-            </li>
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-        </ul>
-        <!-- End of Sidebar -->
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Search -->
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
-                    </ul>
-
-                </nav>
-                <!-- End of Topbar -->
-
-                <div id="allSampleContent" class="p-4 w-full">
-                    
-
-                    <div id="sample">
-
-                        <div style="width: 100%; margin-bottom: 10px;display: flex">
-                            <div id="myPaletteDiv" style="width: 150px; margin-right: 10px; border: solid 4px #82929B"></div>
-
-                            <div id="myDiagramDiv_1" style="width: 200px;margin-right: 10px;height: 600px;  border: solid 4px #82929B"></div>
-                            <div id="myDiagramDiv_2" style="flex-grow:1;height: 600px; border: solid 4px #82929B"></div>
-                        </div>
-
-                        <button class="btn btn-primary" id="SaveButton" onclick="save()">Save</button>
-                        <button class="btn btn-primary" onclick="load()">Load</button>
-                        <button class="btn btn-primary" onclick="layout()">Layout</button>
-                        <button class="btn btn-primary">Compile</button>
-                        <a href="/train"><button class="btn btn-primary">Train</button></a>
-                        <br />
-                        <textarea id="mySavedModel" style="width:100%;height:300px">{ "class": "GraphLinksModel",
-"copiesArrays": true,
-"copiesArrayObjects": true,
-"nodeDataArray": [ {"category":"Data", "reasonsList":[ {} ], "key":-2, "loc":"-99.10220015417542 -20.151221229488044"} ],
-"linkDataArray": []}
-            </textarea>
-                    </div>
+            <!-- Topbar Search -->
+            <form
+              class="
+                d-none d-sm-inline-block
+                form-inline
+                mr-auto
+                ml-md-3
+                my-2 my-md-0
+                mw-100
+                navbar-search
+              "
+            >
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control bg-light border-0 small"
+                  placeholder="Search for..."
+                  aria-label="Search"
+                  aria-describedby="basic-addon2"
+                />
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                  </button>
                 </div>
+              </div>
+            </form>
+
+            <!-- Topbar Navbar -->
+            <ul class="navbar-nav ml-auto">
+              <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+              <li class="nav-item dropdown no-arrow d-sm-none">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="searchDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-search fa-fw"></i>
+                </a>
+                <!-- Dropdown - Messages -->
+                <div
+                  class="
+                    dropdown-menu dropdown-menu-right
+                    p-3
+                    shadow
+                    animated--grow-in
+                  "
+                  aria-labelledby="searchDropdown"
+                >
+                  <form class="form-inline mr-auto w-100 navbar-search">
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control bg-light border-0 small"
+                        placeholder="Search for..."
+                        aria-label="Search"
+                        aria-describedby="basic-addon2"
+                      />
+                      <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                          <i class="fas fa-search fa-sm"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </li>
+            </ul>
+          </nav>
+          <!-- End of Topbar -->
+
+          <div id="allSampleContent" class="p-4 w-full">
+            <div id="sample">
+              <div style="width: 100%; margin-bottom: 10px; display: flex">
+                <div
+                  id="myPaletteDiv"
+                  style="
+                    width: 150px;
+                    margin-right: 10px;
+                    border: solid 4px #82929b;
+                  "
+                ></div>
+
+                <div
+                  id="myDiagramDiv_1"
+                  style="
+                    width: 650px;
+                    margin-right: 10px;
+                    height: 600px;
+                    border: solid 4px #82929b;
+                  "
+                ></div>
+                <div
+                  id="myDiagramDiv_2"
+                  style="flex-grow: 1; height: 600px; border: solid 4px #82929b"
+                >
+                  <prism-editor
+                    class="my-editor"
+                    readonly="false"
+                    v-model="canvasData.code"
+                    :highlight="highlighter"
+                    line-numbers
+                  ></prism-editor>
+                </div>
+              </div>
+
+              <!-- <button class="btn btn-primary" id="SaveButton" @click="save()">
+                Save
+              </button>
+              <button class="btn btn-primary" @click="load()">Load</button>
+              <button class="btn btn-primary" @click="layout()">Layout</button>
+              <button class="btn btn-primary">Compile</button>
+              <a href="/train"
+                ><button class="btn btn-primary">Train</button></a
+              > -->
+              <button class="btn btn-primary" @click="load()">Load</button>
+              <button class="btn btn-primary" type="submit" @click="layout()">
+                Layout
+              </button>
+
+              <button class="btn btn-primary" type="submit" @click="download()">
+                Download
+              </button>
+
+              <form style="display: inline-block" method="POST">
+                <input
+                  type="hidden"
+                  class="form-control"
+                  id="file"
+                  name="file"
+                />
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  @click="compile()"
+                >
+                  Compile
+                </button>
+              </form>
+
+              <button class="btn btn-primary" @click="enterTrain()">
+                Train
+              </button>
+              <br />
+
+              <textarea
+                id="mySavedModel"
+                style="width: 100%; height: 300px"
+                v-model="canvasData.file"
+              >
+              </textarea>
+
+              <br />
             </div>
-
+          </div>
         </div>
-        <!-- End of Content Wrapper -->
-
+      </div>
+      <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
-            </div>
+    <div
+      class="modal fade"
+      id="logoutModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Select "Logout" below if you are ready to end your current session.
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <a class="btn btn-primary" href="login.html">Logout</a>
+          </div>
         </div>
+      </div>
     </div>
-
   </div>
 </template>
 
@@ -207,211 +332,40 @@ export default {
       canvasData: {
         file: {
           class: "GraphLinksModel",
+          copiesArrays: true,
+          copiesArrayObjects: true,
           nodeDataArray: [
             {
               category: "Data",
-              key: -1,
-              loc: "42.22500681322674 47.35735117835321",
-            },
-            {
-              category: "End",
-              key: -4,
-              loc: "567.1497069414404 47.35735117835318",
-            },
-            {
-              category: "ReLU",
+              reasonsList: [{}],
               key: -2,
-              loc: "403.0334278716728 47.357351178353184",
-            },
-            {
-              category: "FC",
-              reasonsList: [{ text1: "512", text3: "128" }],
-              key: -3,
-              loc: "216.57893005138874 47.357351178353184",
+              loc: "-99.10220015417542 -20.151221229488044",
             },
           ],
-          linkDataArray: [
-            {
-              from: -3,
-              to: -2,
-              points: [
-                278.70784647632394, 47.35735117835319, 318.70784647632394,
-                47.35735117835319, 338.707846476324, 47.3573511783532,
-                348.707846476324, 47.3573511783532,
-              ],
-            },
-            {
-              from: -2,
-              to: -4,
-              points: [
-                457.3590092670217, 47.3573511783532, 497.3590092670217,
-                47.3573511783532, 517.3590092670217, 47.35735117835319,
-                527.3590092670217, 47.35735117835319,
-              ],
-            },
-            {
-              from: -1,
-              to: -3,
-              points: [
-                84.4500136264535, 47.3573511783532, 94.4500136264535,
-                47.3573511783532, 104.45001362645351, 47.35735117835319,
-                154.4500136264535, 47.35735117835319,
-              ],
-            },
-          ],
+          linkDataArray: [],
         },
-        code: `import torch import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-from torchvision import datasets, transforms
-import argparse
-import time
-import os
-
-#setup training parameters
-parser = argparse.ArgumentParser(description='PyTorch MNIST Training')
-parser.add_argument('--batch-size', type=int, default=128, metavar='N',
-                    help='input batch size for training (default: 128)')
-parser.add_argument('--test-batch-size', type=int, default=128, metavar='N',
-                    help='input batch size for testing (default: 128)')
-parser.add_argument('--epochs', type=int, default=5, metavar='N',
-                    help='number of epochs to train')
-parser.add_argument('--lr', type=float, default=0.01, metavar='LR',
-                    help='learning rate')
-parser.add_argument('--no-cuda', action='store_true', default=False,
-                    help='disables CUDA training')
-parser.add_argument('--seed', type=int, default=1, metavar='S',
-                    help='random seed (default: 1)')
-parser.add_argument('--model-dir', default='./model-mnist-cnn',
-                    help='directory of model for saving checkpoint')
-parser.add_argument('--load-model', action='store_true', default=False,
-                    help='load model or not')
-    
-args = parser.parse_args(args=[]) 
-    
-if not os.path.exists(args.model_dir):
-    os.makedirs(args.model_dir)
-            
-# Judge cuda is available or not
-use_cuda = not args.no_cuda and torch.cuda.is_available()
-#device = torch.device("cuda" if use_cuda else "cpu")
-device = torch.device("cpu")
-    
-torch.manual_seed(args.seed)
-kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
-    
-# Setup data loader
-transform=transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((0.1307,), (0.3081,))
-        ])
-trainset = datasets.MNIST('data', train=True, download=True,
-                    transform=transform)
-testset = datasets.MNIST('data', train=False,
-                    transform=transform)
-train_loader = torch.utils.data.DataLoader(trainset,batch_size=args.batch_size, shuffle=True,**kwargs)
-test_loader = torch.utils.data.DataLoader(testset,batch_size=args.test_batch_size, shuffle=False, **kwargs)
-    
-    
-# Define CNN
-class Net(nn.Module):
-    def __init__(self):
-        super(Net, self).__init__()
-        # in_channels:1  out_channels:32  kernel_size:3  stride:1
-        self.conv1 = nn.Conv2d(1, 32, 3, 1)
-        # in_channels:32  out_channels:64  kernel_size:3  stride:1
-        self.conv2 = nn.Conv2d(32, 64, 3, 1)
-        self.fc1 = nn.Linear(9216, 128)
-        self.fc2 = nn.Linear(128, 10)
-    
-    def forward(self, x):
-        x = self.conv1(x)
-        x = F.relu(x)
-        x = self.conv2(x)
-        x = F.relu(x)
-        x = F.max_pool2d(x, 2)
-        x = torch.flatten(x, 1)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        output = F.log_softmax(x, dim=1)
-        return output
-    
-    
-    
-# Train function
-def train(args, model, device, train_loader, optimizer, epoch):
-    model.train()
-    for batch_idx, (data, target) in enumerate(train_loader):
-        data, target = data.to(device), target.to(device)
-            
-        #clear gradients
-        optimizer.zero_grad()
-            
-        #compute loss
-        loss = F.cross_entropy(model(data), target)
-            
-        #get gradients and update
-        loss.backward()
-        optimizer.step()
-    
-# Predict function
-def eval_test(model, device, test_loader):
-    model.eval()
-    test_loss = 0
-    correct = 0
-    with torch.no_grad():
-        for data, target in test_loader:
-            data, target = data.to(device), target.to(device)
-            output = model(data)
-            test_loss += F.cross_entropy(output, target, size_average=False).item()
-            pred = output.max(1, keepdim=True)[1]
-            correct += pred.eq(target.view_as(pred)).sum().item()
-    test_loss /= len(test_loader.dataset)
-    test_accuracy = correct / len(test_loader.dataset)
-    return test_loss, test_accuracy
-    
-# Main function, train the initial model or load the model
-def main():
-    model = Net().to(device)
-    optimizer = optim.SGD(model.parameters(), lr=args.lr)
-        
-    if args.load_model:
-        # Load model
-        model.load_state_dict(torch.load(os.path.join(args.model_dir, 'final_model.pt')))
-        trnloss, trnacc = eval_test(model, device, train_loader)
-        tstloss, tstacc = eval_test(model, device, test_loader)
-        print('trn_loss: {:.4f}, trn_acc: {:.2f}%'.format(trnloss, 100. * trnacc), end=', ')
-        print('test_loss: {:.4f}, test_acc: {:.2f}%'.format(tstloss, 100. * tstacc))
-            
-    else:
-        # Train initial model
-        for epoch in range(1, args.epochs + 1):
-            start_time = time.time()
-    
-            #training
-            train(args, model, device, train_loader, optimizer, epoch)
-    
-            #get trnloss and testloss
-            trnloss, trnacc = eval_test(model, device, train_loader)
-            tstloss, tstacc = eval_test(model, device, test_loader)
-    
-            #print trnloss and testloss
-            print('Epoch '+str(epoch)+': '+str(int(time.time()-start_time))+'s', end=', ')
-            print('trn_loss: {:.4f}, trn_acc: {:.2f}%'.format(trnloss, 100. * trnacc), end=', ')
-            print('test_loss: {:.4f}, test_acc: {:.2f}%'.format(tstloss, 100. * tstacc))
-            
-        #save model
-        torch.save(model.state_dict(), os.path.join(args.model_dir, 'final_model.pt'))
-    
-if __name__ == '__main__':
-    main()
-   		 `,
+        code: `if __name__ == '__main__':
+  main()`,
       },
     };
   },
 
   methods: {
+    // layout() {
+    //   myDiagram.layoutDiagram(true);
+    // },
+
+    // save() {
+    //   document.getElementById("mySavedModel").value = myDiagram.model.toJson();
+    //   myDiagram.isModified = false;
+    // },
+
+    load() {
+      myDiagram.model = go.Model.fromJson(
+        document.getElementById("mySavedModel").value
+      );
+    },
+
     highlighter(code) {
       return highlight(code, languages.js); // languages.<insert language> to return html with markup
     },
@@ -536,6 +490,7 @@ if __name__ == '__main__':
 
     // To make canvas tidy 200
     layout() {
+      // layout
       this.updateJson();
       myDiagram.layoutDiagram(true);
     },
@@ -547,39 +502,11 @@ if __name__ == '__main__':
   },
 
   mounted() {
-    // this.getJson();
-    // // this.updateJson();
-    // this.canvasData.file = JSON.stringify(this.canvasData.file);
-    // this.renderJson();
-    this.canvasData.file = JSON.stringify(this.canvasData.file);
-    this.compile();
-    // this.canvasData.file = JSON.stringify(this.canvasData.file);
+    const $ = go.GraphObject.make;
 
-    const $ = go.GraphObject.make; // for conciseness in defining templates
-    var yellowgrad = $(go.Brush, "Linear", {
-      0: "#bde0fe",
-      1: "#bde0fe",
-    });
-    var greengrad = $(go.Brush, "Linear", {
-      0: "#fdffb6",
-      1: "#fdffb6",
-    });
-    var bluegrad = $(go.Brush, "Linear", {
-      0: "#caffbf",
-      1: "#caffbf",
-    });
-    var redgrad = $(go.Brush, "Linear", {
-      0: "#ffadad",
-      1: "#ffadad",
-    });
-    var whitegrad = $(go.Brush, "Linear", {
-      0: "#E7C5FC",
-      1: "#E7C5FC",
-    });
-    var bigfont = "bold 15pt Helvetica, Arial, sans-serif";
-    var smallfont = "bold 13pt Helvetica, Arial, sans-serif";
+    var bigfont = "bold 13pt Helvetica, Arial, sans-serif";
+    var smallfont = "bold 11pt Helvetica, Arial, sans-serif";
 
-    // Common text styling
     function textStyle() {
       return {
         margin: 6,
@@ -590,7 +517,8 @@ if __name__ == '__main__':
       };
     }
 
-    const myDiagram = $(go.Diagram, "myDiagramDiv", {
+    const myDiagram = $(go.Diagram, "myDiagramDiv_1", {
+      "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
       initialAutoScale: go.Diagram.Uniform,
       "linkingTool.direction": go.LinkingTool.ForwardsOnly,
       layout: $(go.LayeredDigraphLayout, {
@@ -613,7 +541,6 @@ if __name__ == '__main__':
       $(go.Placeholder)
     );
 
-    // define the Node template
     myDiagram.nodeTemplate = $(
       go.Node,
       "Auto",
@@ -627,9 +554,8 @@ if __name__ == '__main__':
         selectable: true,
         selectionAdornmentTemplate: nodeSelectionAdornmentTemplate,
       },
-      // define the node's outer shape, which will surround the TextBlock
+
       $(go.Shape, "Rectangle", {
-        fill: yellowgrad,
         stroke: null,
         portId: "",
         fromLinkable: true,
@@ -640,7 +566,7 @@ if __name__ == '__main__':
       }),
       $(
         go.TextBlock,
-        "ReLU",
+        "hello",
         {
           margin: 6,
           font: bigfont,
@@ -650,7 +576,7 @@ if __name__ == '__main__':
         new go.Binding("text", "text").makeTwoWay()
       )
     );
-    // Data
+
     myDiagram.nodeTemplateMap.add(
       "Data",
       $(
@@ -668,11 +594,11 @@ if __name__ == '__main__':
           selectionAdornmentTemplate: nodeSelectionAdornmentTemplate,
         },
         $(go.Shape, "Circle", {
-          fill: bluegrad,
+          fill: "#caffbf",
           portId: "",
           fromLinkable: true,
           cursor: "pointer",
-          //fromEndSegmentLength: 40,
+
           stroke: "#74c69d",
 
           strokeWidth: 4,
@@ -706,7 +632,7 @@ if __name__ == '__main__':
           selectionAdornmentTemplate: nodeSelectionAdornmentTemplate,
         },
         $(go.Shape, "Circle", {
-          fill: redgrad,
+          fill: "#ffadad",
           portId: "",
           toLinkable: true,
           cursor: "pointer",
@@ -743,7 +669,7 @@ if __name__ == '__main__':
           selectionAdornmentTemplate: nodeSelectionAdornmentTemplate,
         },
         $(go.Shape, "Ellipse", {
-          fill: greengrad,
+          fill: "#fdffb6",
           portId: "",
           fromLinkable: true,
           toLinkable: true,
@@ -758,8 +684,7 @@ if __name__ == '__main__':
           textStyle(),
           {
             stroke: "#e2711d",
-            // locationSpot: go.Spot.Center,
-            //margin: new go.Margin(10, 0, 0, 0),
+
             minSize: new go.Size(60, NaN),
           },
           new go.Binding("text", "text").makeTwoWay()
@@ -788,7 +713,7 @@ if __name__ == '__main__':
             margin: new go.Margin(4, 0, 0, 0),
             maxSize: new go.Size(200, NaN),
             wrap: go.TextBlock.WrapFit,
-            //stroke: "whitesmoke",
+
             editable: true,
             font: smallfont,
             row: 2,
@@ -805,7 +730,7 @@ if __name__ == '__main__':
             margin: new go.Margin(4, 0, 0, 0),
             maxSize: new go.Size(200, NaN),
             wrap: go.TextBlock.WrapFit,
-            //stroke: "whitesmoke",
+
             editable: true,
             stroke: "#3e5c76",
             font: smallfont,
@@ -822,7 +747,7 @@ if __name__ == '__main__':
             margin: new go.Margin(4, 0, 0, 0),
             maxSize: new go.Size(200, NaN),
             wrap: go.TextBlock.WrapFit,
-            //stroke: "whitesmoke",
+
             editable: true,
             font: smallfont,
             stroke: "#3e5c76",
@@ -839,7 +764,7 @@ if __name__ == '__main__':
             margin: new go.Margin(4, 0, 0, 9),
             maxSize: new go.Size(200, NaN),
             wrap: go.TextBlock.WrapFit,
-            //stroke: "whitesmoke",
+
             editable: true,
             font: smallfont,
             stroke: "#3e5c76",
@@ -848,7 +773,7 @@ if __name__ == '__main__':
           },
           new go.Binding("text", "text3").makeTwoWay()
         )
-      ) // end Table Panel
+      )
     );
 
     myDiagram.nodeTemplateMap.add(
@@ -867,7 +792,7 @@ if __name__ == '__main__':
           selectionAdornmentTemplate: nodeSelectionAdornmentTemplate,
         },
         $(go.Shape, "RoundedRectangle", {
-          fill: yellowgrad,
+          fill: "#bde0fe",
           stroke: "#4ea8de",
           strokeWidth: 4,
           portId: "",
@@ -892,7 +817,6 @@ if __name__ == '__main__':
               stroke: "#3e5c76",
               margin: new go.Margin(8, 0, 0, 0),
               minSize: new go.Size(100, NaN),
-              //maxSize: new go.Size(200, NaN)
             },
             new go.Binding("text", "text").makeTwoWay()
           ),
@@ -907,51 +831,6 @@ if __name__ == '__main__':
             new go.Binding("itemArray", "reasonsList").makeTwoWay()
           )
         )
-      )
-    );
-
-    var linkSelectionAdornmentTemplate = $(
-      go.Adornment,
-      "Link",
-      $(
-        go.Shape,
-        // isPanelMain declares that this Shape shares the Link.geometry
-        {
-          isPanelMain: true,
-          fill: null,
-          stroke: "deepskyblue",
-          strokeWidth: 2.5,
-        }
-      ) // use selection object's strokeWidth
-    );
-    // replace the default Link template in the linkTemplateMap
-    myDiagram.linkTemplate = $(
-      go.Link, // the whole link panel
-      {
-        selectable: true,
-        selectionAdornmentTemplate: linkSelectionAdornmentTemplate,
-      },
-      new go.Binding("points").makeTwoWay(),
-      {
-        //curve: go.Link.Bezier,
-        toShortLength: 15,
-      },
-      //new go.Binding("curviness", "curviness"),
-      $(
-        go.Shape, // the link shape
-        {
-          stroke: "#979dac",
-          strokeWidth: 2.5,
-        }
-      ),
-      $(
-        go.Shape, // the arrowhead
-        {
-          toArrow: "kite",
-          fill: "#979dac",
-          stroke: null,
-          scale: 2,
-        }
       )
     );
 
@@ -971,7 +850,7 @@ if __name__ == '__main__':
           selectionAdornmentTemplate: nodeSelectionAdornmentTemplate,
         },
         $(go.Shape, "RoundedRectangle", {
-          fill: whitegrad,
+          fill: "#E7C5FC",
           stroke: "#CF8BF9",
           strokeWidth: 4,
         }),
@@ -989,7 +868,6 @@ if __name__ == '__main__':
           },
           new go.Binding("text", "text").makeTwoWay()
         )
-        // no ports, because no links are allowed to connect with a comment
       )
     );
 
@@ -1009,7 +887,7 @@ if __name__ == '__main__':
           selectionAdornmentTemplate: nodeSelectionAdornmentTemplate,
         },
         $(go.Shape, "RoundedRectangle", {
-          fill: whitegrad,
+          fill: "#E7C5FC",
           stroke: "#CF8BF9",
           strokeWidth: 4,
         }),
@@ -1027,7 +905,6 @@ if __name__ == '__main__':
           },
           new go.Binding("text", "text").makeTwoWay()
         )
-        // no ports, because no links are allowed to connect with a comment
       )
     );
 
@@ -1047,7 +924,7 @@ if __name__ == '__main__':
           selectionAdornmentTemplate: nodeSelectionAdornmentTemplate,
         },
         $(go.Shape, "RoundedRectangle", {
-          fill: whitegrad,
+          fill: "#E7C5FC",
           stroke: "#CF8BF9",
           strokeWidth: 4,
         }),
@@ -1065,7 +942,6 @@ if __name__ == '__main__':
           },
           new go.Binding("text", "text").makeTwoWay()
         )
-        // no ports, because no links are allowed to connect with a comment
       )
     );
 
@@ -1085,7 +961,7 @@ if __name__ == '__main__':
           selectionAdornmentTemplate: nodeSelectionAdornmentTemplate,
         },
         $(go.Shape, "RoundedRectangle", {
-          fill: whitegrad,
+          fill: "#E7C5FC",
           stroke: "#CF8BF9",
           strokeWidth: 4,
         }),
@@ -1103,7 +979,6 @@ if __name__ == '__main__':
           },
           new go.Binding("text", "text").makeTwoWay()
         )
-        // no ports, because no links are allowed to connect with a comment
       )
     );
 
@@ -1123,7 +998,7 @@ if __name__ == '__main__':
           selectionAdornmentTemplate: nodeSelectionAdornmentTemplate,
         },
         $(go.Shape, "RoundedRectangle", {
-          fill: whitegrad,
+          fill: "#E7C5FC",
           stroke: "#CF8BF9",
           strokeWidth: 4,
         }),
@@ -1141,26 +1016,60 @@ if __name__ == '__main__':
           },
           new go.Binding("text", "text").makeTwoWay()
         )
-        // no ports, because no links are allowed to connect with a comment
       )
     );
 
-    var palette = $(
-      go.Palette,
-      "myPaletteDiv", // create a new Palette in the HTML DIV element
-      {
-        // share the template map with the Palette
-        nodeTemplateMap: myDiagram.nodeTemplateMap,
-        autoScale: go.Diagram.Uniform, // everything always fits in viewport
-      }
+    var linkSelectionAdornmentTemplate = $(
+      go.Adornment,
+      "Link",
+      $(
+        go.Shape,
+
+        {
+          isPanelMain: true,
+          fill: null,
+          stroke: "deepskyblue",
+          strokeWidth: 2.5,
+        }
+      )
     );
+
+    myDiagram.linkTemplate = $(
+      go.Link,
+      {
+        selectable: true,
+        selectionAdornmentTemplate: linkSelectionAdornmentTemplate,
+      },
+      new go.Binding("points").makeTwoWay(),
+      {
+        toShortLength: 15,
+      },
+
+      $(go.Shape, {
+        stroke: "#979dac",
+        strokeWidth: 2.5,
+      }),
+      $(go.Shape, {
+        toArrow: "kite",
+        fill: "#979dac",
+        stroke: null,
+        scale: 2,
+      })
+    );
+
+    var palette = $(go.Palette, "myPaletteDiv", {
+      nodeTemplateMap: myDiagram.nodeTemplateMap,
+      autoScale: go.Diagram.Uniform,
+    });
 
     palette.model.nodeDataArray = [
       {
         category: "Data",
+        reasonsList: [{}],
       },
       {
         category: "ReLU",
+        reasonsList: [{}],
       },
       {
         category: "FC",
@@ -1168,25 +1077,41 @@ if __name__ == '__main__':
       },
       {
         category: "End",
+        reasonsList: [{}],
       },
       {
         category: "CNN",
+        reasonsList: [{}],
       },
       {
         category: "RNN",
+        reasonsList: [{}],
       },
       {
         category: "LSTM",
+        reasonsList: [{}],
       },
       {
         category: "Softmax",
+        reasonsList: [{}],
       },
       {
         category: "Maximum Polling",
+        reasonsList: [{}],
       },
     ];
 
     window.myDiagram = myDiagram;
+
+    // Load
+    // this.getJson();
+    // // this.updateJson();
+    // this.canvasData.file = JSON.stringify(this.canvasData.file);
+    // this.renderJson();
+
+    this.canvasData.file = JSON.stringify(this.canvasData.file);
+    // this.load();
+    // this.compile();
   },
 };
 </script>
@@ -1225,31 +1150,31 @@ if __name__ == '__main__':
 </style>
 
     <style scpoed>
-        #myPaletteDiv {
-            border-radius: 7px;
-        }
-        
-        #myDiagramDiv_1 {
-            border-radius: 7px;
-        }
-        
-        #myDiagramDiv_2 {
-            border-radius: 7px;
-        }
-        
-        #myDiagramDiv_1 {
-            resize: horizontal;
-            overflow: auto;
-        }
-        
-         ::-webkit-resizer {
-            /* background: #82929B; */
-            /* background-color: #82929B; */
-            /* background: url("img/arrow.png"); */
-            background: url("../../new_pages/img/1.jpg");
-            border-radius: 0.1rem;
-            /* border: 8px solid black;
+#myPaletteDiv {
+  border-radius: 7px;
+}
+
+#myDiagramDiv_1 {
+  border-radius: 7px;
+}
+
+#myDiagramDiv_2 {
+  border-radius: 7px;
+}
+
+#myDiagramDiv_1 {
+  resize: horizontal;
+  overflow: auto;
+}
+
+div::-webkit-resizer {
+  /* background: #82929B; */
+  /* background-color: #82929B; */
+  /* background: url("img/arrow.png"); */
+  background-image: url("../../new_pages/img/1.jpg");
+  border-radius: 0.1rem;
+  /* border: 8px solid black;
             background: blue; */
-            /* outline: 2px dashed green; */
-        }
-    </style>
+  /* outline: 2px dashed green; */
+}
+</style>
