@@ -2,304 +2,180 @@
   <div id="page-top" class="body">
     <!-- Page Wrapper -->
     <div id="wrapper">
-      <!-- Sidebar -->
-      <ul
-        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
-        id="accordionSidebar"
-      >
-        <!-- Sidebar - Brand -->
 
-        <a
-          class="sidebar-brand d-flex align-items-center justify-content-center"
-        >
-          <div class="sidebar-brand-text mx-3">NEURAL LEGO</div>
-        </a>
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
+            <!-- Sidebar - Brand -->
 
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-          <a class="nav-link" href="/profile">
-            <i class="fas fa-fw fa-user"></i>
-            <span>User</span></a
-          >
-        </li>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center">
+                <!-- <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div> -->
+                <div class="sidebar-brand-text mx-3">NEURAL LEGO</div>
+            </a>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
 
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-          <a class="nav-link" href="/project">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Project</span></a
-          >
-        </li>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="/profile">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>User</span></a>
+            </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="/dataset">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Dataset</span></a
-          >
-        </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="/project">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Project</span></a>
+            </li>
 
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-          <a class="nav-link" href="/template">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Template</span></a
-          >
-        </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
 
-        <hr class="sidebar-divider my-0" />
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="/template">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Template</span></a>
+            </li>
 
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-          <a class="nav-link" href="/canvas">
-            <i class="fas fa-fw fa-palette"></i>
-            <span>Canvas</span></a
-          >
-        </li>
 
-        <hr class="sidebar-divider my-0" />
+            <hr class="sidebar-divider my-0">
 
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-          <a class="nav-link" href="/register">
-            <i class="fas fa-fw fa-arrow-circle-left"></i>
-            <span>Log out</span></a
-          >
-        </li>
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block" />
-      </ul>
-      <!-- End of Sidebar -->
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="draggable.html">
+                    <i class="fas fa-fw fa-palette"></i>
+                    <span>Canvas</span></a>
+            </li>
 
-      <!-- Content Wrapper -->
-      <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
-          <!-- Topbar -->
-          <nav
-            class="
-              navbar navbar-expand navbar-light
-              bg-white
-              topbar
-              mb-4
-              static-top
-              shadow
-            "
-          >
-            <!-- Sidebar Toggle (Topbar) -->
-            <button
-              id="sidebarToggleTop"
-              class="btn btn-link d-md-none rounded-circle mr-3"
-            >
-              <i class="fa fa-bars"></i>
-            </button>
 
-            <!-- Topbar Search -->
-            <form
-              class="
-                d-none d-sm-inline-block
-                form-inline
-                mr-auto
-                ml-md-3
-                my-2 my-md-0
-                mw-100
-                navbar-search
-              "
-            >
-              <div class="input-group">
-                <input
-                  type="text"
-                  class="form-control bg-light border-0 small"
-                  placeholder="Search for..."
-                  aria-label="Search"
-                  aria-describedby="basic-addon2"
-                />
-                <div class="input-group-append">
-                  <button class="btn btn-primary" type="button">
-                    <i class="fas fa-search fa-sm"></i>
-                  </button>
-                </div>
-              </div>
-            </form>
+            <hr class="sidebar-divider my-0">
 
-            <!-- Topbar Navbar -->
-            <ul class="navbar-nav ml-auto">
-              <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-              <li class="nav-item dropdown no-arrow d-sm-none">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="searchDropdown"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-search fa-fw"></i>
-                </a>
-                <!-- Dropdown - Messages -->
-                <div
-                  class="
-                    dropdown-menu dropdown-menu-right
-                    p-3
-                    shadow
-                    animated--grow-in
-                  "
-                  aria-labelledby="searchDropdown"
-                >
-                  <form class="form-inline mr-auto w-100 navbar-search">
-                    <div class="input-group">
-                      <input
-                        type="text"
-                        class="form-control bg-light border-0 small"
-                        placeholder="Search for..."
-                        aria-label="Search"
-                        aria-describedby="basic-addon2"
-                      />
-                      <div class="input-group-append">
-                        <button class="btn btn-primary" type="button">
-                          <i class="fas fa-search fa-sm"></i>
-                        </button>
-                      </div>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item ">
+                <a class="nav-link" href="home.html">
+                    <i class="fas fa-fw fa-arrow-circle-left"></i>
+                    <span>Log out</span></a>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <div id="allSampleContent" class="p-4 w-full">
+                    
+
+                    <div id="sample">
+
+                        <div style="width: 100%; margin-bottom: 10px;display: flex">
+                            <div id="myPaletteDiv" style="width: 150px; margin-right: 10px; border: solid 4px #82929B"></div>
+
+                            <div id="myDiagramDiv_1" style="width: 200px;margin-right: 10px;height: 600px;  border: solid 4px #82929B"></div>
+                            <div id="myDiagramDiv_2" style="flex-grow:1;height: 600px; border: solid 4px #82929B"></div>
+                        </div>
+
+                        <button class="btn btn-primary" id="SaveButton" onclick="save()">Save</button>
+                        <button class="btn btn-primary" onclick="load()">Load</button>
+                        <button class="btn btn-primary" onclick="layout()">Layout</button>
+                        <button class="btn btn-primary">Compile</button>
+                        <a href="/train"><button class="btn btn-primary">Train</button></a>
+                        <br />
+                        <textarea id="mySavedModel" style="width:100%;height:300px">{ "class": "GraphLinksModel",
+"copiesArrays": true,
+"copiesArrayObjects": true,
+"nodeDataArray": [ {"category":"Data", "reasonsList":[ {} ], "key":-2, "loc":"-99.10220015417542 -20.151221229488044"} ],
+"linkDataArray": []}
+            </textarea>
                     </div>
-                  </form>
                 </div>
-              </li>
-            </ul>
-          </nav>
-          <!-- End of Topbar -->
-
-          <div id="allSampleContent" class="p-4 w-full">
-            <div id="sample">
-              <div
-                style="
-                  width: 100%;
-                  margin-bottom: 10px;
-                  display: flex;
-                  justify-content: space-between;
-                "
-              >
-                <!-- End of Sidebar -->
-                <div
-                  id="myPaletteDiv"
-                  style="
-                    width: 150px;
-                    margin-right: 10px;
-                    border: solid 4px #82929b;
-                  "
-                ></div>
-                <div
-                  id="myDiagramDiv"
-                  style="
-                    flex-grow: 4;
-                    margin-right: 10px;
-                    height: 600px;
-                    border: solid 4px #82929b;
-                  "
-                ></div>
-                <div
-                  id="myDiagramDiv"
-                  style="flex-grow: 2; height: 600px; border: solid 4px #82929b"
-                >
-                  <prism-editor
-                    class="my-editor"
-                    readonly="false"
-                    v-model="canvasData.code"
-                    :highlight="highlighter"
-                    line-numbers
-                  ></prism-editor>
-                </div>
-              </div>
-
-              <button class="btn btn-primary" type="submit" @click="layout()">
-                Layout
-              </button>
-
-              <button class="btn btn-primary" type="submit" @click="download()">
-                Download
-              </button>
-
-              <form style="display: inline-block" method="POST">
-                <input
-                  type="hidden"
-                  class="form-control"
-                  id="file"
-                  name="file"
-                />
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  @click="compile()"
-                >
-                  Compile
-                </button>
-              </form>
-
-              <button class="btn btn-primary" @click="enterTrain()">
-                Train
-              </button>
-              <br />
-
-              <textarea
-                id="mySavedModel"
-                style="width: 100%; height: 300px"
-                v-model="canvasData.file"
-              >
-              </textarea>
             </div>
-          </div>
+
         </div>
-      </div>
-      <!-- End of Content Wrapper -->
+        <!-- End of Content Wrapper -->
+
     </div>
     <!-- End of Page Wrapper -->
 
     <!-- Logout Modal-->
-    <div
-      class="modal fade"
-      id="logoutModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-            <button
-              class="close"
-              type="button"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            Select "Logout" below if you are ready to end your current session.
-          </div>
-          <div class="modal-footer">
-            <button
-              class="btn btn-secondary"
-              type="button"
-              data-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <a class="btn btn-primary" href="/login">Logout</a>
-          </div>
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
+
   </div>
 </template>
 
@@ -1347,3 +1223,33 @@ if __name__ == '__main__':
   outline: none;
 }
 </style>
+
+    <style scpoed>
+        #myPaletteDiv {
+            border-radius: 7px;
+        }
+        
+        #myDiagramDiv_1 {
+            border-radius: 7px;
+        }
+        
+        #myDiagramDiv_2 {
+            border-radius: 7px;
+        }
+        
+        #myDiagramDiv_1 {
+            resize: horizontal;
+            overflow: auto;
+        }
+        
+         ::-webkit-resizer {
+            /* background: #82929B; */
+            /* background-color: #82929B; */
+            /* background: url("img/arrow.png"); */
+            background: url("../../new_pages/img/1.jpg");
+            border-radius: 0.1rem;
+            /* border: 8px solid black;
+            background: blue; */
+            /* outline: 2px dashed green; */
+        }
+    </style>
