@@ -1,71 +1,4 @@
-import json
-import subprocess, time
-import os
-def model(project_path: str , pid: str):
-    def FC(input_size, output_size, init, forward, pointer):
-    
-        string = "self.fc"+str(-1*pointer)+" = nn.Linear("+str(input_size)+", "+str(output_size)+")"
-        string = "\t\t"+string + "\n"
-        init += string
-        string = "x = self.fc" + str(-1*pointer) + "(x)"
-        string = "\t\t" + string + "\n"
-        forward += string
-        return init, forward
-    def ReLU(forward):
-        forward += "\t\tx = F.relu(x)\n"
-        return forward
-    
-    with open(os.path.join(project_path,pid+'.json'), 'r') as f:
-        List = json.load(f)
-    
-    nodeList = List['nodeDataArray']
-    linkList = List['linkDataArray']
-    
-    nodedict = {}
-    linkdict = {}
-    start = 0
-    end = 0
-    for node in nodeList:
-        nodedict[node['key']] = {'category':node['category'], 'para':node['reasonsList']}
-        if node['category'] == "Data":
-            start = node['key']
-        if node['category'] == "End":
-            end = node['key']
-    
-    for link in linkList:
-        linkdict[link['from']] =  link['to']
-    if len(linkList) == 0 or end == 0:
-        return
-    
-    #if start == 0 or end == 0:
-    #    raise 
-    
-    ################################################## model date
-    pointer = linkdict[start]
-    with open(os.path.join(project_path, "model.py"), 'w') as f:
-        head = '''import torch.nn.functional as F
 import torch.nn as nn
-import torch.nn.functional as F
-import torch.nn as nn
-import torch.nn.functional as F
-
-class Net(nn.Module):
-    '''
-        f.write(head+"\n")
-        init, forward = "\tdef __init__(self):\n\t\tsuper(Net, self).__init__()\n", "\tdef forward(self, x):\n"
-        while pointer != end:
-            if nodedict[pointer]['category'] == 'FC':
-                init, forward = FC(nodedict[pointer]['para'][0]['text1'], nodedict[pointer]['para'][0]['text3'], init, forward, pointer)
-            elif nodedict[pointer]['category'] == 'ReLU':
-                forward = ReLU(forward)
-            pointer = linkdict[pointer]
-        forward += "\t\treturn x\n"
-        f.write(init+"\n")
-        f.write(forward+"\n")
-        f.close()
-def main(project_path, data_path, pid):
-    with open(os.path.join(project_path, 'main.py'), 'w') as f:
-        head = '''import torch.nn as nn
 import torch.nn.functional as F
 from sklearn.model_selection import train_test_split
 import torch.nn as nn
@@ -84,7 +17,7 @@ import time
 import json
 from model import Net
 
-project_path = %s
+project_path = /home/jerry/Comp208-Neural-Lego/backend/media/1/www
 with open("hyper.json", 'r') as f:
     args = json.load(f)
 #use_cuda = not args.no_cuda and torch.cuda.is_available()
@@ -107,7 +40,7 @@ def readcsv(files):
     y = csvfile[columns[-1]].values
     return x, y
 
-X, y = readcsv(%s)
+X, y = readcsv(iri)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.1, random_state = args['seed'])
 X_train, y_train = torch.stack([torch.Tensor(i) for i in X_train]), torch.stack([torch.Tensor([i]) for i in y_train])
 X_test, y_test = torch.stack([torch.Tensor(i) for i in X_test]), torch.stack([torch.Tensor([i]) for i in y_test])
@@ -117,10 +50,8 @@ test_set = Data.TensorDataset(X_test, y_test)
 train_loader = Data.DataLoader(train_set, batch_size=args['batch_size'], shuffle=True)
 test_loader = Data.DataLoader(test_set, batch_size=args['test_batch_size'], shuffle=True)
 
-    '''%(project_path, data_path)
-        f.write(head+"\n")
-
-        endfile = '''def train(args, model, device, train_loader, optimizer, epoch):
+    
+def train(args, model, device, train_loader, optimizer, epoch):
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
 #        target = target.squeeze().type(torch.LongTensor)
@@ -211,17 +142,10 @@ def train_model():
         trnlossList.append(trnloss)
         trnaccList.append(trnacc)
         writeAcc(trnlossList, trnaccList, os.path.join(project_path, "acc.png"))
-        print('Epoch '+str(epoch)+': '+str(int(time.time()-start_time))+'s', end=', ')
-        print('trn_loss: {:.4f}, trn_acc: {:.2f}%'.format(trnloss, 100. * trnacc), end=', ')
+         print('Epoch '+str(epoch)+': '+str(int(time.time()-start_time))+'s', end=', ')
+         print('trn_loss: {:.4f}, trn_acc: {:.2f}%'.format(trnloss, 100. * trnacc), end=', ')
         with open(os.path.join(project_path, "output"), 'w'):
             f.write(str(epoch))
         
     return model
 model = train_model()
-'''
-        f.write(endfile)
-        print(head)
-        print(endfile)
-
-def cmd(command):
-    subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
