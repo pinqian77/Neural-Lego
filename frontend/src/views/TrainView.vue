@@ -579,6 +579,7 @@ export default {
         method: "get",
         url: "/train/status" + localStorage.uid + "/" + localStorage.pid + "/",
       }).then((res) => {
+        console.log(res.data);
         if (res.data.status == 200) {
           this.train_status_data.finished_epoch =
             res.data.train_staus.finished_epoch;
@@ -596,14 +597,15 @@ export default {
       form_data.append("run", "true");
       axios({
         method: "post",
-        url: "/train/apply/" + localStorage.uid + "/" + localStorage.pid + "/",
+        url: "/train/run/" + localStorage.uid + "/" + localStorage.pid + "/",
         data: form_data,
       }).then((res) => {
         console.log(res.data);
         if (res.data.status == "200") {
-          this.timer = setInterval(this.getTrainStatus(), 1000);
+          console.log("zai run le...");
+          // this.timer = setInterval(this.getTrainStatus(), 1000);
         } else {
-          alert.log("apply fail!");
+          console.log("run fail!");
         }
       });
     },
