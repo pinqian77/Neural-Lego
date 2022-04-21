@@ -1,12 +1,6 @@
 { "class": "GraphLinksModel",
   "nodeDataArray": [ 
-{"category":"Data", "reasonsList":[ {"text1":"512", "text3":"128"} ], "key":-1, "loc":"26 -168"},
-{"category":"FC", "reasonsList":[ {"text1":"4", "text3":"3"} ], "key":-3, "loc":"179 -149"},
-{"category":"ReLU", "reasonsList":[ {"text1":"512", "text3":"128"} ], "key":-2, "loc":"308 -75"},
-{"category":"End", "reasonsList":[ {"text1":"512", "text3":"128"} ], "key":-4, "loc":"465 35"}
+{"category":"Data", "reasonsList":[ {"text1":"512", "text3":"128"} ], "key":-1, "loc":"26 -168"}
  ],
   "linkDataArray": [ 
-{"from":-1, "to":-3, "points":[67.9031400339463,-162.7963420872877,116.891524508423,-156.71281721790825]},
-{"from":-3, "to":-2, "points":[240.85854950223057,-113.51525067313905,272.8377916325065,-95.17056914104278]},
-{"from":-2, "to":-4, "points":[339.00969608825955,-53.27346133943597,432.411944782672,12.16760462480202]}
  ]}
