@@ -33,6 +33,7 @@ urlpatterns = [
 
     path('train/<int:pk>/<int:pid>/', views.trainPage),
     path('train/apply/<int:pk>/<int:pid>/', views.trainSave),
+    path('train/run/<int:pk>/<int:pid>/', views.trainRun),
 
     path('canvas/getPython/<int:pk>/<int:pid>/', views.canvasPython),
     path('canvas/getJson/<int:pk>/<int:pid>/', views.canvasJson),
