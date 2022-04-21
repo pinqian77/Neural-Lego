@@ -233,7 +233,7 @@
                 Download
               </button>
 
-              <form style="display: inline-block" method="POST">
+              <form style="display: inline-block">
                 <input
                   type="hidden"
                   class="form-control"
@@ -363,14 +363,14 @@ export default {
       // this.getPython();
     },
 
-    complie() {
+    compile() {
       // document.getElementById("func_layout").click();
       let formData = new FormData();
       formData.append("file", JSON.stringify(this.canvasData.file));
       axios({
         method: "post",
         url:
-          "/canvas/complie/" + localStorage.uid + "/" + localStorage.pid + "/",
+          "/canvas/compile/" + localStorage.uid + "/" + localStorage.pid + "/",
         data: formData,
       }).then((res) => {
         console.log(res.data);
@@ -379,11 +379,6 @@ export default {
           this.getPython();
           console.log("compile ok!");
         }
-        // If 500 complie fails, frontend alert error
-        // else if (res.data.status == "500") {
-        //   alert("The network model is not valid!");
-        // }
-        location.replace("/canvas/");
       });
     },
 
@@ -401,21 +396,12 @@ export default {
         console.log(res.data);
 
         if (res.status == 200) {
+          console.log("200");
           this.canvasData.code = res.code;
         } else {
           alert("can not get user's python!");
         }
       });
-    },
-
-    load() {
-      myDiagram.model = go.Model.fromJson(
-        document.getElementById("mySavedModel").value
-      );
-    },
-
-    highlighter(code) {
-      return highlight(code, languages.js); // languages.<insert language> to return html with markup
     },
 
     getJson() {
@@ -465,27 +451,21 @@ export default {
       });
     },
 
-    // Update Json accroding to user's operation
-    updateJson() {
+    // To make canvas tidy 200
+    layout() {
       document.getElementById("mySavedModel").value = myDiagram.model.toJson();
       myDiagram.isModified = false;
+      myDiagram.layoutDiagram(true);
     },
 
-    // Render Json on the canvas area
-    renderJson() {
+    load() {
       myDiagram.model = go.Model.fromJson(
         document.getElementById("mySavedModel").value
       );
     },
 
-    // Render .py on the code area
-    renderCode() {},
-
-    // To make canvas tidy 200
-    layout() {
-      // layout
-      this.updateJson();
-      myDiagram.layoutDiagram(true);
+    highlighter(code) {
+      return highlight(code, languages.js); // languages.<insert language> to return html with markup
     },
 
     // Go to train page 200
