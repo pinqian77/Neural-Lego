@@ -8,9 +8,10 @@ class Net(nn.Module):
     
 	def __init__(self):
 		super(Net, self).__init__()
-		self.fc3 = nn.Linear(222, 333)
+		self.fc3 = nn.Linear(12, 12)
 
 	def forward(self, x):
 		x = self.fc3(x)
+		x = F.relu(x)
 		return x
 
