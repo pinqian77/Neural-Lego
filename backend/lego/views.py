@@ -319,7 +319,7 @@ def trainSave(request, pk, pid):
 def trainRun(request, pk, pid):
     context = {"isRun": True}
     project_path = Project.objects.get(project_id = pid).project_directory
-    cmd("python "+os.path.join(project_path, str(pk)+".py"))
+    cmd("python "+os.path.join(project_path, "main.py"))
     return JsonResponse(context, safe=False)
 
 def trainEpoch(request, pk, pid):
