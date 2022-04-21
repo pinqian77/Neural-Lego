@@ -393,11 +393,13 @@ export default {
           "/",
         responseType: "stream",
       }).then((res) => {
-        console.log(res.data);
+        console.log(res);
 
         if (res.status == 200) {
-          console.log("200");
+          console.log("python 200");
           this.canvasData.code = res.code;
+          console.log(this.canvasData.code);
+          console.log(res.code);
         } else {
           alert("can not get user's python!");
         }
@@ -456,6 +458,8 @@ export default {
       document.getElementById("mySavedModel").value = myDiagram.model.toJson();
       myDiagram.isModified = false;
       myDiagram.layoutDiagram(true);
+
+      this.canvasData.json = document.getElementById("mySavedModel").value;
     },
 
     load() {
