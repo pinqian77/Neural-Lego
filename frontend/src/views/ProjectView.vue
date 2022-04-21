@@ -428,7 +428,7 @@ export default {
         }
       });
 
-      // location.replace("/project/");
+      location.replace("/project/");
     },
 
     // 200
