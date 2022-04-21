@@ -407,7 +407,11 @@ export default {
       let formData = new FormData();
       formData.append("name", this.new_proj.name);
       formData.append("is_public", this.new_proj.is_public);
-      formData.append("file", this.canvasData.file);
+      formData.append("file", JSON.stringify(this.canvasData.file));
+
+      console.log(this.new_proj.name);
+      console.log(this.new_proj.is_public);
+      console.log(JSON.stringify(this.canvasData.file));
 
       axios({
         method: "post",
