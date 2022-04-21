@@ -415,8 +415,8 @@ export default {
         // not first time
         if (res.status == 200) {
           console.log("200");
-          console.log(JSON.stringify(res.data));
-          this.canvasData.file = JSON.stringify(res.data);
+          // console.log(JSON.stringify(res.data));
+          this.canvasData.file = res.data;
         }
         // first time
         else if (res.status == 204) {
