@@ -217,8 +217,15 @@
               <a href="/train"
                 ><button class="btn btn-primary">Train</button></a
               > -->
-              <button class="btn btn-primary" @click="load()">Load</button>
-              <button class="btn btn-primary" type="submit" @click="layout()">
+              <button class="btn btn-primary" id="func_load" @click="load()">
+                Load
+              </button>
+              <button
+                class="btn btn-primary"
+                id="func_layout"
+                type="submit"
+                @click="layout()"
+              >
                 Layout
               </button>
 
@@ -351,14 +358,77 @@ export default {
   },
 
   methods: {
-    // layout() {
-    //   myDiagram.layoutDiagram(true);
-    // },
+    getData() {
+      this.canvasData.file = JSON.stringify(this.canvasData.file);
 
-    // save() {
-    //   document.getElementById("mySavedModel").value = myDiagram.model.toJson();
-    //   myDiagram.isModified = false;
-    // },
+      let formData = new FormData();
+      formData.append("file", this.canvasData.file);
+
+      axios({
+        method: "post",
+        url:
+          "/canvas/complie/" + localStorage.uid + "/" + localStorage.pid + "/",
+        data: formData,
+      }).then((res) => {
+        console.log(res.data);
+
+        // If 200 compile successful, backend update database, frontend get data and reload
+        if (res.data.status == "200") {
+          this.getPython();
+
+          console.log("compile ok!");
+        }
+        // If 500 complie fails, frontend alert error
+        else if (res.data.status == "500") {
+          alert("The network model is not valid!");
+        }
+      });
+    },
+
+    complie() {
+      document.getElementById("func_layout").click();
+      // let formData = new FormData();
+      // formData.append("file", JSON.stringify(this.canvasData.file));
+      // axios({
+      //   method: "post",
+      //   url:
+      //     "/canvas/complie/" + localStorage.uid + "/" + localStorage.pid + "/",
+      //   data: formData,
+      // }).then((res) => {
+      //   console.log(res.data);
+      //   // If 200 compile successful, backend update database, frontend get data and reload
+      //   if (res.data.status == "200") {
+      //     this.getPython();
+      //     console.log("compile ok!");
+      //   }
+      //   // If 500 complie fails, frontend alert error
+      //   else if (res.data.status == "500") {
+      //     alert("The network model is not valid!");
+      //   }
+      //   location.replace("/canvas/");
+      // });
+    },
+
+    getPython() {
+      axios({
+        method: "get",
+        url:
+          "/canvas/getPython/" +
+          localStorage.uid +
+          "/" +
+          localStorage.pid +
+          "/",
+        responseType: "stream",
+      }).then((res) => {
+        console.log(res.data);
+
+        if (res.data.status == 200) {
+          this.canvas_data.code = res.code;
+        } else {
+          alert("can not get user's python!");
+        }
+      });
+    },
 
     load() {
       myDiagram.model = go.Model.fromJson(
@@ -391,26 +461,6 @@ export default {
       });
     },
 
-    getPython() {
-      axios({
-        method: "get",
-        url:
-          "/canvas/getPython/" +
-          localStorage.uid +
-          "/" +
-          localStorage.pid +
-          "/",
-        responseType: "stream",
-      }).then((res) => {
-        console.log(res.data);
-        if (res.data.status == 200) {
-          this.canvas_data.code = res.code;
-        } else {
-          alert("can not get user's python!");
-        }
-      });
-    },
-
     download() {
       axios({
         method: "get",
@@ -434,41 +484,6 @@ export default {
         } else {
           alert("can not get user's json!");
         }
-      });
-    },
-
-    // Update json first, then send to backend and get python code
-    compile() {
-      // Update json
-      this.getJson();
-      // console.log(this.canvasData.file);
-      // this.renderJson();
-      // console.log(this.canvasData.file);
-      // this.updateJson();
-      // console.log(this.canvasData.file);
-
-      // send json to backend
-      // this.canvasData.file = myDiagram.model.toJson();
-
-      let formData = new FormData();
-      formData.append("file", this.canvasData.file);
-      axios({
-        method: "post",
-        url:
-          "/canvas/compile/" + localStorage.uid + "/" + localStorage.pid + "/",
-        data: formData,
-      }).then((res) => {
-        console.log(res.data);
-        // If compile successful 200, backend update database, frontend get data and reload
-        if (res.data.status == "200") {
-          this.getPython();
-          console.log("compile ok!");
-        }
-        // If complie fails 500, frontend alert error
-        else if (res.data.status == "500") {
-          alert("The network model is not valid!");
-        }
-        location.replace("/canvas/");
       });
     },
 
@@ -1103,15 +1118,7 @@ export default {
 
     window.myDiagram = myDiagram;
 
-    // Load
-    // this.getJson();
-    // // this.updateJson();
-    // this.canvasData.file = JSON.stringify(this.canvasData.file);
-    // this.renderJson();
-
-    this.canvasData.file = JSON.stringify(this.canvasData.file);
-    // this.load();
-    // this.compile();
+    this.getData();
   },
 };
 </script>
@@ -1149,7 +1156,7 @@ export default {
 }
 </style>
 
-    <style scpoed>
+<style scpoed>
 #myPaletteDiv {
   border-radius: 7px;
 }

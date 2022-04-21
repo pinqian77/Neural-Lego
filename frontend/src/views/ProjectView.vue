@@ -357,6 +357,25 @@ export default {
       proj_data: {},
 
       isModalVisible: false,
+
+      canvasData: {
+        file: {
+          class: "GraphLinksModel",
+          copiesArrays: true,
+          copiesArrayObjects: true,
+          nodeDataArray: [
+            {
+              category: "Data",
+              reasonsList: [{}],
+              key: -2,
+              loc: "-99.10220015417542 -20.151221229488044",
+            },
+          ],
+          linkDataArray: [],
+        },
+        code: `if __name__ == '__main__':
+  main()`,
+      },
     };
   },
 
@@ -388,6 +407,7 @@ export default {
       let formData = new FormData();
       formData.append("name", this.new_proj.name);
       formData.append("is_public", this.new_proj.is_public);
+      formData.append("file", this.canvasData.file);
 
       axios({
         method: "post",
@@ -396,12 +416,15 @@ export default {
       }).then((res) => {
         console.log(res.data);
         if (res.data.status == "200") {
-          console.log("create ok!");
+          console.log("formData ok! 200");
         } else if (res.data.status == "500") {
-          console.log("create error");
+          console.log("formData error 500");
+        } else if (res.data.status == "400") {
+          console.log("can not save 400");
         }
-        location.replace("/project/");
       });
+
+      location.replace("/project/");
     },
 
     // 200
