@@ -31,12 +31,13 @@ def login(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
 
+        user = User.objects.get(username = username)
         user = authenticate(username = username, password = password)
-        if user is not None and user.is_active:
-            return JsonResponse({'status':200, 'uid': user.pk})
+        if user is not None:
+            if user.check_password(password):
+                return JsonResponse({'status':200, 'uid': user.pk})
 
     return JsonResponse({'status': 404}, safe=False)
-
 
 # Front
 # POST: {"email":"xxx@xxx.com"， "password":"xxxxxx", "next_url":"/login"，}
@@ -113,7 +114,6 @@ def search(request, pk=None):
     context['status'] = 200
     return JsonResponse(context, safe=False)
 
-
 # Front
 # POST: {"project_ID":"1"}
 # TODO: 删掉这个的地址的文件
@@ -130,7 +130,6 @@ def deleteProject(request, pk, pid):
         context['status'] = 200
     project.delete()
     return JsonResponse(context, safe=False)
-
 
 # Front
 # POST: {"project_name":"xxx", "project_time":"time"}
@@ -151,10 +150,10 @@ def newProject(request, pk):
 
     try:
         os.makedirs(save_path)
+        canvasSave(request, pk, project.project_id)
     except Exception:
         return JsonResponse({'status':500})
     return JsonResponse({'status':status}, safe=False)
-
 
 # 现在文件是都存在一个media的文件夹下。
 # 之后应该是根据用户id分别有文件夹， request.COOKIES.get(' ')来得到用户id
@@ -214,11 +213,9 @@ def downloadProject(request, pk, pid):
     else:
         return JsonResponse({'status':500})
 
-
 def profilePage(request, pk):
     context = {"name": "username"}
     return JsonResponse(context, safe=False)
-
 
 # Front
 # POST: {"canvas_data":"xxx"}
@@ -373,7 +370,6 @@ def templatePage(request, pk):
     project = Project.objects.filter(is_public=True).order_by(star)
     context = {'status': 400, 'project_list': list(project)}
     return JsonResponse(context, safe=False)
-
 
 def templateStar(request, pk):
     project_ID = request.POST.get("project_ID")
