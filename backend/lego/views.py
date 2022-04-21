@@ -268,11 +268,13 @@ def canvasJson(request, pk, pid):
 
 # TODO 检查文件合法
 def canvasSave(request, pk, pid):
+    print("\n CavbasSave\n")
     
     if request.method == "POST":
 
         file = request.POST.get("file")
         file = json.loads(file)
+        print("file:\n",file)
         save_path = Project.objects.get(project_id=pid).project_directory
 
         file_path = os.path.join(save_path, str(pid) + ".json")
