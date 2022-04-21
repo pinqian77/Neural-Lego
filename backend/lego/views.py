@@ -322,36 +322,14 @@ def trainRun(request, pk, pid):
     cmd("/usr/bin/python " + os.path.join(project_path, "main.py"))
     return JsonResponse(context, safe=False)
 
-def trainEpoch(request, pk, pid):
+def trainStatus(request, pk, pid):
     project_path = Project.objects.get(project_id = pid).project_directory
     with open(os.path.join(project_path,"output"), "r") as f:
         epoch = f.read()
-    context = {"epoch": epoch, "status": 200}
-    return JsonResponse(context, safe=False)
-
-def trainROC(request, pk, pid):
-    project_path = Project.objects.get(project_id = pid).project_directory
-    file_path = os.path.join(project_path, "auc.png")
-    try:
-        response = StreamingHttpResponse(open(file_path, 'rb'))
-        response["Content-type"] = "application/png"
-        response["status"] = 200
-    except Exception as e:
-        return JsonResponse({'status': 500})
-    response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
-    return response
-
-def trainACC(request, pk, pid):
-    project_path = Project.objects.get(project_id = pid).project_directory
-    file_path = os.path.join(project_path, "acc.png")
-    try:
-        response = StreamingHttpResponse(open(file_path, 'rb'))
-        response["Content-type"] = "application/png"
-        response["status"] = 200
-    except Exception as e:
-        return JsonResponse({'status': 500})
-    response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(pid)
-    return response
+    roc = os.path.join(project_path, "auc.png")
+    acc = os.path.join(project_path, "acc.png")
+    context = {"epoch": epoch, "status": 200, "acc": acc, "roc": roc}
+    return context
 
 # Front
 # POST: 还不是很清楚
