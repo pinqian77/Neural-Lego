@@ -20,6 +20,8 @@ def model(project_path: str , pid: str):
     
     nodeList = List['nodeDataArray']
     linkList = List['linkDataArray']
+    if len(linkList) == 0:
+        return
     
     nodedict = {}
     linkdict = {}

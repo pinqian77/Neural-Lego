@@ -135,22 +135,33 @@ def deleteProject(request, pk, pid):
 # POST: {"project_name":"xxx", "project_time":"time"}
 # TODO: 真的存这个文件夹， 要前端发送is_public过来
 def newProject(request, pk):
-    save_path = os.path.join(settings.MEDIA_ROOT, str(pk), request.POST.get("name"))
+    project_name = request.POST.get("name")
+    save_path = os.path.join(settings.MEDIA_ROOT, str(pk), project_name)
 
     user = User.objects.get(pk = pk)
-    is_save = Project.objects.filter(user_id = user, project_name = request.POST.get("name"))
+    is_save = Project.objects.filter(user_id = user, project_name =project_name)
 
     project = Project(user_id= user, project_name=request.POST.get("name"), project_directory=save_path, is_public=request.POST.get("is_public"), star = 0)
+    pid = 0
     
     if project is None or is_save.count() != 0:
         status = 400
+        return JsonResponse({'status':status}, safe=False)
     else:
         project.save()
+        pid = project.project_id
         status = 200
 
     try:
         os.makedirs(save_path)
-        canvasSave(request, pk, project.project_id)
+        file = request.POST.get("file")
+        file = json.loads(file)
+        print("load",file)
+        file_path = os.path.join(save_path, str(pid) + ".json")
+        # save file
+        with open(file_path, 'w') as fp:
+            print("json dump")
+            json.dump(file, fp)
     except Exception:
         return JsonResponse({'status':500})
     return JsonResponse({'status':status}, safe=False)
@@ -260,8 +271,8 @@ def canvasSave(request, pk, pid):
         save_path = Project.objects.get(project_id=pid).project_directory
         file_path = os.path.join(save_path, str(pid) + ".json")
         # save file
-        with open(file_path, 'wb+') as fp:
-            json.dumps(file)
+        with open(file_path, 'w') as fp:
+            json.dump(file, fp)
 
     return JsonResponse({"status":200}, safe=False)
 
