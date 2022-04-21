@@ -329,7 +329,7 @@ def trainStatus(request, pk, pid):
     roc = os.path.join(project_path, "auc.png")
     acc = os.path.join(project_path, "acc.png")
     context = {"epoch": epoch, "status": 200, "acc": acc, "roc": roc}
-    return context
+    return JsonResponse(context, safe=False)
 
 # Front
 # POST: 还不是很清楚
