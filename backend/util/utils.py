@@ -1,4 +1,5 @@
 import json
+from subprocess import PIPE
 import subprocess, time
 import os
 def model(project_path: str , pid: str):
@@ -83,6 +84,9 @@ from torchvision import transforms
 import time
 import json
 from model import Net
+from sklearn.metrics import roc_curve, auc
+import matplotlib.pyplot as plt
+import os
 
 project_path = "%s"
 with open("hyperparameter.json", 'r') as f:
@@ -91,7 +95,7 @@ with open("hyperparameter.json", 'r') as f:
 #device = torch.device("cuda" if use_cuda else "cpu")
 device = torch.device("cpu")
 
-torch.manual_seed(args['seed'])
+torch.manual_seed(int(args['seed']))
 #kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
 kwargs = {}
 
@@ -108,14 +112,14 @@ def readcsv(files):
     return x, y
 
 X, y = readcsv("%s")
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.1, random_state = args['seed'])
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.1, random_state = int(args['seed']))
 X_train, y_train = torch.stack([torch.Tensor(i) for i in X_train]), torch.stack([torch.Tensor([i]) for i in y_train])
 X_test, y_test = torch.stack([torch.Tensor(i) for i in X_test]), torch.stack([torch.Tensor([i]) for i in y_test])
 y_train, y_test = y_train.squeeze().type(torch.LongTensor), y_test.squeeze().type(torch.LongTensor)
 train_set = Data.TensorDataset(X_train, y_train)
 test_set = Data.TensorDataset(X_test, y_test)
-train_loader = Data.DataLoader(train_set, batch_size=args['batch_size'], shuffle=True)
-test_loader = Data.DataLoader(test_set, batch_size=args['test_batch_size'], shuffle=True)
+train_loader = Data.DataLoader(train_set, batch_size=int(args['batch_size']), shuffle=True)
+test_loader = Data.DataLoader(test_set, batch_size=int(args['test_batch_size']), shuffle=True)
 
     '''%(project_path, data_path)
         f.write(head+"\n")
@@ -144,7 +148,7 @@ def writeAuc(target_list, pred_list, path):
         roc_auc[i] = auc(fpr[i], tpr[i])
 
     # Compute micro-average ROC curve and ROC area
-    fpr["micro"], tpr["micro"], _ = roc_curve(pred.ravel(), target.ravel())
+    fpr["micro"], tpr["micro"], _ = roc_curve(pred_all.ravel(), target_all.ravel())
     roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
     
     plt.figure()
@@ -199,10 +203,10 @@ def eval_test(model, device, test_loader):
 def train_model():
     model = Net().to(device)
     
-    optimizer = optim.SGD(model.parameters(), lr=args['lr'])
+    optimizer = optim.SGD(model.parameters(), lr=float(args['lr']))
     
     trnlossList, trnaccList = [], []
-    for epoch in range(1, args['epoch'] + 1):
+    for epoch in range(1, int(args['epoch']) + 1):
         start_time = time.time()
         
         train(args, model, device, train_loader, optimizer, epoch)
@@ -210,10 +214,10 @@ def train_model():
         trnloss, trnacc = eval_test(model, device, train_loader)
         trnlossList.append(trnloss)
         trnaccList.append(trnacc)
-        writeAcc(trnlossList, trnaccList, os.path.join(project_path, "acc.png"))
+        writeLossAcc(trnlossList, trnaccList, os.path.join(project_path, "acc.png"))
         print('Epoch '+str(epoch)+': '+str(int(time.time()-start_time))+'s', end=', ')
         print('trn_loss: {:.4f}, trn_acc: {:.2f}%'.format(trnloss, 100. * trnacc), end=', ')
-        with open(os.path.join(project_path, "output"), 'w'):
+        with open(os.path.join(project_path, "output"), 'w') as f:
             f.write(str(epoch))
         
     return model
@@ -223,10 +227,5 @@ model = train_model()
         print(head)
         print(endfile)
 
-from subprocess import PIPE
 def cmd(command):
-    print(command)
-    subprocess.Popen(["ls -la"], shell = True)
-    subp = subprocess.Popen(command, shell = True, stdout=PIPE, stderr=PIPE)
-    stdout, stderr = subp.communicate()
-    print(subp)
+    subp = subprocess.Popen(command, shell=True)
