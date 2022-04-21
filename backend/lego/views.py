@@ -246,6 +246,7 @@ def canvasPython(request, pk, pid):
             return JsonResponse({'status':204})
 
         response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
+        response["status"] = 200
         return response
     return JsonResponse({'status':204})
 
@@ -273,6 +274,7 @@ def canvasSave(request, pk, pid):
         file = request.POST.get("file")
         file = json.loads(file)
         save_path = Project.objects.get(project_id=pid).project_directory
+
         file_path = os.path.join(save_path, str(pid) + ".json")
         # save file
         with open(file_path, 'w') as fp:

@@ -20,8 +20,6 @@ def model(project_path: str , pid: str):
     
     nodeList = List['nodeDataArray']
     linkList = List['linkDataArray']
-    if len(linkList) == 0:
-        return
     
     nodedict = {}
     linkdict = {}
@@ -36,6 +34,8 @@ def model(project_path: str , pid: str):
     
     for link in linkList:
         linkdict[link['from']] =  link['to']
+    if len(linkList) == 0 or end == 0:
+        return
     
     #if start == 0 or end == 0:
     #    raise 
