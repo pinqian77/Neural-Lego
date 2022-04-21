@@ -34,9 +34,8 @@ urlpatterns = [
     path('train/<int:pk>/<int:pid>/', views.trainPage),
     path('train/apply/<int:pk>/<int:pid>/', views.trainSave),
     path('train/run/<int:pk>/<int:pid>/', views.trainRun),
-    path('train/roc/<int:pk>/<int:pid>/', views.trainROC),
-    path('train/acc/<int:pk>/<int:pid>/', views.trainACC),
-    path('train/epoch/<int:pk>/<int:pid>/', views.trainACC),
+    path('train/status/<int:pk>/<int:pid>/', views.trainStatus),
+
 
     path('canvas/getPython/<int:pk>/<int:pid>/', views.canvasPython),
     path('canvas/getJson/<int:pk>/<int:pid>/', views.canvasJson),
