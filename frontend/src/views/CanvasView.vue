@@ -359,11 +359,14 @@ export default {
 
   methods: {
     getData() {
-      this.canvasData.file = JSON.stringify(this.canvasData.file);
+      this.getJson();
+      // this.getPython();
+    },
 
+    complie() {
+      // document.getElementById("func_layout").click();
       let formData = new FormData();
-      formData.append("file", this.canvasData.file);
-
+      formData.append("file", JSON.stringify(this.canvasData.file));
       axios({
         method: "post",
         url:
@@ -371,47 +374,22 @@ export default {
         data: formData,
       }).then((res) => {
         console.log(res.data);
-
         // If 200 compile successful, backend update database, frontend get data and reload
         if (res.data.status == "200") {
           this.getPython();
-
           console.log("compile ok!");
         }
         // If 500 complie fails, frontend alert error
-        else if (res.data.status == "500") {
-          alert("The network model is not valid!");
-        }
+        // else if (res.data.status == "500") {
+        //   alert("The network model is not valid!");
+        // }
+        location.replace("/canvas/");
       });
-    },
-
-    complie() {
-      document.getElementById("func_layout").click();
-      // let formData = new FormData();
-      // formData.append("file", JSON.stringify(this.canvasData.file));
-      // axios({
-      //   method: "post",
-      //   url:
-      //     "/canvas/complie/" + localStorage.uid + "/" + localStorage.pid + "/",
-      //   data: formData,
-      // }).then((res) => {
-      //   console.log(res.data);
-      //   // If 200 compile successful, backend update database, frontend get data and reload
-      //   if (res.data.status == "200") {
-      //     this.getPython();
-      //     console.log("compile ok!");
-      //   }
-      //   // If 500 complie fails, frontend alert error
-      //   else if (res.data.status == "500") {
-      //     alert("The network model is not valid!");
-      //   }
-      //   location.replace("/canvas/");
-      // });
     },
 
     getPython() {
       axios({
-        method: "get",
+        method: "post",
         url:
           "/canvas/getPython/" +
           localStorage.uid +
@@ -422,8 +400,8 @@ export default {
       }).then((res) => {
         console.log(res.data);
 
-        if (res.data.status == 200) {
-          this.canvas_data.code = res.code;
+        if (res.status == 200) {
+          this.canvasData.code = res.code;
         } else {
           alert("can not get user's python!");
         }
@@ -442,21 +420,21 @@ export default {
 
     getJson() {
       axios({
-        method: "get",
+        method: "post",
         url:
           "/canvas/getJson/" + localStorage.uid + "/" + localStorage.pid + "/",
         responseType: "stream",
       }).then((res) => {
         console.log(res.data);
         // not first time
-        if (res.data.status == 200) {
-          this.canvas_data.file = res.data;
-          this.renderJson();
+        if (res.status == 200) {
+          console.log("200");
+          console.log(JSON.stringify(res.data));
+          this.canvasData.file = JSON.stringify(res.data);
         }
         // first time
-        else if (res.data.status == 204) {
-        } else {
-          alert("can not get user's json!");
+        else if (res.status == 204) {
+          console.log("204");
         }
       });
     },
