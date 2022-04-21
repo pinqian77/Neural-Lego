@@ -366,7 +366,7 @@ export default {
     compile() {
       // document.getElementById("func_layout").click();
       let formData = new FormData();
-      formData.append("file", JSON.stringify(this.canvasData.file));
+      formData.append("file", this.canvasData.file);
       axios({
         method: "post",
         url:
@@ -416,7 +416,7 @@ export default {
         if (res.status == 200) {
           console.log("200");
           // console.log(JSON.stringify(res.data));
-          this.canvasData.file = res.data;
+          this.canvasData.file = JSON.stringify(res.data);
         }
         // first time
         else if (res.status == 204) {
