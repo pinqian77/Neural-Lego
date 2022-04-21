@@ -317,7 +317,7 @@ def trainSave(request, pk, pid):
     return JsonResponse(context, safe=False)
 
 def trainRun(request, pk, pid):
-    context = {"isRun": True}
+    context = {"isRun": True, "status": 200}
     project_path = Project.objects.get(project_id = pid).project_directory
     cmd("python "+os.path.join(project_path, "main.py"))
     return JsonResponse(context, safe=False)
@@ -326,7 +326,7 @@ def trainEpoch(request, pk, pid):
     project_path = Project.objects.get(project_id = pid).project_directory
     with open(os.path.join(project_path,"epoch"), "r") as f:
         epoch = f.read()
-    context = {"epoch:", epoch}
+    context = {"epoch:", epoch, "status": 200}
     return JsonResponse(context, safe=False)
 
 def trainROC(request, pk, pid):
@@ -335,6 +335,7 @@ def trainROC(request, pk, pid):
     try:
         response = StreamingHttpResponse(open(file_path, 'rb'))
         response["Content-type"] = "application/png"
+        response["status"] = 200
     except Exception as e:
         return JsonResponse({'status':500})
     response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
@@ -346,6 +347,7 @@ def trainACC(request, pk, pid):
     try:
         response = StreamingHttpResponse(open(file_path, 'rb'))
         response["Content-type"] = "application/png"
+        response["status"] = 200
     except Exception as e:
         return JsonResponse({'status':500})
     response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(pid)
