@@ -326,7 +326,7 @@ def trainEpoch(request, pk, pid):
     project_path = Project.objects.get(project_id = pid).project_directory
     with open(os.path.join(project_path,"epoch"), "r") as f:
         epoch = f.read()
-    context = {"epoch:", epoch, "status": 200}
+    context = {"epoch:": epoch, "status": 200}
     return JsonResponse(context, safe=False)
 
 def trainROC(request, pk, pid):
@@ -337,7 +337,7 @@ def trainROC(request, pk, pid):
         response["Content-type"] = "application/png"
         response["status"] = 200
     except Exception as e:
-        return JsonResponse({'status':500})
+        return JsonResponse({'status': 500})
     response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
     return response
 
@@ -349,7 +349,7 @@ def trainACC(request, pk, pid):
         response["Content-type"] = "application/png"
         response["status"] = 200
     except Exception as e:
-        return JsonResponse({'status':500})
+        return JsonResponse({'status': 500})
     response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(pid)
     return response
 
@@ -358,7 +358,7 @@ def trainACC(request, pk, pid):
 def uploadDataset(request, pk):
     file = request.FILES['file']
     if file is None:
-        return JsonResponse({"status":400})
+        return JsonResponse({"status": 400})
     name = file.name[:-5]
     file_path = os.path.join(settings.MEDIA_ROOT, str(pk), "data", name)
     save_path = os.path.join(settings.MEDIA_ROOT, str(pk), "data")
