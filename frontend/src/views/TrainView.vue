@@ -520,6 +520,7 @@ export default {
         method: "get",
         url: "/train/" + localStorage.uid + "/" + localStorage.pid + "/",
       }).then((res) => {
+        console.log(res);
         console.log(res.data);
         if (res.data.status == "200") {
           this.config.optimizer = res.data.optimizer;
@@ -543,6 +544,7 @@ export default {
         method: "get",
         url: "/dataset/" + localStorage.uid + "/",
       }).then((res) => {
+        console.log(res);
         if (res.data.status == "200") {
           this.dataset_data = res.data.dataset_detail;
         } else {

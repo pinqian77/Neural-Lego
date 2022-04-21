@@ -366,7 +366,10 @@ export default {
     compile() {
       // document.getElementById("func_layout").click();
       let formData = new FormData();
-      formData.append("file", this.canvasData.file);
+      console.log(document.getElementById("mySavedModel").value);
+      // this.canvasData.json = document.getElementById("mySavedModel").value;
+      // console.log(this.canvasData.file);
+      formData.append("file", document.getElementById("mySavedModel").value);
       axios({
         method: "post",
         url:
@@ -394,12 +397,12 @@ export default {
         responseType: "stream",
       }).then((res) => {
         console.log(res);
+        console.log(res.data);
 
         if (res.status == 200) {
           console.log("python 200");
-          this.canvasData.code = res.code;
+          this.canvasData.code = res.data;
           console.log(this.canvasData.code);
-          console.log(res.code);
         } else {
           alert("can not get user's python!");
         }
