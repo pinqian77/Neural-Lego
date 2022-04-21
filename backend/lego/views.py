@@ -158,10 +158,13 @@ def newProject(request, pk):
         file = json.loads(file)
         print("load",file)
         file_path = os.path.join(save_path, str(pid) + ".json")
+
+        code_path = os.path.join(save_path, str(pid) + ".py")
         # save file
         with open(file_path, 'w') as fp:
-            print("json dump")
             json.dump(file, fp)
+        with open(code_path, 'w') as fp:
+            fp.write("")
     except Exception:
         return JsonResponse({'status':500})
     return JsonResponse({'status':status}, safe=False)
@@ -258,6 +261,7 @@ def canvasJson(request, pk, pid):
             return JsonResponse({'status':204})
 
         response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
+        response["status"] = 200
         return response
     return JsonResponse({'status':204})
 
