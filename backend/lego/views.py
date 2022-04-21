@@ -237,7 +237,7 @@ def canvasPython(request, pk, pid):
     project_ID = pid
     project_path = Project.objects.only('project_directory').get(project_id = project_ID).project_directory
     model(project_path=project_path, pid=str(project_ID))
-    python_path = os.path.join(project_path, str(project_ID)+".py")
+    python_path = os.path.join(project_path, "model.py")
     if python_path:
         try:
             response = StreamingHttpResponse(open(python_path, 'rb'))
