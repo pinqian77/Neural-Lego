@@ -324,9 +324,9 @@ def trainRun(request, pk, pid):
 
 def trainEpoch(request, pk, pid):
     project_path = Project.objects.get(project_id = pid).project_directory
-    with open(os.path.join(project_path,"epoch"), "r") as f:
+    with open(os.path.join(project_path,"output"), "r") as f:
         epoch = f.read()
-    context = {"epoch:": epoch, "status": 200}
+    context = {"epoch": epoch, "status": 200}
     return JsonResponse(context, safe=False)
 
 def trainROC(request, pk, pid):
