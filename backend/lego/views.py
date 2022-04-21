@@ -308,9 +308,11 @@ def trainSave(request, pk, pid):
     project_json_name = "hyperparameter.json"
     project_json = request.POST.get("config")
     project_json = json.loads(project_json)
+    data_name = project_json["dataset"]
     with open(os.path.join(project_path, project_json_name), 'w') as f:
         json.dump(project_json, f)
-    main(project_path= project_path, pid= str(project_ID))
+    data_path = Data.objects.get(dataset_name = data_name).dataset_name
+    main(project_path= project_path, data_path = data_path, pid= str(project_ID))
     context = {"status":200}
     return JsonResponse(context, safe=False)
 
