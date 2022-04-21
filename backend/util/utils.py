@@ -84,8 +84,8 @@ import time
 import json
 from model import Net
 
-project_path = %s
-with open("hyper.json", 'r') as f:
+project_path = "%s"
+with open("hyperparameter.json", 'r') as f:
     args = json.load(f)
 #use_cuda = not args.no_cuda and torch.cuda.is_available()
 #device = torch.device("cuda" if use_cuda else "cpu")
@@ -107,7 +107,7 @@ def readcsv(files):
     y = csvfile[columns[-1]].values
     return x, y
 
-X, y = readcsv(%s)
+X, y = readcsv("%s")
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.1, random_state = args['seed'])
 X_train, y_train = torch.stack([torch.Tensor(i) for i in X_train]), torch.stack([torch.Tensor([i]) for i in y_train])
 X_test, y_test = torch.stack([torch.Tensor(i) for i in X_test]), torch.stack([torch.Tensor([i]) for i in y_test])
@@ -223,5 +223,10 @@ model = train_model()
         print(head)
         print(endfile)
 
+from subprocess import PIPE
 def cmd(command):
-    subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
+    print(command)
+    subprocess.Popen(["ls -la"], shell = True)
+    subp = subprocess.Popen(command, shell = True, stdout=PIPE, stderr=PIPE)
+    stdout, stderr = subp.communicate()
+    print(subp)

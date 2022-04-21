@@ -311,7 +311,7 @@ def trainSave(request, pk, pid):
     data_name = project_json["dataset"]
     with open(os.path.join(project_path, project_json_name), 'w') as f:
         json.dump(project_json, f)
-    data_path = Data.objects.get(dataset_name = data_name).dataset_name
+    data_path = Data.objects.get(dataset_name = data_name).dataset_directory
     main(project_path= project_path, data_path = data_path, pid= str(project_ID))
     context = {"status":200}
     return JsonResponse(context, safe=False)
@@ -319,7 +319,7 @@ def trainSave(request, pk, pid):
 def trainRun(request, pk, pid):
     context = {"isRun": True, "status": 200}
     project_path = Project.objects.get(project_id = pid).project_directory
-    cmd("python "+os.path.join(project_path, "main.py"))
+    cmd(["/usr/bin/python", os.path.join(project_path, "main.py")])
     return JsonResponse(context, safe=False)
 
 def trainEpoch(request, pk, pid):

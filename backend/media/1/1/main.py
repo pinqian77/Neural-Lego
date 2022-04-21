@@ -17,8 +17,8 @@ import time
 import json
 from model import Net
 
-project_path = "~/Comp208-Neural-Lego/backend/media/1/yrj"
-with open("hyperparameter.json", 'r') as f:
+project_path = /home/jerry/Comp208-Neural-Lego/backend/media/1/1
+with open("hyper.json", 'r') as f:
     args = json.load(f)
 #use_cuda = not args.no_cuda and torch.cuda.is_available()
 #device = torch.device("cuda" if use_cuda else "cpu")
