@@ -233,7 +233,7 @@
                 Download
               </button>
 
-              <form style="display: inline-block">
+              <div style="display: inline-block">
                 <input
                   type="hidden"
                   class="form-control"
@@ -247,7 +247,7 @@
                 >
                   Compile
                 </button>
-              </form>
+              </div>
 
               <button class="btn btn-primary" @click="enterTrain()">
                 Train
