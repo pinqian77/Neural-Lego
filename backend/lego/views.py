@@ -327,7 +327,7 @@ def trainEpoch(request, pk, pid):
     context = {"epoch:", epoch}
     return JsonResponse(context, safe=False)
 
-def trainROC(request, pk):
+def trainROC(request, pk, pid):
     project_path = Project.objects.get(project_id = pid).project_directory
     file_path = os.path.join(project_path, "auc.png")
     try:
@@ -338,7 +338,7 @@ def trainROC(request, pk):
     response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
     return response
 
-def trainACC(request, pk):
+def trainACC(request, pk, pid):
     project_path = Project.objects.get(project_id = pid).project_directory
     file_path = os.path.join(project_path, "acc.png")
     try:
@@ -346,7 +346,7 @@ def trainACC(request, pk):
         response["Content-type"] = "application/png"
     except Exception as e:
         return JsonResponse({'status':500})
-    response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
+    response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(pid)
     return response
 
 # Front
