@@ -46,9 +46,6 @@ def model(project_path: str , pid: str):
     with open(os.path.join(project_path, "model.py"), 'w') as f:
         head = '''import torch.nn.functional as F
 import torch.nn as nn
-import torch.nn.functional as F
-import torch.nn as nn
-import torch.nn.functional as F
 
 class Net(nn.Module):
     '''
@@ -67,10 +64,6 @@ class Net(nn.Module):
 def main(project_path, data_path, pid):
     with open(os.path.join(project_path, 'main.py'), 'w') as f:
         head = '''import torch.nn as nn
-import torch.nn.functional as F
-from sklearn.model_selection import train_test_split
-import torch.nn as nn
-import torch.nn.functional as F
 from sklearn.model_selection import train_test_split
 import torch
 import torch.nn as nn
@@ -89,7 +82,7 @@ import matplotlib.pyplot as plt
 import os
 
 project_path = "%s"
-with open("hyperparameter.json", 'r') as f:
+with open(os.path.join(project_path, "hyperparameter.json"), 'r') as f:
     args = json.load(f)
 #use_cuda = not args.no_cuda and torch.cuda.is_available()
 #device = torch.device("cuda" if use_cuda else "cpu")

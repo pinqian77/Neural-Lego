@@ -40,7 +40,7 @@
           >
         </li>
 
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="/dataset">
             <i class="fas fa-fw fa-folder"></i>
             <span>Dataset</span></a
@@ -61,12 +61,6 @@
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-          <a class="nav-link" href="/canvas">
-            <i class="fas fa-fw fa-palette"></i>
-            <span>Canvas</span></a
-          >
-        </li>
 
         <hr class="sidebar-divider my-0" />
 
@@ -188,8 +182,8 @@
               <!-- About-->
               <div class="resume-section-content">
                 <h1 class="mb-0">
-                  Haomiao
-                  <span class="text-primary">Ji</span>
+                 Welcome!
+                  <span class="text-primary"></span>
                 </h1>
                 <!-- <hr class="m-0" /> -->
                 <hr class="sidebar-divider d-none d-md-block" />

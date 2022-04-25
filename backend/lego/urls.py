@@ -24,6 +24,7 @@ urlpatterns = [
     path('project/upload/<int:pk>/', views.uploadProject),
     path('project/search/<int:pk>/', views.search),
     path('project/remove/<int:pk>/<int:pid>/', views.deleteProject),
+    path('project/download/<int:pk>/<int:pid>/', views.downloadProject),
 
     path('dataset/<int:pk>/', views.dataPage),
     path('dataset/upload/<int:pk>/', views.uploadDataset),
@@ -35,6 +36,9 @@ urlpatterns = [
     path('train/apply/<int:pk>/<int:pid>/', views.trainSave),
     path('train/run/<int:pk>/<int:pid>/', views.trainRun),
     path('train/status/<int:pk>/<int:pid>/', views.trainStatus),
+    path('train/roc/<int:pk>/<int:pid>/', views.trainROC),
+    path('train/acc/<int:pk>/<int:pid>/', views.trainACC),
+    path('train/epoch/<int:pk>/<int:pid>/', views.trainEpoch),
 
 
     path('canvas/getPython/<int:pk>/<int:pid>/', views.canvasPython),

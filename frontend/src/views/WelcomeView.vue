@@ -23,6 +23,9 @@
             <li class="nav-item">
               <a class="nav-link" href="/register/">Register</a>
             </li>
+<li class="nav-item">
+              <a class="nav-link" href="javascript:void(0);" @click="tryMe()">Try Me</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -44,14 +47,14 @@
             <div class="p-5">
               <img
                 class="img-fluid rounded-circle"
-                src="img/c3po.jpg"
+                src="../../new_pages/img/c3po.jpg"
                 alt="..."
               />
             </div>
           </div>
           <div class="col-lg-6 order-lg-1">
             <div class="p-5">
-              <h2 class="display-4">For AI beginners...</h2>
+              <h2 class="display-4">For AI Enthusiasts...</h2>
               <p>
                 As artificial intelligence advances, a rising number of people
                 from various industries and research fields are keen to master
@@ -72,7 +75,7 @@
             <div class="p-5">
               <img
                 class="img-fluid rounded-circle"
-                src="img/blocks.jpg"
+                src="../../new_pages/img/blocks.jpg"
                 alt="..."
               />
             </div>
@@ -100,7 +103,7 @@
             <div class="p-5">
               <img
                 class="img-fluid rounded-circle"
-                src="img/logo.jpg"
+                src="../../new_pages/img/logo.jpg"
                 alt="..."
               />
             </div>
@@ -131,17 +134,41 @@
 </template>
 
 <script>
-// export default {
-//   name: 'WelcomeView',
-//   components: {
-//     Welcome
-//   }
-// }
+import axios from "axios";
+
+ export default {
+   name: 'WelcomeView',
+
+methods: {
+    tryMe() {
+      let formData = new FormData();
+      formData.append("username", "admin");
+      formData.append("password", 1);
+
+      axios({
+        method: "post",
+        url: "/login/",
+        data: formData,
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.status == "200") {
+          localStorage.uid = res.data.uid;
+          console.log("uid: " + localStorage.uid);
+          console.log("login ok!");
+          location.replace("/project/");
+        } else {
+          console.log("login fail!");
+        }
+      });
+    },
+  },
+ }
 </script>
 
 
 
 
+<style scoped src="../../new_pages/css/style_home.css"></style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .body {
@@ -153,4 +180,3 @@
   width: 100%;
 }
 </style>
-<style scoped src="../../new_pages/css/style_home.css"></style>

@@ -61,12 +61,6 @@
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-          <a class="nav-link" href="/canvas">
-            <i class="fas fa-fw fa-palette"></i>
-            <span>Canvas</span></a
-          >
-        </li>
 
         <hr class="sidebar-divider my-0" />
 
@@ -208,17 +202,17 @@
                         class="nav-link collapsed"
                         href="#"
                         data-toggle="collapse"
-                        data-target="#collapseTwo"
+                        data-target="#collapseUtilities"
                         aria-expanded="true"
-                        aria-controls="collapseTwo"
+                        aria-controls="collapseUtilities"
                       >
-                        <i class="fas fa-fw fa-cog"></i>
+                        <i class="fas fa-fw fa-file"></i>
                         <span>Dataset</span>
                       </a>
                       <div
-                        id="collapseTwo"
+                        id="collapseUtilities"
                         class="collapse"
-                        aria-labelledby="headingTwo"
+                        aria-labelledby="headingUtilities"
                         data-parent="#accordionSidebar"
                       >
                         <div class="form-group col-lg-2">
@@ -393,21 +387,22 @@
                         <div class="col-xl-10 col-lg-5">
                           <!-- progress bar -->
                           <div class="progress">
-                            <div
+                          
+<div
                               class="
                                 progress-bar
                                 progress-bar-striped
                                 progress-bar-animated
                               "
                               role="progressbar"
-                              style="width: 25%"
-                              aria-valuenow="25"
+                              v-bind:style="{width: percentage + '%'}"
+                              v-bind:aria-valuenow="finished_epoch"
                               aria-valuemin="0"
-                              aria-valuemax="100"
+                              v-bind:aria-valuemax="config.epoch"
                             >
-                              25%
+                              {{percentage}}%
                             </div>
-                          </div>
+</div>
                         </div>
                       </div>
                     </div>
@@ -438,9 +433,9 @@
                     <a href="#"
                       ><img
                         class="card-img-top"
-                        v-bind:src="train_status_data.acc"
-                        alt="..."
-                    /></a>
+                        :src="this.acc"
+                        alt=""
+                        /></a>
                   </div>
                 </div>
               </div>
@@ -466,8 +461,8 @@
                     <a href="#"
                       ><img
                         class="card-img-top"
-                        v-bind:src="train_status_data.roc"
-                        alt="..."
+                        :src="this.roc"
+                        alt=""
                     /></a>
                   </div>
                 </div>
@@ -501,13 +496,13 @@ export default {
 
       dataset_data: {},
 
-      train_status_data: {
         finished_epoch: 0,
         roc: "",
         acc: "",
-      },
 
-      timer: "",
+      timer: null,
+
+      percentage: 0,
     };
   },
 
@@ -568,27 +563,75 @@ export default {
           console.log("apply ok!");
           this.getData();
         } else {
-          alert.log("apply fail!");
+          console.log("apply fail!");
         }
       });
     },
 
-    // untested
-    getTrainStatus() {
+    getAcc() {
       axios({
-        method: "get",
-        url: "/train/status" + localStorage.uid + "/" + localStorage.pid + "/",
+        method: "post",
+        url: "/train/acc/" + localStorage.uid + "/" + localStorage.pid + "/",
+        responseType: "blob",
       }).then((res) => {
+        console.log(res);
         console.log(res.data);
-        if (res.data.status == 200) {
-          this.train_status_data.finished_epoch =
-            res.data.train_staus.finished_epoch;
-          this.train_status_data.roc = res.data.train_staus.roc;
-          this.train_status_data.acc = res.data.train_staus.acc;
+        if (res.status == "200") {
+          console.log("acc 200");
+          let url = window.URL.createObjectURL(res.data); // 获取对象url
+          this.acc = url;
         } else {
-          alert("train error!");
+          alert("can not get acc!");
         }
       });
+    },
+
+    getRoc() {
+      axios({
+        method: "post",
+        url: "/train/roc/" + localStorage.uid + "/" + localStorage.pid + "/",
+        responseType: "blob",
+      }).then((res) => {
+        console.log(res.data);
+
+        if (res.status == "200") {
+          console.log("roc 200");
+          let url = window.URL.createObjectURL(res.data); // 获取对象url
+          this.roc = url;
+        } else {
+          alert("can not get roc!");
+        }
+      });
+    },
+
+
+    getEpoch() {
+      console.log("getting epoch");
+      axios({
+        method: "post",
+        url: "/train/epoch/" + localStorage.uid + "/" + localStorage.pid + "/",
+      }).then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.epoch);
+        if (res.status == "200") {
+          this.finished_epoch = res.data.epoch;
+          this.percentage = this.finished_epoch / this.config.epoch;
+          this.percentage = Number(this.percentage * 100).toFixed(2);
+          console.log("percentage" + this.percentage); 
+          console.log("f_epoch" + this.finished_epoch);
+        } else {
+          alert("epoch error!");
+        }
+      });
+    },
+
+
+    getTrainStatus() {
+      console.log("enter get status");
+      this.getAcc();
+      this.getRoc();
+      this.getEpoch();
     },
 
     // untested
@@ -603,8 +646,22 @@ export default {
         console.log(res.data);
         if (res.data.status == "200") {
           console.log("zai run le...");
+
+
+          // this.getTrainStatus(); 
           // this.timer = setInterval(this.getTrainStatus(), 1000);
-        } else {
+this.timer = setInterval(() => {
+            if (this.finished_epoch == this.config.epoch) {
+              alert("Train finished!");
+              clearInterval(this.timer);
+              this.timer = null;
+              this.finished_epoch = 0;
+            }
+            console.log("ep " + this.config.epoch);
+            console.log("f_ep " + this.finished_epoch);
+            this.getTrainStatus();
+          }, 1000);
+ } else {
           console.log("run fail!");
         }
       });
@@ -616,7 +673,8 @@ export default {
   },
 
   beforeDestroy() {
-    clearTimeout(this.timer);
+    clearInterval(this.timer);
+    this.timer = null;
   },
 };
 </script>

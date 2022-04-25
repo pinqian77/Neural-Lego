@@ -45,15 +45,18 @@ def register(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        isHave = User.objects.get(username = username)
-
-        if isHave is None and username is not None and password is not None:
-            user = User.objects.create_user(username=username, password = password)
-            user.is_active = True
-            user.save
-            return JsonResponse({'status':200})
-        else:
+        
+        try:
+            isHave = User.objects.get(username = username)
             return JsonResponse({'status':500})
+        except Exception as e:
+            if username is not None and password is not None:
+                user = User.objects.create_user(username=username, password = password)
+                user.is_active = True
+                user.save
+                return JsonResponse({'status':200})
+            else:
+                return JsonResponse({'status':500})
 
     return JsonResponse({'status': 404}, safe=False)
 
@@ -103,11 +106,14 @@ def deleteData(request, pk, did):
 def search(request, pk=None):
 #    context = {'project_detail': {"project_ID": "1",
 #                                  "project_name": "name", "project_time": "time"}}
+    print(pk, request.POST.get("keyword"))
     if pk is not None:
         user = User.objects.get(pk = pk)
-        project = Project.objects.filter(user_id=user, project_name__contains= request.POST.get("keyword"))
+        project = Project.objects.filter(user_id=user, project_name__icontains= request.POST.get("keyword"))
     else:
-        project = Project.objects.filter(is_public = True, project_name__contains= request.POST.get("keyword"))
+        project = Project.objects.filter(is_public = True, project_name__icontains= request.POST.get("keyword"))
+    for item in project:
+        print(item)
 
     context = {}
     context['project_detail'] = querysetTojson(project)
@@ -125,7 +131,14 @@ def deleteProject(request, pk, pid):
         context['status'] = 500
     else:
         for item in os.listdir(project.project_directory):
-            os.remove(os.path.join(project.project_directory, item))
+            path = os.path.join(project.project_directory, item)
+            if (os.path.isfile(path)):
+                os.remove(path)
+            else:
+                for i in os.listdir(path):
+                    ipath = os.path.join(path, i)
+                    os.remove(ipath)
+                os.removedirs(path)
         os.removedirs(project.project_directory)
         context['status'] = 200
     project.delete()
@@ -220,6 +233,7 @@ def downloadProject(request, pk, pid):
             zip_file.close()
             response = StreamingHttpResponse(open(zip_dir, 'rb'))
             response["Content-type"] = "application/zip"
+            response["status"] = 200
         except Exception as e:
             return JsonResponse({'status':500})
         response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(project_ID)
@@ -311,7 +325,7 @@ def trainSave(request, pk, pid):
     data_name = project_json["dataset"]
     with open(os.path.join(project_path, project_json_name), 'w') as f:
         json.dump(project_json, f)
-    data_path = Data.objects.get(dataset_name = data_name).dataset_directory
+    data_path = Data.objects.get(dataset_name = data_name, user_id = user).dataset_directory
     main(project_path= project_path, data_path = data_path, pid= str(project_ID))
     context = {"status":200}
     return JsonResponse(context, safe=False)
@@ -319,7 +333,7 @@ def trainSave(request, pk, pid):
 def trainRun(request, pk, pid):
     context = {"isRun": True, "status": 200}
     project_path = Project.objects.get(project_id = pid).project_directory
-    cmd("/usr/bin/python " + os.path.join(project_path, "main.py"))
+    cmd("python3 " + os.path.join(project_path, "main.py"))
     return JsonResponse(context, safe=False)
 
 def trainStatus(request, pk, pid):
@@ -330,6 +344,35 @@ def trainStatus(request, pk, pid):
     acc = os.path.join(project_path, "acc.png")
     context = {"epoch": epoch, "status": 200, "acc": acc, "roc": roc}
     return JsonResponse(context, safe=False)
+def trainEpoch(request, pk, pid):
+    project_path = Project.objects.get(project_id = pid).project_directory
+    with open(os.path.join(project_path,"output"), "r") as f:
+        epoch = f.read()
+    context = {"epoch": epoch}
+    return JsonResponse(context, safe=False)
+
+def trainROC(request, pk, pid):
+     project_path = Project.objects.get(project_id = pid).project_directory
+     file_path = os.path.join(project_path, "auc.png")
+     try:
+        response = StreamingHttpResponse(open(file_path, 'rb'))
+        response["Content-type"] = "application/png"
+     except Exception as e:
+        return JsonResponse({'status':500})
+     response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(pid)
+     return response
+
+def trainACC(request, pk, pid):
+     project_path = Project.objects.get(project_id = pid).project_directory
+     file_path = os.path.join(project_path, "acc.png")
+     try:
+        response = StreamingHttpResponse(open(file_path, 'rb'))
+        response["Content-type"] = "application/png"
+     except Exception as e:
+        return JsonResponse({'status':500})
+     response["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(pid)
+     return response
+
 
 # Front
 # POST: 还不是很清楚

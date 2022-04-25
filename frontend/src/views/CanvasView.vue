@@ -54,18 +54,12 @@
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-          <a class="nav-link" href="draggable.html">
-            <i class="fas fa-fw fa-palette"></i>
-            <span>Canvas</span></a
-          >
-        </li>
 
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
-          <a class="nav-link" href="home.html">
+          <a class="nav-link" href="/">
             <i class="fas fa-fw fa-arrow-circle-left"></i>
             <span>Log out</span></a
           >
@@ -434,20 +428,21 @@ export default {
       axios({
         method: "get",
         url:
-          "/canvas/download/" + localStorage.uid + "/" + localStorage.pid + "/",
+          "/project/download/" + localStorage.uid + "/" + localStorage.pid + "/",
         responseType: "blob",
       }).then((res) => {
         console.log(res.data);
-        if (res.data.status == 200) {
-          let blob = new Blob([res], {
-            type: "application/zip;charset-UTF-8",
+        console.log(res.status);
+        if (res.status == "200") {
+          let blob = new Blob([res.data], {
+            type: "application/zip",
           });
 
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.style.display = "none";
           a.href = url;
-          a.download = "projectttt.zip";
+          a.download = "";
           a.click();
           URL.revokeObjectURL(url);
         } else {

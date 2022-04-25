@@ -58,12 +58,6 @@
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-          <a class="nav-link" href="/canvas/">
-            <i class="fas fa-fw fa-palette"></i>
-            <span>Canvas</span></a
-          >
-        </li>
 
         <hr class="sidebar-divider my-0" />
 
@@ -178,7 +172,7 @@
                     </thead>
                     <tbody>
                       <tr v-for="ds in dataset_data" :key="ds.id">
-                        <th scope="col">{{ ds.id }}</th>
+                        <th scope="col"></th>
                         <td>
                           <button type="button" class="btn btn-link" disabled>
                             {{ ds.dataset_name }}
@@ -310,12 +304,11 @@ export default {
         console.log(res.data);
         if (res.data.status == "200") {
           console.log("upload ok!");
-          location.replace("/dataset/");
         } else {
           alert.log("upload fail!");
-          location.replace("/dataset/");
         }
       });
+      location.replace("/dataset/");
     },
 
     // 200

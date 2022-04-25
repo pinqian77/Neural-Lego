@@ -13,7 +13,7 @@ class Project(models.Model):
     is_public = models.CharField(max_length = 50, null=False)
     star = models.IntegerField(null=False)
     def __str__(self):
-        return str(self.project_id)
+        return str(self.project_name)
     class Meta:
         db_table = 'project'
         ordering = ['project_id']

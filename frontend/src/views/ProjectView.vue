@@ -58,12 +58,6 @@
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-          <a class="nav-link" href="/canvas/">
-            <i class="fas fa-fw fa-palette"></i>
-            <span>Canvas</span></a
-          >
-        </li>
 
         <hr class="sidebar-divider my-0" />
 
@@ -184,12 +178,13 @@
                         <th scope="col"></th>
                         <th scope="col">Name</th>
                         <th scope="col">Time</th>
+                        <th scope="col">Public</th>
                         <th scope="col">Operation</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="proj in proj_data" :key="proj.id">
-                        <th scope="col">{{ proj.id }}</th>
+                        <th scope="col"></th>
                         <td>
                           <button
                             type="button"
@@ -205,6 +200,13 @@
                             {{ proj.last_save_time }}
                           </button>
                         </td>
+
+                        <td>
+                          <button type="button" class="btn btn-link" disabled>
+                            {{ proj.is_public }}
+                          </button>
+                        </td>
+
                         <td>
                           <button
                             class="btn btn-warning"
@@ -352,7 +354,8 @@ export default {
 
       page_name: "project_page",
 
-      search_keyword: "",
+is_search: "false",      
+search_keyword: "",
 
       proj_data: {},
 
@@ -387,19 +390,41 @@ export default {
   methods: {
     // 200
     getData() {
-      axios({
-        method: "get",
-        url: "/project/" + localStorage.uid + "/",
-      }).then((res) => {
-        console.log(res.data);
-        if (res.data.status == 200) {
-          this.proj_data = res.data.project_detail;
-          console.log(res.data.project_detail);
-          console.log(this.proj_data);
-        } else {
-          alert("project loading error!");
-        }
-      });
+      console.log(this.is_search);
+
+      if (this.is_search == "false") {
+        axios({
+          method: "get",
+          url: "/project/" + localStorage.uid + "/",
+        }).then((res) => {
+          console.log(res.data);
+          if (res.data.status == 200) {
+            this.proj_data = res.data.project_detail;
+            console.log(res.data.project_detail);
+            console.log(this.proj_data);
+          } else {
+            alert("project loading error!");
+          }
+        });
+      } else {
+        let formData = new FormData();
+        formData.append("page_name", this.page_name);
+        formData.append("keyword", this.search_keyword);
+
+        axios({
+          method: "post",
+          url: "/project/search/" + localStorage.uid + "/",
+          data: formData,
+        }).then((res) => {
+          console.log(res.data);
+          if (res.data.status == "200") {
+            this.proj_data = res.data.project_detail;
+          } else if (res.data.status == "500") {
+            alert("Something wrong...");
+          }
+        });
+        this.is_search = "false";
+      }
     },
 
     // 200
@@ -449,35 +474,20 @@ export default {
         headers: { "Content-Type": "multipart/form-data" },
       }).then((res) => {
         console.log(res.data);
-        if (res.data.status == "200") {
-          console.log("upload ok!");
-        } else {
-          alert("upload fail!");
-        }
-        location.replace("/project/");
+        // if (res.data.status == "200") {
+        //  console.log("upload ok!");
+        // } else {
+        //  alert("upload fail!");
+       // }
+         location.replace("/project/");
       });
     },
 
     // untested
     search() {
-      let formData = new FormData();
-      formData.append("page_name", this.page_name);
-      formData.append("keyword", this.search_keyword);
-
-      axios({
-        method: "post",
-        url: "/project/search/" + localStorage.uid + "/",
-        data: formData,
-      }).then((res) => {
-        console.log(res.data);
-        if (res.data.status == "200") {
-          this.proj_data = res.data.project_datail;
-        } else if (res.data.status == "500") {
-          alert("Something wrong...");
-        }
-        location.replace("/project/");
-      });
-    },
+    this.is_search = "true";    
+this.getData();   
+ },
 
     // 200
     remove(proj) {
