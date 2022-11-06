@@ -4,8 +4,6 @@ Welcome to the Neural-Lego repo!
 
 This repo is used for developing COMP208 project, containing codes and related materials.
 
-You can try the website via: [TRY ME](http://124.220.206.81/)
-
 ## Run it on Your Machine
 
 - create conda env
